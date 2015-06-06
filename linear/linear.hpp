@@ -70,7 +70,7 @@ class LinearRegressionCpp: public NumericallyOptimisedMLAlgorithmCpp {
 	//rank: Each process is assigned an individual number ranging from 0 to the number of processs minus one. This is used for identification. You may or may not need this depending on your algorithm.
 	//BatchNum: batch number
 	//IterationNum: iteration number
-	void g(MPI_Comm comm, double *dZdW, const double *W, const int BatchBegin, const int BatchEnd, const int BatchSize, const int rank, const int BatchNum, const int IterationNum) {
+	void g(MPI_Comm comm, const double *W, const int BatchBegin, const int BatchEnd, const int BatchSize, const int rank, const int BatchNum, const int IterationNum) {
 		
 		int i,j;
 		double Yhat, TwoYhatMinusY;

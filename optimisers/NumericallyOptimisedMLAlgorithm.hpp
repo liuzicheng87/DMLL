@@ -24,7 +24,7 @@ class NumericallyOptimisedMLAlgorithmCpp {
 	//BatchNum: batch number
 	//IterationNum: iteration number
 	virtual void f(MPI_Comm comm, double &Z, const double *W, const int BatchBegin, const int BatchEnd, const int BatchSize, const int rank, const int BatchNum, const int IterationNum) {}
-	virtual void g(MPI_Comm comm, double *dZdW, const double *W, const int BatchBegin, const int BatchEnd, const int BatchSize, const int rank, const int BatchNum, const int IterationNum) {}
+	virtual void g(MPI_Comm comm, const double *W, const int BatchBegin, const int BatchEnd, const int BatchSize, const int rank, const int BatchNum, const int IterationNum) {}
 		
 	//This is used to determine the size of the array needed
 	int GetIterationsNeeded() {return this->IterationsNeeded;}
