@@ -3,7 +3,7 @@ class GradientDescent: public OptimiserCpp {
 	public:
 	double LearningRate, LearningRatePower;
 		
-	//Initialise the SGD function
+	//Initialise the GradientDescent function
 	GradientDescent (double LearningRate, double LearningRatePower, const int size, const int rank):OptimiserCpp(size, rank) {
 	
 		//Store all of the input values
@@ -15,12 +15,12 @@ class GradientDescent: public OptimiserCpp {
 	//Destructor		
 	~GradientDescent() {}
 		
-	void max(MPI_Comm comm, const double tol, const int MaxNumIterations, const int size, const int rank);
-	void min(MPI_Comm comm, const double tol, const int MaxNumIterations, const int size, const int rank);
+	void max(MPI_Comm comm, const double tol, const int MaxNumIterations);
+	void min(MPI_Comm comm, const double tol, const int MaxNumIterations);
 		
 };
 
-void GradientDescent::max(MPI_Comm comm, const double tol, const int MaxNumIterations, const int size, const int rank) {
+void GradientDescent::max(MPI_Comm comm, const double tol, const int MaxNumIterations) {
 		
 	int i, IterationNum, BatchNum, BatchBegin, BatchEnd, BatchSize, GlobalBatchSize, CurrentBatchSize, WBatchBegin, WBatchEnd;
 	double GlobalBatchSizeDouble;
@@ -45,7 +45,7 @@ void GradientDescent::max(MPI_Comm comm, const double tol, const int MaxNumItera
 				//Call g()
 				//Note that it is the responsibility of whoever writes the MLalgorithm to make sure that this->dZdW and this->SumdZdW are passed to ALL processes
 				//It is, however, your responsibility to place a barrier after that, if required
-				this->MLalgorithm->g(comm, this->W, BatchBegin, BatchEnd, BatchSize, rank, BatchNum, IterationNum);
+				this->MLalgorithm->g(comm, this->W, BatchBegin, BatchEnd, BatchSize, BatchNum, IterationNum);
 				
 				//Add all BatchSize and store the result in GlobalBatchSize
 				MPI_Allreduce(&BatchSize, &GlobalBatchSize, 1, MPI_INT, MPI_SUM, comm);		
@@ -79,7 +79,7 @@ void GradientDescent::max(MPI_Comm comm, const double tol, const int MaxNumItera
 		
 }
 
-void GradientDescent::min(MPI_Comm comm, const double tol, const int MaxNumIterations, const int size, const int rank) {
+void GradientDescent::min(MPI_Comm comm, const double tol, const int MaxNumIterations) {
 		
 	int i, IterationNum, BatchNum, BatchBegin, BatchEnd, BatchSize, GlobalBatchSize, CurrentBatchSize, WBatchBegin, WBatchEnd;
 	double GlobalBatchSizeDouble;
@@ -104,7 +104,7 @@ void GradientDescent::min(MPI_Comm comm, const double tol, const int MaxNumItera
 				//Call g()
 				//Note that it is the responsibility of whoever writes the MLalgorithm to make sure that this->dZdW and this->SumdZdW are passed to ALL processes
 				//It is, however, your responsibility to place a barrier after that, if required
-				this->MLalgorithm->g(comm, this->W, BatchBegin, BatchEnd, BatchSize, rank, BatchNum, IterationNum);
+				this->MLalgorithm->g(comm, this->W, BatchBegin, BatchEnd, BatchSize, BatchNum, IterationNum);
 				
 				//Add all BatchSize and store the result in GlobalBatchSize
 				MPI_Allreduce(&BatchSize, &GlobalBatchSize, 1, MPI_INT, MPI_SUM, comm);		

@@ -108,12 +108,33 @@ class NumericallyOptimisedMLAlgorithm:
 		#Set W
 		self.thisptr.SetParams(params)	
 
+#DimensionalityReduction
+class LinearMahaFeatExtSparse(NumericallyOptimisedMLAlgorithm):
+	def __init__(self, J, Jext):
+		self.thisptr = DMLLCpp.LinearMahaFeatExtSparseCpp(J, Jext)
+	def fit(self, X, Y, optimiser=DMLLCpp.GradientDescent(1.0, 0.1, size, rank), GlobalBatchSize=0, tol=1e-08, MaxNumIterations=500, root=0):
+		#Place a barrier before getting the time
+		MPI.COMM_WORLD.barrier()
+		StartTiming = datetime.now()	#Calculate the length of the respective arrays and broadcast them to all processes
+		#Do the actual fitting
+		self.thisptr.fit(MPI.COMM_WORLD, DMLL.rank, DMLL.size, X.data, X.indices, X.indptr, Y, X.shape[1], optimiser, GlobalBatchSize, tol, MaxNumIterations)
+		#Get the time
+		StopTiming = datetime.now()
+		TimeElapsed = StopTiming - StartTiming		
+		if DMLL.rank==root:
+			print "Trained Mahalanobis Feature Extraction."
+			print "Time taken: %.2dh:%.2dm:%.2d.%.6ds" % (TimeElapsed.seconds//3600, TimeElapsed.seconds//60, TimeElapsed.seconds%60, TimeElapsed.microseconds)	
+			print				
+	def predict(self, X):
+		Yhat = np.zeros(len(X))
+		self.thisptr.predict(Yhat, X)
+		return Yhat
 
 #linear
 class LinearRegression(NumericallyOptimisedMLAlgorithm):
 	def __init__(self, J):
 		self.thisptr = DMLLCpp.LinearRegressionCpp(J)
-	def fit(self, X, Y, optimiser=DMLLCpp.GradientDescent(1.0, 0.1, size, rank), GlobalBatchSize=0, tol=1e-08, MaxNumIterations=500, root=0, rank=rank):
+	def fit(self, X, Y, optimiser=DMLLCpp.GradientDescent(1.0, 0.1, size, rank), GlobalBatchSize=0, tol=1e-08, MaxNumIterations=500, root=0):
 		#Place a barrier before getting the time
 		MPI.COMM_WORLD.barrier()
 		StartTiming = datetime.now()	#Calculate the length of the respective arrays and broadcast them to all processes

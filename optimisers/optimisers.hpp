@@ -43,19 +43,21 @@ class OptimiserCpp {
 	void minimise (MPI_Comm comm, NumericallyOptimisedMLAlgorithmCpp *MLalgorithm, int I, int lengthW, int GlobalBatchSize, const double tol, const int MaxNumIterations);
 		
 	//This is were you come in. What happens within these two functions is entirely your responsibility.
-	virtual void max(MPI_Comm comm, const double tol, const int MaxNumIterations, const int size, const int rank) {std::cout << "This shouldn't happen!\n You need to use an optimising algorithm, not the base class!\n";}
-	virtual void min(MPI_Comm comm, const double tol, const int MaxNumIterations, const int size, const int rank) {std::cout << "This shouldn't happen!\n You need to use an optimising algorithm, not the base class!\n";}
+	virtual void max(MPI_Comm comm, const double tol, const int MaxNumIterations) {std::cout << "This shouldn't happen!\n You need to use an optimising algorithm, not the base class!\n";}
+	virtual void min(MPI_Comm comm, const double tol, const int MaxNumIterations) {std::cout << "This shouldn't happen!\n You need to use an optimising algorithm, not the base class!\n";}
 	
 	//CalcNumBatches calculates the number of batches needed
 	void CalcNumBatches (MPI_Comm comm);
-	
+	void CalcNumBatches (MPI_Comm comm, int I, int GlobalBatchSize, int &NumBatches);
+		
 	//BatchBegin: Integer signifying the beginning of the batch 
 	//BatchEnd: Integer signifying the end of the batch
 	//BatchSize: Size of the Batch
 	//BatchSize = BatchEnd - BatchBegin
 	//BatchNum: Integer iterating throught the batches
 	void CalcBatchBeginEnd (int &BatchBegin, int &BatchEnd, int &BatchSize, const int BatchNum);
-	
+	void CalcBatchBeginEnd (int &BatchBegin, int &BatchEnd, int &BatchSize, const int BatchNum, const int I, const int NumBatches);
+		
 };
 
 //Functions are in alphabetical order
@@ -77,15 +79,49 @@ void OptimiserCpp::CalcNumBatches (MPI_Comm comm) {
 		
 }
 
-//BatchBegin and BatchEnd are used to share the burden of updating W evenly among threads
-void OptimiserCpp::CalcBatchBeginEnd (int &BatchBegin, int &BatchEnd, int &BatchSize, const int BatchNum) {
+//CalcNumBatches calculates the number of batches needed
+//Some machine learning algorithms need the function CalcBatchBeginEnd for initialisation. We therefore create a version that does not depend on calling variables contained in the optimiser class (no this->).
+void OptimiserCpp::CalcNumBatches (MPI_Comm comm, int I, int GlobalBatchSize, int &NumBatches) {
+	
+	int GlobalI;
+	
+	//Add all local I and store the result in GlobalI
+	MPI_Allreduce(&I, &GlobalI, 1, MPI_INT, MPI_SUM, comm);
+	MPI_Barrier(comm);
+	
+	if (GlobalBatchSize < 1 || GlobalBatchSize > GlobalI) GlobalBatchSize = GlobalI;		
 			
+	//Calculate the number of batches needed to divide GlobalI such that the sum of all local batches approximately equals GlobalBatchSize
+	if (GlobalI % GlobalBatchSize == 0) NumBatches = GlobalI/GlobalBatchSize; else NumBatches = GlobalI/GlobalBatchSize + 1;
+	MPI_Barrier(comm);
+				
+}	
+
+//BatchBegin and BatchEnd are used to share the burden evenly among the processes
+void OptimiserCpp::CalcBatchBeginEnd (int &BatchBegin, int &BatchEnd, int &BatchSize, const int BatchNum) {
+									
 		//Calculate BatchBegin
 		BatchBegin = BatchNum*(this->I/this->NumBatches);
 		
 		//Calculate WBatchSize
 		if (BatchNum < this->NumBatches-1) BatchSize = this->I/this->NumBatches;
 		else BatchSize = this->I - BatchBegin;
+		
+		//Calculate WBatchEnd
+		BatchEnd = BatchBegin + BatchSize;
+	
+}
+
+//BatchBegin and BatchEnd are used to share the burden evenly among the processes
+//Some machine learning algorithms need the function CalcBatchBeginEnd for initialisation. We therefore create a version that does not depend on calling variables contained in the optimiser class (no this->).
+void OptimiserCpp::CalcBatchBeginEnd (int &BatchBegin, int &BatchEnd, int &BatchSize, const int BatchNum, const int I, const int NumBatches) {
+									
+		//Calculate BatchBegin
+		BatchBegin = BatchNum*(I/NumBatches);
+		
+		//Calculate WBatchSize
+		if (BatchNum < NumBatches-1) BatchSize = I/NumBatches;
+		else BatchSize = I - BatchBegin;
 		
 		//Calculate WBatchEnd
 		BatchEnd = BatchBegin + BatchSize;
@@ -117,7 +153,7 @@ void OptimiserCpp::maximise (MPI_Comm comm, NumericallyOptimisedMLAlgorithmCpp *
 	this->CalcNumBatches (comm);
 					
 	//Create the threads and pass the values they need
-	max(comm, tol, MaxNumIterations, size, rank);
+	max(comm, tol, MaxNumIterations);
 	
 	free(this->dZdW);
 	free(this->localdZdW);	
@@ -150,7 +186,7 @@ void OptimiserCpp::minimise (MPI_Comm comm, NumericallyOptimisedMLAlgorithmCpp *
 	this->CalcNumBatches (comm);
 					
 	//Create the threads and pass the values they need
-	min(comm, tol, MaxNumIterations, size, rank);
+	min(comm, tol, MaxNumIterations);
 	
 	free(this->dZdW);
 	free(this->localdZdW);		

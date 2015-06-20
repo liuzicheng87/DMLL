@@ -2,7 +2,7 @@ class LinearRegressionCpp: public NumericallyOptimisedMLAlgorithmCpp {
 
 	public:
 	double *X, *Y;
-	int I,J;
+	int J;
 	
 	OptimiserCpp *optimiser;
 
@@ -34,7 +34,7 @@ class LinearRegressionCpp: public NumericallyOptimisedMLAlgorithmCpp {
 	//ThreadBatchBegin: the number of the instance or sample at which this thread is supposed to begin iterating
 	//ThreadBatchEnd: the end of the batch assigned to this thread. The thread will iterate from sample number ThreadBatchBegin to sample number ThreadBatchEnd.
 	//ThreadNum: Each thread is assigned an individual number ranging from 0 to the number of threads minus one. This is used for identification. You may or may not need this depending on your algorithm.
-	void f(MPI_Comm comm, double &Z, const double *W, const int BatchBegin, const int BatchEnd, const int BatchSize, const int rank, const int BatchNum, const int IterationNum) {
+	void f(MPI_Comm comm, double &Z, const double *W, const int BatchBegin, const int BatchEnd, const int BatchSize, const int BatchNum, const int IterationNum) {
 		
 		int i,j;
 		double localZ=0.0, Yhat;
@@ -67,10 +67,9 @@ class LinearRegressionCpp: public NumericallyOptimisedMLAlgorithmCpp {
 	//BatchBegin: the number of the instance or sample at which this process is supposed to begin iterating
 	//BatchEnd: the end of the batch assigned to this process. The process will iterate from sample number BatchBegin to sample number BatchEnd.
 	//BatchSize: the end of the batch assigned to this process. The process will iterate from sample number BatchBegin to sample number BatchEnd.	
-	//rank: Each process is assigned an individual number ranging from 0 to the number of processs minus one. This is used for identification. You may or may not need this depending on your algorithm.
 	//BatchNum: batch number
 	//IterationNum: iteration number
-	void g(MPI_Comm comm, const double *W, const int BatchBegin, const int BatchEnd, const int BatchSize, const int rank, const int BatchNum, const int IterationNum) {
+	void g(MPI_Comm comm, const double *W, const int BatchBegin, const int BatchEnd, const int BatchSize, const int BatchNum, const int IterationNum) {
 		
 		int i,j;
 		double Yhat, TwoYhatMinusY;
@@ -152,15 +151,15 @@ class LinearRegressionCpp: public NumericallyOptimisedMLAlgorithmCpp {
 		
 	}	
 	
-	void GetParams(double *W, int lengthW) {
+//	void GetParams(double *W, int lengthW) {
 		
-		int i;
+//		int i;
 		
-		if (lengthW != this->lengthW) throw std::invalid_argument("Length of provided W does not match lengthW!");
+//		if (lengthW != this->lengthW) throw std::invalid_argument("Length of provided W does not match lengthW!");
 		
-		for (i=0; i<lengthW; ++i) W[i] = this->W[i];
+//		for (i=0; i<lengthW; ++i) W[i] = this->W[i];
 		
-	} 
+//	} 
 	
 	
 		
