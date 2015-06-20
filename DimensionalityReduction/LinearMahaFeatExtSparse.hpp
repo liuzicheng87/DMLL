@@ -92,12 +92,13 @@ class LinearMahaFeatExtSparseCpp: public NumericallyOptimisedMLAlgorithmCpp {
 			const double *y;
 			int i,j,k,a,c,d;
 			double BatchSizeDouble = (double)BatchSize;
-								
+			double GlobalBatchSizeDouble;
+										
 			for (i=0; i<this->Jext; ++i) this->LocalsumXext[i] = 0.0;
 			for (i=0; i<this->Jext; ++i) this->LocalsumXextY[i] = 0.0;				
 			for (i=0; i<(this->Jext*(this->Jext + 1))/2; ++i) this->LocalsumXextXext[i] = 0.0;
 			for (i=0; i<this->Jext; ++i) for (j=0; j<this->J; ++j) this->LocalsumdXextdWXext[i][j] = 0.0;			
-																														
+																																	
 			double *Xext = (double*)calloc(this->Jext*BatchSize, sizeof(double));
 				
 			//Declare a pointer that points to the part of this->Y we are interested in
@@ -111,7 +112,8 @@ class LinearMahaFeatExtSparseCpp: public NumericallyOptimisedMLAlgorithmCpp {
 									
 			free(Xext);		
 			
-			//Add all localdZdW and store the result in dZdW
+			//Execute AllReduce operations
+			MPI_Allreduce(&BatchSizeDouble, &GlobalBatchSizeDouble, 1, MPI_DOUBLE, MPI_SUM, comm); //Add all BatchSizeDouble and store the result in GlobalBatchSizeDouble				
 			MPI_Allreduce(this->LocalsumXext, this->sumXext, this->Jext, MPI_DOUBLE, MPI_SUM, comm); //Add all LocalsumXext and store the result in sumXext	
 			MPI_Allreduce(this->LocalsumXextY, this->sumXextY, this->Jext, MPI_DOUBLE, MPI_SUM, comm); //Add all LocalsumXextY and store the result in sumXextY	
 			MPI_Allreduce(this->LocalsumXextXext, this->sumXextXext, (this->Jext*(this->Jext + 1))/2, MPI_DOUBLE, MPI_SUM, comm); //Add all LocalsumXextXext and store the result in sumXextXext		
@@ -121,12 +123,12 @@ class LinearMahaFeatExtSparseCpp: public NumericallyOptimisedMLAlgorithmCpp {
 			MPI_Barrier(comm);							
 																 
 			//Calculate Z - E(Z)
-			for(a=0; a<Jext; ++a) this->ZEZ(a, 0) = this->sumXextY[a] - this->sumXext[a]*this->sumY[BatchNum]/BatchSizeDouble;
+			for(a=0; a<Jext; ++a) this->ZEZ(a, 0) = this->sumXextY[a] - this->sumXext[a]*this->sumY[BatchNum]/GlobalBatchSizeDouble;
 																							
 			//Calculate V							
 			for (i=0; i<Jext; ++i) for (k=0; k<=i; ++k)
 				this->V(i, k) = this->V(k, i) =
-					calcvar1(sumXext[i], sumXext[k], sumXextXext[i*(i+1)/2 + k], sumY[BatchNum], sumYY[BatchNum], BatchSizeDouble); 
+					calcvar1(sumXext[i], sumXext[k], sumXextXext[i*(i+1)/2 + k], sumY[BatchNum], sumYY[BatchNum], GlobalBatchSizeDouble); 
 																																																			
 				//Calculate V_inv			
 			this->VInv = this->V.inverse(); 
@@ -146,18 +148,18 @@ class LinearMahaFeatExtSparseCpp: public NumericallyOptimisedMLAlgorithmCpp {
 								
 				//Calculate dZEZdw	
 				dZEZdW.setZero();
-				dZEZdW(0, d) = sumdXextdWY[BatchNum][c] - sumdXextdW[BatchNum][c]*sumY[BatchNum]/BatchSizeDouble;
+				dZEZdW(0, d) = sumdXextdWY[BatchNum][c] - sumdXextdW[BatchNum][c]*sumY[BatchNum]/GlobalBatchSizeDouble;
 																													
 				//Calculate dVdw						
 				dVdW.setZero();
 												
 				for (a=0; a<d; ++a) this->dVdW(d, a) = this->dVdW(a, d) =
-					calcdvardw1(sumdXextdW[BatchNum][c], sumXext[a], sumdXextdWXext[a][c], sumY[BatchNum], sumYY[BatchNum], BatchSizeDouble);
+					calcdvardw1(sumdXextdW[BatchNum][c], sumXext[a], sumdXextdWXext[a][c], sumY[BatchNum], sumYY[BatchNum], GlobalBatchSizeDouble);
 														
-				this->dVdW(d, d)	= 2.0*calcdvardw1(sumdXextdW[BatchNum][c], sumXext[d], sumdXextdWXext[d][c], sumY[BatchNum], sumYY[BatchNum], BatchSizeDouble);
+				this->dVdW(d, d)	= 2.0*calcdvardw1(sumdXextdW[BatchNum][c], sumXext[d], sumdXextdWXext[d][c], sumY[BatchNum], sumYY[BatchNum], GlobalBatchSizeDouble);
 																						
 				for (a=d+1; a<this->Jext; ++a) this->dVdW(d, a) = this->dVdW(a, d) = 
-					calcdvardw1(sumdXextdW[BatchNum][c], sumXext[a], sumdXextdWXext[a][c], sumY[BatchNum], sumYY[BatchNum], BatchSizeDouble);
+					calcdvardw1(sumdXextdW[BatchNum][c], sumXext[a], sumdXextdWXext[a][c], sumY[BatchNum], sumYY[BatchNum], GlobalBatchSizeDouble);
 																																															
 				//Calculate the gradient
 				gradient = 2.0*dZEZdW*VInv*ZEZ - ZEZ.transpose()*VInv*dVdW*VInv*ZEZ;
@@ -165,14 +167,14 @@ class LinearMahaFeatExtSparseCpp: public NumericallyOptimisedMLAlgorithmCpp {
 				this->optimiser->localdZdW[i] = gradient(0,0);
 																			
 			}			
-
+						
 			//Gather all localdZdW and store the result in dZdW
 			MPI_Allgatherv(this->optimiser->localdZdW + this->WBatchBegin, this->WBatchSize[this->optimiser->rank], MPI_DOUBLE, this->optimiser->dZdW, this->WBatchSize, this->CumulativeWBatchSize, MPI_DOUBLE, comm);				
 			
 			//Barrier: Wait until all threads have reached this point
 			//It the the responsibility of every ML algorithm to pass the complete dZdW to the optimiser
 			MPI_Barrier(comm);						
-		
+					
 	}		
 			
 	//optimiser: pointer to the optimiser used
@@ -264,7 +266,7 @@ class LinearMahaFeatExtSparseCpp: public NumericallyOptimisedMLAlgorithmCpp {
 			y = this->Y + BatchBegin;
 				
 			//sumY and sumYY are part of the sufficient statistics, but obviously do not depend on W
-			reduce1(y, BatchSize, this->sumY[BatchNum], this->sumYY[BatchNum]);
+			reduce1(y, BatchSize, this->LocalsumY[BatchNum], this->LocalsumYY[BatchNum]);
 			
 			//We do not know the size of the vectors  this->dXextdWData and this->dXextdWIndices beforehand, so we cannot allocate them earlier
 			SparseDataSize = this->XIndptr[BatchEnd] - this->XIndptr[BatchBegin];
@@ -273,17 +275,26 @@ class LinearMahaFeatExtSparseCpp: public NumericallyOptimisedMLAlgorithmCpp {
 			this->dXextdWIndices[BatchNum] = (int*)calloc(SparseDataSize, sizeof(int));
 			this->dXextdWIndptr[BatchNum] = (int*)calloc(J+1, sizeof(int));		
 			
-			//calcdXextdW() calculates dXextdWData, dXextdWIndptr and dXextdWIndptr for the respective  batch
+			//calcdXextdW() calculates dXextdWData, dXextdWIndptr and dXextdWIndptr for the respective process and batch				
 			calcdXextdW(BatchBegin, BatchSize, BatchEnd, BatchNum);
 							
-			//reduce2() calculates sumdXextdW for the respective thread and batch				
+			//reduce2() calculates sumdXextdW for the respective process and batch				
 			reduce2(BatchNum);		
 				
-			//reduce3() calculates sumdXextdWY for the respective thread and batch															
+			//reduce3() calculates sumdXextdWY for the respective process and batch															
 			reduce3(BatchBegin, BatchNum);	
 									
 		}			
-															
+		
+		//Reduce variables
+		MPI_Allreduce(this->LocalsumY, this->sumY, this->NumBatches, MPI_DOUBLE, MPI_SUM, comm); //Add all LocalsumY and store the result in sumY	
+		MPI_Allreduce(this->LocalsumYY, this->sumYY, this->NumBatches, MPI_DOUBLE, MPI_SUM, comm); //Add all LocalsumYY and store the result in sumYY	
+		for (BatchNum=0; BatchNum<this->NumBatches; ++BatchNum) MPI_Allreduce(this->LocalsumdXextdW[BatchNum], this->sumdXextdW[BatchNum], J, MPI_DOUBLE, MPI_SUM, comm); //Add all LocalsumdXextdW and store the result in sumdXextdW	
+		for (BatchNum=0; BatchNum<this->NumBatches; ++BatchNum) MPI_Allreduce(this->LocalsumdXextdWY[BatchNum], this->sumdXextdWY[BatchNum], J, MPI_DOUBLE, MPI_SUM, comm); //Add all LocalsumdXextdWY and store the result in sumdXextdWY	
+		
+		//Barrier: Wait until all threads have reached this point
+		MPI_Barrier(comm);	
+																	
 		//Optimise
 		//This algorithm needs to be maximised, so we call the maximise function
 		this->optimiser->maximise(comm, this, I, lengthW, GlobalBatchSize, tol, MaxNumIterations);		
@@ -334,7 +345,8 @@ class LinearMahaFeatExtSparseCpp: public NumericallyOptimisedMLAlgorithmCpp {
 										
 	}
 	
-	void transform(double *Xext, int I, int Jext, double *XData, int XDataLength, int *XIndices, int XIndicesLength, int *XIndptr, int XIndptrLength, const int J) {
+	void transform(double *Xext, int Jext, int I, double *XData, int XDataLength, int *XIndices, int XIndicesLength, int *XIndptr, int XIndptrLength, const int J) {
+		
 		int i,jext,k;
 		
 		//Make sure there are no invalid arguments

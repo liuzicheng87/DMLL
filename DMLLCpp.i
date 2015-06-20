@@ -21,7 +21,7 @@ import_array();
 %apply (int* IN_ARRAY1, int DIM1) {(int *XIndptr, int XIndptrLength)};
 %apply (int* IN_ARRAY1, int DIM1) {(int* X, int I)};
 %apply (double* IN_ARRAY2, int DIM1, int DIM2 ) {(double* X, int I, int J)};
-%apply (double* IN_ARRAY2, int DIM1, int DIM2 ) {(double *Xext, int I, const int Jext)};
+%apply (double* IN_ARRAY2, int DIM1, int DIM2 ) {(double *Xext, int Jext, int I)};
 %apply (double* IN_ARRAY1, int DIM1) {(double* Y, int IY)};
 %apply (double* IN_ARRAY1, int DIM1) {(double* Yhat, int IY)};
 %apply (double* IN_ARRAY1, int DIM1) {(double *SumGradients, int IterationsNeeded)};

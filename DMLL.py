@@ -111,6 +111,7 @@ class NumericallyOptimisedMLAlgorithm:
 #DimensionalityReduction
 class LinearMahaFeatExtSparse(NumericallyOptimisedMLAlgorithm):
 	def __init__(self, J, Jext):
+		self.Jext = Jext
 		self.thisptr = DMLLCpp.LinearMahaFeatExtSparseCpp(J, Jext)
 	def fit(self, X, Y, optimiser=DMLLCpp.GradientDescent(1.0, 0.1, size, rank), GlobalBatchSize=0, tol=1e-08, MaxNumIterations=500, root=0):
 		#Place a barrier before getting the time
@@ -125,10 +126,12 @@ class LinearMahaFeatExtSparse(NumericallyOptimisedMLAlgorithm):
 			print "Trained Mahalanobis Feature Extraction."
 			print "Time taken: %.2dh:%.2dm:%.2d.%.6ds" % (TimeElapsed.seconds//3600, TimeElapsed.seconds//60, TimeElapsed.seconds%60, TimeElapsed.microseconds)	
 			print				
-	def predict(self, X):
-		Yhat = np.zeros(len(X))
-		self.thisptr.predict(Yhat, X)
-		return Yhat
+	def transform(self, X):
+		Xext = np.zeros((self.Jext, X.shape[0]))
+		self.thisptr.transform(Xext, X.data, X.indices, X.indptr, X.shape[1])
+		#transform returns the transpose of Xext, so we transpose it
+		Xext = Xext.transpose()
+		return Xext
 
 #linear
 class LinearRegression(NumericallyOptimisedMLAlgorithm):
