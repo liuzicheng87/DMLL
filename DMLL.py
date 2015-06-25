@@ -107,18 +107,23 @@ class NumericallyOptimisedMLAlgorithm:
 		params = MPI.COMM_WORLD.bcast(params, root)
 		#Set W
 		self.thisptr.SetParams(params)	
-
+		
+#Wrapper class for GradientDescent optimiser
+class GradientDescent:
+	def __init__(self, LearningRate, LearningRatePower):
+		self.thisptr = DMLLCpp.GradientDescentCpp(LearningRate, LearningRatePower, size, rank)
+	
 #DimensionalityReduction
 class LinearMahaFeatExtSparse(NumericallyOptimisedMLAlgorithm):
 	def __init__(self, J, Jext):
 		self.Jext = Jext
 		self.thisptr = DMLLCpp.LinearMahaFeatExtSparseCpp(J, Jext)
-	def fit(self, X, Y, optimiser=DMLLCpp.GradientDescent(1.0, 0.1, size, rank), GlobalBatchSize=0, tol=1e-08, MaxNumIterations=500, root=0):
+	def fit(self, X, Y, optimiser=GradientDescent(25.0, 0.1), GlobalBatchSize=0, tol=1e-08, MaxNumIterations=500, root=0):
 		#Place a barrier before getting the time
 		MPI.COMM_WORLD.barrier()
 		StartTiming = datetime.now()	#Calculate the length of the respective arrays and broadcast them to all processes
 		#Do the actual fitting
-		self.thisptr.fit(MPI.COMM_WORLD, rank, size, X.data, X.indices, X.indptr, Y, X.shape[1], optimiser, GlobalBatchSize, tol, MaxNumIterations)
+		self.thisptr.fit(MPI.COMM_WORLD, rank, size, X.data, X.indices, X.indptr, Y, X.shape[1], optimiser.thisptr, GlobalBatchSize, tol, MaxNumIterations)
 		#Get the time
 		StopTiming = datetime.now()
 		TimeElapsed = StopTiming - StartTiming		
@@ -137,12 +142,12 @@ class LinearMahaFeatExtSparse(NumericallyOptimisedMLAlgorithm):
 class LinearRegression(NumericallyOptimisedMLAlgorithm):
 	def __init__(self, J):
 		self.thisptr = DMLLCpp.LinearRegressionCpp(J)
-	def fit(self, X, Y, optimiser=DMLLCpp.GradientDescent(1.0, 0.1, size, rank), GlobalBatchSize=0, tol=1e-08, MaxNumIterations=500, root=0):
+	def fit(self, X, Y, optimiser=GradientDescent(1.0, 0.1), GlobalBatchSize=0, tol=1e-08, MaxNumIterations=500, root=0):
 		#Place a barrier before getting the time
 		MPI.COMM_WORLD.barrier()
 		StartTiming = datetime.now()	#Calculate the length of the respective arrays and broadcast them to all processes
 		#Do the actual fitting
-		self.thisptr.fit(MPI.COMM_WORLD, X, Y, optimiser, GlobalBatchSize, tol, MaxNumIterations)
+		self.thisptr.fit(MPI.COMM_WORLD, X, Y, optimiser.thisptr, GlobalBatchSize, tol, MaxNumIterations)
 		#Get the time
 		StopTiming = datetime.now()
 		TimeElapsed = StopTiming - StartTiming		

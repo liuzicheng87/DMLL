@@ -1,10 +1,10 @@
-class GradientDescent: public OptimiserCpp {
+class GradientDescentCpp: public OptimiserCpp {
 	
 	public:
 	double LearningRate, LearningRatePower;
 		
 	//Initialise the GradientDescent function
-	GradientDescent (double LearningRate, double LearningRatePower, const int size, const int rank):OptimiserCpp(size, rank) {
+	GradientDescentCpp (double LearningRate, double LearningRatePower, const int size, const int rank):OptimiserCpp(size, rank) {
 	
 		//Store all of the input values
 		this->LearningRate = LearningRate; 
@@ -13,14 +13,14 @@ class GradientDescent: public OptimiserCpp {
 		}
 
 	//Destructor		
-	~GradientDescent() {}
+	~GradientDescentCpp() {}
 		
 	void max(MPI_Comm comm, const double tol, const int MaxNumIterations);
 	void min(MPI_Comm comm, const double tol, const int MaxNumIterations);
 		
 };
 
-void GradientDescent::max(MPI_Comm comm, const double tol, const int MaxNumIterations) {
+void GradientDescentCpp::max(MPI_Comm comm, const double tol, const int MaxNumIterations) {
 		
 	int i, IterationNum, BatchNum, BatchBegin, BatchEnd, BatchSize, GlobalBatchSize, CurrentBatchSize, WBatchBegin, WBatchEnd;
 	double GlobalBatchSizeDouble;
@@ -79,7 +79,7 @@ void GradientDescent::max(MPI_Comm comm, const double tol, const int MaxNumItera
 		
 }
 
-void GradientDescent::min(MPI_Comm comm, const double tol, const int MaxNumIterations) {
+void GradientDescentCpp::min(MPI_Comm comm, const double tol, const int MaxNumIterations) {
 		
 	int i, IterationNum, BatchNum, BatchBegin, BatchEnd, BatchSize, GlobalBatchSize, CurrentBatchSize, WBatchBegin, WBatchEnd;
 	double GlobalBatchSizeDouble;

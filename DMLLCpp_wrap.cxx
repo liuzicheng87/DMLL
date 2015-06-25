@@ -2934,17 +2934,18 @@ SWIG_Python_NonDynamicSetAttr(PyObject *obj, PyObject *name, PyObject *value) {
 
 /* -------- TYPES TABLE (BEGIN) -------- */
 
-#define SWIGTYPE_p_GradientDescent swig_types[0]
-#define SWIGTYPE_p_LinearRegressionCpp swig_types[1]
-#define SWIGTYPE_p_MPI_Comm swig_types[2]
-#define SWIGTYPE_p_NumericallyOptimisedMLAlgorithmCpp swig_types[3]
-#define SWIGTYPE_p_OptimiserCpp swig_types[4]
-#define SWIGTYPE_p_SayHelloCpp swig_types[5]
-#define SWIGTYPE_p_char swig_types[6]
-#define SWIGTYPE_p_double swig_types[7]
-#define SWIGTYPE_p_int swig_types[8]
-static swig_type_info *swig_types[10];
-static swig_module_info swig_module = {swig_types, 9, 0, 0, 0, 0};
+#define SWIGTYPE_p_GradientDescentCpp swig_types[0]
+#define SWIGTYPE_p_LinearMahaFeatExtSparseCpp swig_types[1]
+#define SWIGTYPE_p_LinearRegressionCpp swig_types[2]
+#define SWIGTYPE_p_MPI_Comm swig_types[3]
+#define SWIGTYPE_p_NumericallyOptimisedMLAlgorithmCpp swig_types[4]
+#define SWIGTYPE_p_OptimiserCpp swig_types[5]
+#define SWIGTYPE_p_SayHelloCpp swig_types[6]
+#define SWIGTYPE_p_char swig_types[7]
+#define SWIGTYPE_p_double swig_types[8]
+#define SWIGTYPE_p_int swig_types[9]
+static swig_type_info *swig_types[11];
+static swig_module_info swig_module = {swig_types, 10, 0, 0, 0, 0};
 #define SWIG_TypeQuery(name) SWIG_TypeQueryModule(&swig_module, &swig_module, name)
 #define SWIG_MangledTypeQuery(name) SWIG_MangledTypeQueryModule(&swig_module, &swig_module, name)
 
@@ -3929,6 +3930,214 @@ fail:
 }
 
 
+SWIGINTERN PyObject *_wrap_SendDoubleCpp(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  MPI_Comm arg1 ;
+  double *arg2 = (double *) 0 ;
+  int arg3 ;
+  int arg4 ;
+  PyArrayObject *array2 = NULL ;
+  int is_new_object2 ;
+  int val4 ;
+  int ecode4 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:SendDoubleCpp",&obj0,&obj1,&obj2)) SWIG_fail;
+  {
+    MPI_Comm *ptr = (MPI_Comm *)0;
+    int res = SWIG_AsPtr_MPI_Comm(obj0, &ptr);
+    if (!SWIG_IsOK(res) || !ptr) {
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "SendDoubleCpp" "', argument " "1"" of type '" "MPI_Comm""'"); 
+    }
+    arg1 = *ptr;
+    if (SWIG_IsNewObj(res)) delete ptr;
+  }
+  {
+    int size[1] = {
+      -1
+    };
+    array2 = obj_to_array_contiguous_allow_conversion(obj1, PyArray_DOUBLE, &is_new_object2);
+    if (!array2 || !require_dimensions(array2,1) || !require_size(array2,size,1)) SWIG_fail;
+    arg2 = (double*) array2->data;
+    arg3 = array2->dimensions[0];
+  }
+  ecode4 = SWIG_AsVal_int(obj2, &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "SendDoubleCpp" "', argument " "4"" of type '" "int""'");
+  } 
+  arg4 = static_cast< int >(val4);
+  SendDoubleCpp(arg1,arg2,arg3,arg4);
+  resultobj = SWIG_Py_Void();
+  {
+    if (is_new_object2 && array2) Py_DECREF(array2);
+  }
+  return resultobj;
+fail:
+  {
+    if (is_new_object2 && array2) Py_DECREF(array2);
+  }
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_SendIntCpp(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  MPI_Comm arg1 ;
+  int *arg2 = (int *) 0 ;
+  int arg3 ;
+  int arg4 ;
+  PyArrayObject *array2 = NULL ;
+  int is_new_object2 ;
+  int val4 ;
+  int ecode4 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:SendIntCpp",&obj0,&obj1,&obj2)) SWIG_fail;
+  {
+    MPI_Comm *ptr = (MPI_Comm *)0;
+    int res = SWIG_AsPtr_MPI_Comm(obj0, &ptr);
+    if (!SWIG_IsOK(res) || !ptr) {
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "SendIntCpp" "', argument " "1"" of type '" "MPI_Comm""'"); 
+    }
+    arg1 = *ptr;
+    if (SWIG_IsNewObj(res)) delete ptr;
+  }
+  {
+    int size[1] = {
+      -1
+    };
+    array2 = obj_to_array_contiguous_allow_conversion(obj1, PyArray_INT, &is_new_object2);
+    if (!array2 || !require_dimensions(array2,1) || !require_size(array2,size,1)) SWIG_fail;
+    arg2 = (int*) array2->data;
+    arg3 = array2->dimensions[0];
+  }
+  ecode4 = SWIG_AsVal_int(obj2, &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "SendIntCpp" "', argument " "4"" of type '" "int""'");
+  } 
+  arg4 = static_cast< int >(val4);
+  SendIntCpp(arg1,arg2,arg3,arg4);
+  resultobj = SWIG_Py_Void();
+  {
+    if (is_new_object2 && array2) Py_DECREF(array2);
+  }
+  return resultobj;
+fail:
+  {
+    if (is_new_object2 && array2) Py_DECREF(array2);
+  }
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_RecvDoubleCpp(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  MPI_Comm arg1 ;
+  double *arg2 = (double *) 0 ;
+  int arg3 ;
+  int arg4 ;
+  PyArrayObject *array2 = NULL ;
+  int is_new_object2 ;
+  int val4 ;
+  int ecode4 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:RecvDoubleCpp",&obj0,&obj1,&obj2)) SWIG_fail;
+  {
+    MPI_Comm *ptr = (MPI_Comm *)0;
+    int res = SWIG_AsPtr_MPI_Comm(obj0, &ptr);
+    if (!SWIG_IsOK(res) || !ptr) {
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RecvDoubleCpp" "', argument " "1"" of type '" "MPI_Comm""'"); 
+    }
+    arg1 = *ptr;
+    if (SWIG_IsNewObj(res)) delete ptr;
+  }
+  {
+    int size[1] = {
+      -1
+    };
+    array2 = obj_to_array_contiguous_allow_conversion(obj1, PyArray_DOUBLE, &is_new_object2);
+    if (!array2 || !require_dimensions(array2,1) || !require_size(array2,size,1)) SWIG_fail;
+    arg2 = (double*) array2->data;
+    arg3 = array2->dimensions[0];
+  }
+  ecode4 = SWIG_AsVal_int(obj2, &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "RecvDoubleCpp" "', argument " "4"" of type '" "int""'");
+  } 
+  arg4 = static_cast< int >(val4);
+  RecvDoubleCpp(arg1,arg2,arg3,arg4);
+  resultobj = SWIG_Py_Void();
+  {
+    if (is_new_object2 && array2) Py_DECREF(array2);
+  }
+  return resultobj;
+fail:
+  {
+    if (is_new_object2 && array2) Py_DECREF(array2);
+  }
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_RecvIntCpp(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  MPI_Comm arg1 ;
+  int *arg2 = (int *) 0 ;
+  int arg3 ;
+  int arg4 ;
+  PyArrayObject *array2 = NULL ;
+  int is_new_object2 ;
+  int val4 ;
+  int ecode4 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:RecvIntCpp",&obj0,&obj1,&obj2)) SWIG_fail;
+  {
+    MPI_Comm *ptr = (MPI_Comm *)0;
+    int res = SWIG_AsPtr_MPI_Comm(obj0, &ptr);
+    if (!SWIG_IsOK(res) || !ptr) {
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RecvIntCpp" "', argument " "1"" of type '" "MPI_Comm""'"); 
+    }
+    arg1 = *ptr;
+    if (SWIG_IsNewObj(res)) delete ptr;
+  }
+  {
+    int size[1] = {
+      -1
+    };
+    array2 = obj_to_array_contiguous_allow_conversion(obj1, PyArray_INT, &is_new_object2);
+    if (!array2 || !require_dimensions(array2,1) || !require_size(array2,size,1)) SWIG_fail;
+    arg2 = (int*) array2->data;
+    arg3 = array2->dimensions[0];
+  }
+  ecode4 = SWIG_AsVal_int(obj2, &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "RecvIntCpp" "', argument " "4"" of type '" "int""'");
+  } 
+  arg4 = static_cast< int >(val4);
+  RecvIntCpp(arg1,arg2,arg3,arg4);
+  resultobj = SWIG_Py_Void();
+  {
+    if (is_new_object2 && array2) Py_DECREF(array2);
+  }
+  return resultobj;
+fail:
+  {
+    if (is_new_object2 && array2) Py_DECREF(array2);
+  }
+  return NULL;
+}
+
+
 SWIGINTERN PyObject *_wrap_new_NumericallyOptimisedMLAlgorithmCpp(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   NumericallyOptimisedMLAlgorithmCpp *result = 0 ;
@@ -4196,7 +4405,7 @@ SWIGINTERN PyObject *OptimiserCpp_swigregister(PyObject *SWIGUNUSEDPARM(self), P
   return SWIG_Py_Void();
 }
 
-SWIGINTERN PyObject *_wrap_new_GradientDescent(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_new_GradientDescentCpp(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   double arg1 ;
   double arg2 ;
@@ -4214,50 +4423,50 @@ SWIGINTERN PyObject *_wrap_new_GradientDescent(PyObject *SWIGUNUSEDPARM(self), P
   PyObject * obj1 = 0 ;
   PyObject * obj2 = 0 ;
   PyObject * obj3 = 0 ;
-  GradientDescent *result = 0 ;
+  GradientDescentCpp *result = 0 ;
   
-  if (!PyArg_ParseTuple(args,(char *)"OOOO:new_GradientDescent",&obj0,&obj1,&obj2,&obj3)) SWIG_fail;
+  if (!PyArg_ParseTuple(args,(char *)"OOOO:new_GradientDescentCpp",&obj0,&obj1,&obj2,&obj3)) SWIG_fail;
   ecode1 = SWIG_AsVal_double(obj0, &val1);
   if (!SWIG_IsOK(ecode1)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "new_GradientDescent" "', argument " "1"" of type '" "double""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "new_GradientDescentCpp" "', argument " "1"" of type '" "double""'");
   } 
   arg1 = static_cast< double >(val1);
   ecode2 = SWIG_AsVal_double(obj1, &val2);
   if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "new_GradientDescent" "', argument " "2"" of type '" "double""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "new_GradientDescentCpp" "', argument " "2"" of type '" "double""'");
   } 
   arg2 = static_cast< double >(val2);
   ecode3 = SWIG_AsVal_int(obj2, &val3);
   if (!SWIG_IsOK(ecode3)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "new_GradientDescent" "', argument " "3"" of type '" "int""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "new_GradientDescentCpp" "', argument " "3"" of type '" "int""'");
   } 
   arg3 = static_cast< int >(val3);
   ecode4 = SWIG_AsVal_int(obj3, &val4);
   if (!SWIG_IsOK(ecode4)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "new_GradientDescent" "', argument " "4"" of type '" "int""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "new_GradientDescentCpp" "', argument " "4"" of type '" "int""'");
   } 
   arg4 = static_cast< int >(val4);
-  result = (GradientDescent *)new GradientDescent(arg1,arg2,arg3,arg4);
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_GradientDescent, SWIG_POINTER_NEW |  0 );
+  result = (GradientDescentCpp *)new GradientDescentCpp(arg1,arg2,arg3,arg4);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_GradientDescentCpp, SWIG_POINTER_NEW |  0 );
   return resultobj;
 fail:
   return NULL;
 }
 
 
-SWIGINTERN PyObject *_wrap_delete_GradientDescent(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_delete_GradientDescentCpp(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  GradientDescent *arg1 = (GradientDescent *) 0 ;
+  GradientDescentCpp *arg1 = (GradientDescentCpp *) 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject * obj0 = 0 ;
   
-  if (!PyArg_ParseTuple(args,(char *)"O:delete_GradientDescent",&obj0)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_GradientDescent, SWIG_POINTER_DISOWN |  0 );
+  if (!PyArg_ParseTuple(args,(char *)"O:delete_GradientDescentCpp",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_GradientDescentCpp, SWIG_POINTER_DISOWN |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_GradientDescent" "', argument " "1"" of type '" "GradientDescent *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_GradientDescentCpp" "', argument " "1"" of type '" "GradientDescentCpp *""'"); 
   }
-  arg1 = reinterpret_cast< GradientDescent * >(argp1);
+  arg1 = reinterpret_cast< GradientDescentCpp * >(argp1);
   delete arg1;
   resultobj = SWIG_Py_Void();
   return resultobj;
@@ -4266,10 +4475,10 @@ fail:
 }
 
 
-SWIGINTERN PyObject *GradientDescent_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *GradientDescentCpp_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *obj;
   if (!PyArg_ParseTuple(args,(char*)"O:swigregister", &obj)) return NULL;
-  SWIG_TypeNewClientData(SWIGTYPE_p_GradientDescent, SWIG_NewClientData(obj));
+  SWIG_TypeNewClientData(SWIGTYPE_p_GradientDescentCpp, SWIG_NewClientData(obj));
   return SWIG_Py_Void();
 }
 
@@ -4496,6 +4705,352 @@ SWIGINTERN PyObject *LinearRegressionCpp_swigregister(PyObject *SWIGUNUSEDPARM(s
   return SWIG_Py_Void();
 }
 
+SWIGINTERN PyObject *_wrap_new_LinearMahaFeatExtSparseCpp(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  int arg1 ;
+  int arg2 ;
+  int val1 ;
+  int ecode1 = 0 ;
+  int val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  LinearMahaFeatExtSparseCpp *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:new_LinearMahaFeatExtSparseCpp",&obj0,&obj1)) SWIG_fail;
+  ecode1 = SWIG_AsVal_int(obj0, &val1);
+  if (!SWIG_IsOK(ecode1)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "new_LinearMahaFeatExtSparseCpp" "', argument " "1"" of type '" "int""'");
+  } 
+  arg1 = static_cast< int >(val1);
+  ecode2 = SWIG_AsVal_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "new_LinearMahaFeatExtSparseCpp" "', argument " "2"" of type '" "int""'");
+  } 
+  arg2 = static_cast< int >(val2);
+  result = (LinearMahaFeatExtSparseCpp *)new LinearMahaFeatExtSparseCpp(arg1,arg2);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_LinearMahaFeatExtSparseCpp, SWIG_POINTER_NEW |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_delete_LinearMahaFeatExtSparseCpp(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  LinearMahaFeatExtSparseCpp *arg1 = (LinearMahaFeatExtSparseCpp *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:delete_LinearMahaFeatExtSparseCpp",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_LinearMahaFeatExtSparseCpp, SWIG_POINTER_DISOWN |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_LinearMahaFeatExtSparseCpp" "', argument " "1"" of type '" "LinearMahaFeatExtSparseCpp *""'"); 
+  }
+  arg1 = reinterpret_cast< LinearMahaFeatExtSparseCpp * >(argp1);
+  delete arg1;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LinearMahaFeatExtSparseCpp_fit(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  LinearMahaFeatExtSparseCpp *arg1 = (LinearMahaFeatExtSparseCpp *) 0 ;
+  MPI_Comm arg2 ;
+  int arg3 ;
+  int arg4 ;
+  double *arg5 = (double *) 0 ;
+  int arg6 ;
+  int *arg7 = (int *) 0 ;
+  int arg8 ;
+  int *arg9 = (int *) 0 ;
+  int arg10 ;
+  double *arg11 = (double *) 0 ;
+  int arg12 ;
+  int arg13 ;
+  OptimiserCpp *arg14 = (OptimiserCpp *) 0 ;
+  int arg15 ;
+  double arg16 ;
+  int arg17 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int val3 ;
+  int ecode3 = 0 ;
+  int val4 ;
+  int ecode4 = 0 ;
+  PyArrayObject *array5 = NULL ;
+  int is_new_object5 ;
+  PyArrayObject *array7 = NULL ;
+  int is_new_object7 ;
+  PyArrayObject *array9 = NULL ;
+  int is_new_object9 ;
+  PyArrayObject *array11 = NULL ;
+  int is_new_object11 ;
+  int val13 ;
+  int ecode13 = 0 ;
+  void *argp14 = 0 ;
+  int res14 = 0 ;
+  int val15 ;
+  int ecode15 = 0 ;
+  double val16 ;
+  int ecode16 = 0 ;
+  int val17 ;
+  int ecode17 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  PyObject * obj3 = 0 ;
+  PyObject * obj4 = 0 ;
+  PyObject * obj5 = 0 ;
+  PyObject * obj6 = 0 ;
+  PyObject * obj7 = 0 ;
+  PyObject * obj8 = 0 ;
+  PyObject * obj9 = 0 ;
+  PyObject * obj10 = 0 ;
+  PyObject * obj11 = 0 ;
+  PyObject * obj12 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOOOOOOOOOOOO:LinearMahaFeatExtSparseCpp_fit",&obj0,&obj1,&obj2,&obj3,&obj4,&obj5,&obj6,&obj7,&obj8,&obj9,&obj10,&obj11,&obj12)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_LinearMahaFeatExtSparseCpp, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LinearMahaFeatExtSparseCpp_fit" "', argument " "1"" of type '" "LinearMahaFeatExtSparseCpp *""'"); 
+  }
+  arg1 = reinterpret_cast< LinearMahaFeatExtSparseCpp * >(argp1);
+  {
+    MPI_Comm *ptr = (MPI_Comm *)0;
+    int res = SWIG_AsPtr_MPI_Comm(obj1, &ptr);
+    if (!SWIG_IsOK(res) || !ptr) {
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "LinearMahaFeatExtSparseCpp_fit" "', argument " "2"" of type '" "MPI_Comm""'"); 
+    }
+    arg2 = *ptr;
+    if (SWIG_IsNewObj(res)) delete ptr;
+  }
+  ecode3 = SWIG_AsVal_int(obj2, &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "LinearMahaFeatExtSparseCpp_fit" "', argument " "3"" of type '" "int""'");
+  } 
+  arg3 = static_cast< int >(val3);
+  ecode4 = SWIG_AsVal_int(obj3, &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "LinearMahaFeatExtSparseCpp_fit" "', argument " "4"" of type '" "int""'");
+  } 
+  arg4 = static_cast< int >(val4);
+  {
+    int size[1] = {
+      -1
+    };
+    array5 = obj_to_array_contiguous_allow_conversion(obj4, PyArray_DOUBLE, &is_new_object5);
+    if (!array5 || !require_dimensions(array5,1) || !require_size(array5,size,1)) SWIG_fail;
+    arg5 = (double*) array5->data;
+    arg6 = array5->dimensions[0];
+  }
+  {
+    int size[1] = {
+      -1
+    };
+    array7 = obj_to_array_contiguous_allow_conversion(obj5, PyArray_INT, &is_new_object7);
+    if (!array7 || !require_dimensions(array7,1) || !require_size(array7,size,1)) SWIG_fail;
+    arg7 = (int*) array7->data;
+    arg8 = array7->dimensions[0];
+  }
+  {
+    int size[1] = {
+      -1
+    };
+    array9 = obj_to_array_contiguous_allow_conversion(obj6, PyArray_INT, &is_new_object9);
+    if (!array9 || !require_dimensions(array9,1) || !require_size(array9,size,1)) SWIG_fail;
+    arg9 = (int*) array9->data;
+    arg10 = array9->dimensions[0];
+  }
+  {
+    int size[1] = {
+      -1
+    };
+    array11 = obj_to_array_contiguous_allow_conversion(obj7, PyArray_DOUBLE, &is_new_object11);
+    if (!array11 || !require_dimensions(array11,1) || !require_size(array11,size,1)) SWIG_fail;
+    arg11 = (double*) array11->data;
+    arg12 = array11->dimensions[0];
+  }
+  ecode13 = SWIG_AsVal_int(obj8, &val13);
+  if (!SWIG_IsOK(ecode13)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode13), "in method '" "LinearMahaFeatExtSparseCpp_fit" "', argument " "13"" of type '" "int""'");
+  } 
+  arg13 = static_cast< int >(val13);
+  res14 = SWIG_ConvertPtr(obj9, &argp14,SWIGTYPE_p_OptimiserCpp, 0 |  0 );
+  if (!SWIG_IsOK(res14)) {
+    SWIG_exception_fail(SWIG_ArgError(res14), "in method '" "LinearMahaFeatExtSparseCpp_fit" "', argument " "14"" of type '" "OptimiserCpp *""'"); 
+  }
+  arg14 = reinterpret_cast< OptimiserCpp * >(argp14);
+  ecode15 = SWIG_AsVal_int(obj10, &val15);
+  if (!SWIG_IsOK(ecode15)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode15), "in method '" "LinearMahaFeatExtSparseCpp_fit" "', argument " "15"" of type '" "int""'");
+  } 
+  arg15 = static_cast< int >(val15);
+  ecode16 = SWIG_AsVal_double(obj11, &val16);
+  if (!SWIG_IsOK(ecode16)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode16), "in method '" "LinearMahaFeatExtSparseCpp_fit" "', argument " "16"" of type '" "double""'");
+  } 
+  arg16 = static_cast< double >(val16);
+  ecode17 = SWIG_AsVal_int(obj12, &val17);
+  if (!SWIG_IsOK(ecode17)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode17), "in method '" "LinearMahaFeatExtSparseCpp_fit" "', argument " "17"" of type '" "int""'");
+  } 
+  arg17 = static_cast< int >(val17);
+  (arg1)->fit(arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10,arg11,arg12,arg13,arg14,arg15,arg16,arg17);
+  resultobj = SWIG_Py_Void();
+  {
+    if (is_new_object5 && array5) Py_DECREF(array5);
+  }
+  {
+    if (is_new_object7 && array7) Py_DECREF(array7);
+  }
+  {
+    if (is_new_object9 && array9) Py_DECREF(array9);
+  }
+  {
+    if (is_new_object11 && array11) Py_DECREF(array11);
+  }
+  return resultobj;
+fail:
+  {
+    if (is_new_object5 && array5) Py_DECREF(array5);
+  }
+  {
+    if (is_new_object7 && array7) Py_DECREF(array7);
+  }
+  {
+    if (is_new_object9 && array9) Py_DECREF(array9);
+  }
+  {
+    if (is_new_object11 && array11) Py_DECREF(array11);
+  }
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LinearMahaFeatExtSparseCpp_transform(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  LinearMahaFeatExtSparseCpp *arg1 = (LinearMahaFeatExtSparseCpp *) 0 ;
+  double *arg2 = (double *) 0 ;
+  int arg3 ;
+  int arg4 ;
+  double *arg5 = (double *) 0 ;
+  int arg6 ;
+  int *arg7 = (int *) 0 ;
+  int arg8 ;
+  int *arg9 = (int *) 0 ;
+  int arg10 ;
+  int arg11 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyArrayObject *array2 = NULL ;
+  int is_new_object2 ;
+  PyArrayObject *array5 = NULL ;
+  int is_new_object5 ;
+  PyArrayObject *array7 = NULL ;
+  int is_new_object7 ;
+  PyArrayObject *array9 = NULL ;
+  int is_new_object9 ;
+  int val11 ;
+  int ecode11 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  PyObject * obj3 = 0 ;
+  PyObject * obj4 = 0 ;
+  PyObject * obj5 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOOOOO:LinearMahaFeatExtSparseCpp_transform",&obj0,&obj1,&obj2,&obj3,&obj4,&obj5)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_LinearMahaFeatExtSparseCpp, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LinearMahaFeatExtSparseCpp_transform" "', argument " "1"" of type '" "LinearMahaFeatExtSparseCpp *""'"); 
+  }
+  arg1 = reinterpret_cast< LinearMahaFeatExtSparseCpp * >(argp1);
+  {
+    int size[2] = {
+      -1,-1
+    };
+    array2 = obj_to_array_contiguous_allow_conversion(obj1, PyArray_DOUBLE, &is_new_object2);
+    if (!array2 || !require_dimensions(array2,2) || !require_size(array2,size,1)) SWIG_fail;
+    arg2 = (double*) array2->data;
+    arg3 = array2->dimensions[0];
+    arg4 = array2->dimensions[1];
+  }
+  {
+    int size[1] = {
+      -1
+    };
+    array5 = obj_to_array_contiguous_allow_conversion(obj2, PyArray_DOUBLE, &is_new_object5);
+    if (!array5 || !require_dimensions(array5,1) || !require_size(array5,size,1)) SWIG_fail;
+    arg5 = (double*) array5->data;
+    arg6 = array5->dimensions[0];
+  }
+  {
+    int size[1] = {
+      -1
+    };
+    array7 = obj_to_array_contiguous_allow_conversion(obj3, PyArray_INT, &is_new_object7);
+    if (!array7 || !require_dimensions(array7,1) || !require_size(array7,size,1)) SWIG_fail;
+    arg7 = (int*) array7->data;
+    arg8 = array7->dimensions[0];
+  }
+  {
+    int size[1] = {
+      -1
+    };
+    array9 = obj_to_array_contiguous_allow_conversion(obj4, PyArray_INT, &is_new_object9);
+    if (!array9 || !require_dimensions(array9,1) || !require_size(array9,size,1)) SWIG_fail;
+    arg9 = (int*) array9->data;
+    arg10 = array9->dimensions[0];
+  }
+  ecode11 = SWIG_AsVal_int(obj5, &val11);
+  if (!SWIG_IsOK(ecode11)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode11), "in method '" "LinearMahaFeatExtSparseCpp_transform" "', argument " "11"" of type '" "int""'");
+  } 
+  arg11 = static_cast< int >(val11);
+  (arg1)->transform(arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10,arg11);
+  resultobj = SWIG_Py_Void();
+  {
+    if (is_new_object2 && array2) Py_DECREF(array2);
+  }
+  {
+    if (is_new_object5 && array5) Py_DECREF(array5);
+  }
+  {
+    if (is_new_object7 && array7) Py_DECREF(array7);
+  }
+  {
+    if (is_new_object9 && array9) Py_DECREF(array9);
+  }
+  return resultobj;
+fail:
+  {
+    if (is_new_object2 && array2) Py_DECREF(array2);
+  }
+  {
+    if (is_new_object5 && array5) Py_DECREF(array5);
+  }
+  {
+    if (is_new_object7 && array7) Py_DECREF(array7);
+  }
+  {
+    if (is_new_object9 && array9) Py_DECREF(array9);
+  }
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *LinearMahaFeatExtSparseCpp_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *obj;
+  if (!PyArg_ParseTuple(args,(char*)"O:swigregister", &obj)) return NULL;
+  SWIG_TypeNewClientData(SWIGTYPE_p_LinearMahaFeatExtSparseCpp, SWIG_NewClientData(obj));
+  return SWIG_Py_Void();
+}
+
 static PyMethodDef SwigMethods[] = {
 	 { (char *)"SWIG_PyInstanceMethod_New", (PyCFunction)SWIG_PyInstanceMethod_New, METH_O, NULL},
 	 { (char *)"new_SayHelloCpp", _wrap_new_SayHelloCpp, METH_VARARGS, NULL},
@@ -4506,6 +5061,10 @@ static PyMethodDef SwigMethods[] = {
 	 { (char *)"CalcLocalICpp", _wrap_CalcLocalICpp, METH_VARARGS, NULL},
 	 { (char *)"Scatter1dCpp", _wrap_Scatter1dCpp, METH_VARARGS, NULL},
 	 { (char *)"ScatterCpp", _wrap_ScatterCpp, METH_VARARGS, NULL},
+	 { (char *)"SendDoubleCpp", _wrap_SendDoubleCpp, METH_VARARGS, NULL},
+	 { (char *)"SendIntCpp", _wrap_SendIntCpp, METH_VARARGS, NULL},
+	 { (char *)"RecvDoubleCpp", _wrap_RecvDoubleCpp, METH_VARARGS, NULL},
+	 { (char *)"RecvIntCpp", _wrap_RecvIntCpp, METH_VARARGS, NULL},
 	 { (char *)"new_NumericallyOptimisedMLAlgorithmCpp", _wrap_new_NumericallyOptimisedMLAlgorithmCpp, METH_VARARGS, NULL},
 	 { (char *)"delete_NumericallyOptimisedMLAlgorithmCpp", _wrap_delete_NumericallyOptimisedMLAlgorithmCpp, METH_VARARGS, NULL},
 	 { (char *)"NumericallyOptimisedMLAlgorithmCpp_GetIterationsNeeded", _wrap_NumericallyOptimisedMLAlgorithmCpp_GetIterationsNeeded, METH_VARARGS, NULL},
@@ -4517,27 +5076,36 @@ static PyMethodDef SwigMethods[] = {
 	 { (char *)"new_OptimiserCpp", _wrap_new_OptimiserCpp, METH_VARARGS, NULL},
 	 { (char *)"delete_OptimiserCpp", _wrap_delete_OptimiserCpp, METH_VARARGS, NULL},
 	 { (char *)"OptimiserCpp_swigregister", OptimiserCpp_swigregister, METH_VARARGS, NULL},
-	 { (char *)"new_GradientDescent", _wrap_new_GradientDescent, METH_VARARGS, NULL},
-	 { (char *)"delete_GradientDescent", _wrap_delete_GradientDescent, METH_VARARGS, NULL},
-	 { (char *)"GradientDescent_swigregister", GradientDescent_swigregister, METH_VARARGS, NULL},
+	 { (char *)"new_GradientDescentCpp", _wrap_new_GradientDescentCpp, METH_VARARGS, NULL},
+	 { (char *)"delete_GradientDescentCpp", _wrap_delete_GradientDescentCpp, METH_VARARGS, NULL},
+	 { (char *)"GradientDescentCpp_swigregister", GradientDescentCpp_swigregister, METH_VARARGS, NULL},
 	 { (char *)"new_LinearRegressionCpp", _wrap_new_LinearRegressionCpp, METH_VARARGS, NULL},
 	 { (char *)"delete_LinearRegressionCpp", _wrap_delete_LinearRegressionCpp, METH_VARARGS, NULL},
 	 { (char *)"LinearRegressionCpp_fit", _wrap_LinearRegressionCpp_fit, METH_VARARGS, NULL},
 	 { (char *)"LinearRegressionCpp_predict", _wrap_LinearRegressionCpp_predict, METH_VARARGS, NULL},
 	 { (char *)"LinearRegressionCpp_swigregister", LinearRegressionCpp_swigregister, METH_VARARGS, NULL},
+	 { (char *)"new_LinearMahaFeatExtSparseCpp", _wrap_new_LinearMahaFeatExtSparseCpp, METH_VARARGS, NULL},
+	 { (char *)"delete_LinearMahaFeatExtSparseCpp", _wrap_delete_LinearMahaFeatExtSparseCpp, METH_VARARGS, NULL},
+	 { (char *)"LinearMahaFeatExtSparseCpp_fit", _wrap_LinearMahaFeatExtSparseCpp_fit, METH_VARARGS, NULL},
+	 { (char *)"LinearMahaFeatExtSparseCpp_transform", _wrap_LinearMahaFeatExtSparseCpp_transform, METH_VARARGS, NULL},
+	 { (char *)"LinearMahaFeatExtSparseCpp_swigregister", LinearMahaFeatExtSparseCpp_swigregister, METH_VARARGS, NULL},
 	 { NULL, NULL, 0, NULL }
 };
 
 
 /* -------- TYPE CONVERSION AND EQUIVALENCE RULES (BEGIN) -------- */
 
-static void *_p_GradientDescentTo_p_OptimiserCpp(void *x, int *SWIGUNUSEDPARM(newmemory)) {
-    return (void *)((OptimiserCpp *)  ((GradientDescent *) x));
+static void *_p_GradientDescentCppTo_p_OptimiserCpp(void *x, int *SWIGUNUSEDPARM(newmemory)) {
+    return (void *)((OptimiserCpp *)  ((GradientDescentCpp *) x));
+}
+static void *_p_LinearMahaFeatExtSparseCppTo_p_NumericallyOptimisedMLAlgorithmCpp(void *x, int *SWIGUNUSEDPARM(newmemory)) {
+    return (void *)((NumericallyOptimisedMLAlgorithmCpp *)  ((LinearMahaFeatExtSparseCpp *) x));
 }
 static void *_p_LinearRegressionCppTo_p_NumericallyOptimisedMLAlgorithmCpp(void *x, int *SWIGUNUSEDPARM(newmemory)) {
     return (void *)((NumericallyOptimisedMLAlgorithmCpp *)  ((LinearRegressionCpp *) x));
 }
-static swig_type_info _swigt__p_GradientDescent = {"_p_GradientDescent", "GradientDescent *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_GradientDescentCpp = {"_p_GradientDescentCpp", "GradientDescentCpp *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_LinearMahaFeatExtSparseCpp = {"_p_LinearMahaFeatExtSparseCpp", "LinearMahaFeatExtSparseCpp *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_LinearRegressionCpp = {"_p_LinearRegressionCpp", "LinearRegressionCpp *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_MPI_Comm = {"_p_MPI_Comm", "MPI_Comm *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_NumericallyOptimisedMLAlgorithmCpp = {"_p_NumericallyOptimisedMLAlgorithmCpp", "NumericallyOptimisedMLAlgorithmCpp *", 0, 0, (void*)0, 0};
@@ -4548,7 +5116,8 @@ static swig_type_info _swigt__p_double = {"_p_double", "double *", 0, 0, (void*)
 static swig_type_info _swigt__p_int = {"_p_int", "int *", 0, 0, (void*)0, 0};
 
 static swig_type_info *swig_type_initial[] = {
-  &_swigt__p_GradientDescent,
+  &_swigt__p_GradientDescentCpp,
+  &_swigt__p_LinearMahaFeatExtSparseCpp,
   &_swigt__p_LinearRegressionCpp,
   &_swigt__p_MPI_Comm,
   &_swigt__p_NumericallyOptimisedMLAlgorithmCpp,
@@ -4559,18 +5128,20 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_int,
 };
 
-static swig_cast_info _swigc__p_GradientDescent[] = {  {&_swigt__p_GradientDescent, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_GradientDescentCpp[] = {  {&_swigt__p_GradientDescentCpp, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_LinearMahaFeatExtSparseCpp[] = {  {&_swigt__p_LinearMahaFeatExtSparseCpp, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_LinearRegressionCpp[] = {  {&_swigt__p_LinearRegressionCpp, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_MPI_Comm[] = {  {&_swigt__p_MPI_Comm, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_NumericallyOptimisedMLAlgorithmCpp[] = {  {&_swigt__p_NumericallyOptimisedMLAlgorithmCpp, 0, 0, 0},  {&_swigt__p_LinearRegressionCpp, _p_LinearRegressionCppTo_p_NumericallyOptimisedMLAlgorithmCpp, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_OptimiserCpp[] = {  {&_swigt__p_OptimiserCpp, 0, 0, 0},  {&_swigt__p_GradientDescent, _p_GradientDescentTo_p_OptimiserCpp, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_NumericallyOptimisedMLAlgorithmCpp[] = {  {&_swigt__p_LinearMahaFeatExtSparseCpp, _p_LinearMahaFeatExtSparseCppTo_p_NumericallyOptimisedMLAlgorithmCpp, 0, 0},  {&_swigt__p_NumericallyOptimisedMLAlgorithmCpp, 0, 0, 0},  {&_swigt__p_LinearRegressionCpp, _p_LinearRegressionCppTo_p_NumericallyOptimisedMLAlgorithmCpp, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_OptimiserCpp[] = {  {&_swigt__p_GradientDescentCpp, _p_GradientDescentCppTo_p_OptimiserCpp, 0, 0},  {&_swigt__p_OptimiserCpp, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_SayHelloCpp[] = {  {&_swigt__p_SayHelloCpp, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_char[] = {  {&_swigt__p_char, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_double[] = {  {&_swigt__p_double, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_int[] = {  {&_swigt__p_int, 0, 0, 0},{0, 0, 0, 0}};
 
 static swig_cast_info *swig_cast_initial[] = {
-  _swigc__p_GradientDescent,
+  _swigc__p_GradientDescentCpp,
+  _swigc__p_LinearMahaFeatExtSparseCpp,
   _swigc__p_LinearRegressionCpp,
   _swigc__p_MPI_Comm,
   _swigc__p_NumericallyOptimisedMLAlgorithmCpp,

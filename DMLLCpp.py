@@ -101,6 +101,22 @@ Scatter1dCpp = _DMLLCpp.Scatter1dCpp
 def ScatterCpp(*args):
   return _DMLLCpp.ScatterCpp(*args)
 ScatterCpp = _DMLLCpp.ScatterCpp
+
+def SendDoubleCpp(*args):
+  return _DMLLCpp.SendDoubleCpp(*args)
+SendDoubleCpp = _DMLLCpp.SendDoubleCpp
+
+def SendIntCpp(*args):
+  return _DMLLCpp.SendIntCpp(*args)
+SendIntCpp = _DMLLCpp.SendIntCpp
+
+def RecvDoubleCpp(*args):
+  return _DMLLCpp.RecvDoubleCpp(*args)
+RecvDoubleCpp = _DMLLCpp.RecvDoubleCpp
+
+def RecvIntCpp(*args):
+  return _DMLLCpp.RecvIntCpp(*args)
+RecvIntCpp = _DMLLCpp.RecvIntCpp
 class NumericallyOptimisedMLAlgorithmCpp(_object):
     __swig_setmethods__ = {}
     __setattr__ = lambda self, name, value: _swig_setattr(self, NumericallyOptimisedMLAlgorithmCpp, name, value)
@@ -136,22 +152,22 @@ class OptimiserCpp(_object):
 OptimiserCpp_swigregister = _DMLLCpp.OptimiserCpp_swigregister
 OptimiserCpp_swigregister(OptimiserCpp)
 
-class GradientDescent(OptimiserCpp):
+class GradientDescentCpp(OptimiserCpp):
     __swig_setmethods__ = {}
     for _s in [OptimiserCpp]: __swig_setmethods__.update(getattr(_s,'__swig_setmethods__',{}))
-    __setattr__ = lambda self, name, value: _swig_setattr(self, GradientDescent, name, value)
+    __setattr__ = lambda self, name, value: _swig_setattr(self, GradientDescentCpp, name, value)
     __swig_getmethods__ = {}
     for _s in [OptimiserCpp]: __swig_getmethods__.update(getattr(_s,'__swig_getmethods__',{}))
-    __getattr__ = lambda self, name: _swig_getattr(self, GradientDescent, name)
+    __getattr__ = lambda self, name: _swig_getattr(self, GradientDescentCpp, name)
     __repr__ = _swig_repr
     def __init__(self, *args): 
-        this = _DMLLCpp.new_GradientDescent(*args)
+        this = _DMLLCpp.new_GradientDescentCpp(*args)
         try: self.this.append(this)
         except: self.this = this
-    __swig_destroy__ = _DMLLCpp.delete_GradientDescent
+    __swig_destroy__ = _DMLLCpp.delete_GradientDescentCpp
     __del__ = lambda self : None;
-GradientDescent_swigregister = _DMLLCpp.GradientDescent_swigregister
-GradientDescent_swigregister(GradientDescent)
+GradientDescentCpp_swigregister = _DMLLCpp.GradientDescentCpp_swigregister
+GradientDescentCpp_swigregister(GradientDescentCpp)
 
 class LinearRegressionCpp(NumericallyOptimisedMLAlgorithmCpp):
     __swig_setmethods__ = {}
@@ -171,6 +187,25 @@ class LinearRegressionCpp(NumericallyOptimisedMLAlgorithmCpp):
     def predict(self, *args): return _DMLLCpp.LinearRegressionCpp_predict(self, *args)
 LinearRegressionCpp_swigregister = _DMLLCpp.LinearRegressionCpp_swigregister
 LinearRegressionCpp_swigregister(LinearRegressionCpp)
+
+class LinearMahaFeatExtSparseCpp(NumericallyOptimisedMLAlgorithmCpp):
+    __swig_setmethods__ = {}
+    for _s in [NumericallyOptimisedMLAlgorithmCpp]: __swig_setmethods__.update(getattr(_s,'__swig_setmethods__',{}))
+    __setattr__ = lambda self, name, value: _swig_setattr(self, LinearMahaFeatExtSparseCpp, name, value)
+    __swig_getmethods__ = {}
+    for _s in [NumericallyOptimisedMLAlgorithmCpp]: __swig_getmethods__.update(getattr(_s,'__swig_getmethods__',{}))
+    __getattr__ = lambda self, name: _swig_getattr(self, LinearMahaFeatExtSparseCpp, name)
+    __repr__ = _swig_repr
+    def __init__(self, *args): 
+        this = _DMLLCpp.new_LinearMahaFeatExtSparseCpp(*args)
+        try: self.this.append(this)
+        except: self.this = this
+    __swig_destroy__ = _DMLLCpp.delete_LinearMahaFeatExtSparseCpp
+    __del__ = lambda self : None;
+    def fit(self, *args): return _DMLLCpp.LinearMahaFeatExtSparseCpp_fit(self, *args)
+    def transform(self, *args): return _DMLLCpp.LinearMahaFeatExtSparseCpp_transform(self, *args)
+LinearMahaFeatExtSparseCpp_swigregister = _DMLLCpp.LinearMahaFeatExtSparseCpp_swigregister
+LinearMahaFeatExtSparseCpp_swigregister(LinearMahaFeatExtSparseCpp)
 
 # This file is compatible with both classic and new-style classes.
 

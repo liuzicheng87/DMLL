@@ -27,13 +27,13 @@ class OptimiserCpp {
 	
 };
 
-class GradientDescent: public OptimiserCpp {
+class GradientDescentCpp: public OptimiserCpp {
 	
 	public:
 		
-	GradientDescent (double LearningRate, double LearningRatePower, const int size, const int rank):OptimiserCpp(size, rank);
+	GradientDescentCpp (double LearningRate, double LearningRatePower, const int size, const int rank):OptimiserCpp(size, rank);
 
-	~GradientDescent();
+	~GradientDescentCpp();
 				
 };
 
