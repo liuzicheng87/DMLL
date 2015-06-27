@@ -105,10 +105,10 @@ class LinearMahaFeatExtSparseCpp: public NumericallyOptimisedMLAlgorithmCpp {
 			y = this->Y + BatchBegin;		
 																																		
 			calcXext(Xext, W, BatchBegin, BatchSize); //Calculate Xext										
-			reduce4(Xext, BatchSize); //Calculate LocalsumXext
-			reduce5(Xext, y, BatchSize); //Calculate LocalsumXextY							
-			reduce6(Xext, BatchSize); //Calculate LocalsumXextXext
-			reduce7(Xext,  BatchSize, BatchNum); //Calculate LocalsumdXextdWXext
+			reduce5(Xext, BatchSize); //Calculate LocalsumXext
+			reduce6(Xext, y, BatchSize); //Calculate LocalsumXextY							
+			reduce7(Xext, BatchSize); //Calculate LocalsumXextXext
+			reduce8(Xext,  BatchSize, BatchNum); //Calculate LocalsumdXextdWXext
 									
 			free(Xext);		
 			
@@ -196,8 +196,6 @@ class LinearMahaFeatExtSparseCpp: public NumericallyOptimisedMLAlgorithmCpp {
 				
 		int i, BatchNum, BatchBegin, BatchEnd, BatchSize, SparseDataSize;
 						
-		const double *y;
-
 		//Store input values (which we need for f() and g())
 		this->optimiser = optimiser;
 		this->XData = XData;
@@ -261,13 +259,11 @@ class LinearMahaFeatExtSparseCpp: public NumericallyOptimisedMLAlgorithmCpp {
 								
 			//We must find out our current values for BatchBegin and BatchEnd. We do so by calling this->CalcBatchBeginEnd, which is inherited from the optimiser class.
 			this->optimiser->CalcBatchBeginEnd(BatchBegin, BatchEnd, BatchSize, BatchNum, this->I, this->NumBatches);
-				
-			//Declare a pointer that points to the part of this->Y we are interested in
-			y = this->Y + BatchBegin;
-				
+								
 			//sumY and sumYY are part of the sufficient statistics, but obviously do not depend on W
-			reduce1(y, BatchSize, this->LocalsumY[BatchNum], this->LocalsumYY[BatchNum]);
-			
+			reduce1(BatchBegin, BatchEnd, BatchNum);
+			reduce2(BatchBegin, BatchEnd, BatchNum);
+						
 			//We do not know the size of the vectors  this->dXextdWData and this->dXextdWIndices beforehand, so we cannot allocate them earlier
 			SparseDataSize = this->XIndptr[BatchEnd] - this->XIndptr[BatchBegin];
 			
@@ -278,11 +274,11 @@ class LinearMahaFeatExtSparseCpp: public NumericallyOptimisedMLAlgorithmCpp {
 			//calcdXextdW() calculates dXextdWData, dXextdWIndptr and dXextdWIndptr for the respective process and batch				
 			calcdXextdW(BatchBegin, BatchSize, BatchEnd, BatchNum);
 							
-			//reduce2() calculates sumdXextdW for the respective process and batch				
-			reduce2(BatchNum);		
+			//reduce3() calculates sumdXextdW for the respective process and batch				
+			reduce3(BatchNum);		
 				
-			//reduce3() calculates sumdXextdWY for the respective process and batch															
-			reduce3(BatchBegin, BatchNum);	
+			//reduce5() calculates sumdXextdWY for the respective process and batch															
+			reduce4(BatchBegin, BatchNum);	
 									
 		}			
 		
@@ -370,15 +366,16 @@ class LinearMahaFeatExtSparseCpp: public NumericallyOptimisedMLAlgorithmCpp {
 	void calcdXextdW(const int BatchBegin, const int BatchSize, const int BatchEnd, const int BatchNum);
 		
 	//Does not depend on W	
-	void reduce1(const double *y, int BatchSize, double &LocalsumY, double &LocalsumYY);//Calculate sumY and sumYY
-	void reduce2(const int BatchNum);//Calculate sumdXextdW
-	void reduce3(const int BatchBegin, const int BatchNum);//Calculate sumdXextdWY
+	void reduce1(const int BatchBegin, const int BatchEnd, const int BatchNum);//Calculate sumY
+	void reduce2(const int BatchBegin, const int BatchEnd, const int BatchNum);//Calculate sumYY	
+	void reduce3(const int BatchNum);//Calculate sumdXextdW
+	void reduce4(const int BatchBegin, const int BatchNum);//Calculate sumdXextdWY
 	
 	//Does depend on W		
-	void reduce4(const double *Xext, const int BatchSize);//Calculate sumXext
-	void reduce5(const double *Xext, const double *y, const int BatchSize);	//Calculate sumXextY
-	void reduce6(const double *Xext, const int BatchSize);//Calculate sumXextXext
-	void reduce7(const double *Xext, const int BatchSize,  const int BatchNum);//Calculate sumXextdWXext
+	void reduce5(const double *Xext, const int BatchSize);//Calculate sumXext
+	void reduce6(const double *Xext, const double *y, const int BatchSize);	//Calculate sumXextY
+	void reduce7(const double *Xext, const int BatchSize);//Calculate sumXextXext
+	void reduce8(const double *Xext, const int BatchSize,  const int BatchNum);//Calculate sumXextdWXext
 
 	double calcvar1(double &sumXext1, double &sumXext2, double &sumXextXext, 
 			double &sumY, double &sumYY, double &BatchSize) {

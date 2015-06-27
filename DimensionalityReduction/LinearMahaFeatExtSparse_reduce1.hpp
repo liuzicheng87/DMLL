@@ -43,20 +43,30 @@
 								
 	}
 	
-	//Calculate sumY and sumYY
-	void LinearMahaFeatExtSparseCpp::reduce1(const double *y, int BatchSize, double &LocalsumY, double &LocalsumYY) {
+	//Calculate sumY 
+	void LinearMahaFeatExtSparseCpp::reduce1(const int BatchBegin, const int BatchEnd, const int BatchNum) {
 		
 		int i;
 		
-		LocalsumY=0.0;
-		LocalsumYY=0.0;
+		this->LocalsumY[BatchNum] = 0.0;
 		
-		for (i=0; i<BatchSize; ++i) {LocalsumY += y[i]; LocalsumYY += y[i]*y[i];}
+		for (i=BatchBegin; i<BatchEnd; ++i) {this->LocalsumY[BatchNum] += this->Y[i];}
 								
-	}					
+	}	
+	
+	//Calculate sumYY
+	void LinearMahaFeatExtSparseCpp::reduce2(const int BatchBegin, const int BatchEnd, const int BatchNum) {
+		
+		int i;
+		
+		this->LocalsumYY[BatchNum] = 0.0;
+		
+		for (i=BatchBegin; i<BatchEnd; ++i) {this->LocalsumYY[BatchNum] += this->Y[i]*this->Y[i];}
+	
+	}												
 		
 	//Calculate sumdXextdW
-	void LinearMahaFeatExtSparseCpp::reduce2(const int BatchNum) {
+	void LinearMahaFeatExtSparseCpp::reduce3(const int BatchNum) {
 						
 		int k,c;
 		for (c=0; c<this->J;++c) {//layer 1
@@ -70,7 +80,7 @@
 	}	
 	
 	//Calculate sumdXextdWY
-	void LinearMahaFeatExtSparseCpp::reduce3(const int BatchBegin, const int BatchNum) {
+	void LinearMahaFeatExtSparseCpp::reduce4(const int BatchBegin, const int BatchNum) {
 						
 		int k,c;
 		for (c=0; c<this->J;++c) {//layer 1
@@ -85,7 +95,7 @@
 	}						
 	
 	//Calculate sumXext
-	void LinearMahaFeatExtSparseCpp::reduce4(const double *Xext, const int BatchSize) {
+	void LinearMahaFeatExtSparseCpp::reduce5(const double *Xext, const int BatchSize) {
 				
 		int i, a;
 				
@@ -100,7 +110,7 @@
 	}		
 
 	//Calculate sumXextY
-	void LinearMahaFeatExtSparseCpp::reduce5(const double *Xext, const double *y, const int BatchSize) {
+	void LinearMahaFeatExtSparseCpp::reduce6(const double *Xext, const double *y, const int BatchSize) {
 				
 		int i, a;
 				
@@ -115,7 +125,7 @@
 	}		
 		
 	//Calculate sumXextXext
-	void LinearMahaFeatExtSparseCpp::reduce6(const double *Xext, const int BatchSize) {
+	void LinearMahaFeatExtSparseCpp::reduce7(const double *Xext, const int BatchSize) {
 				
 		int i, a1, a2;
 				
@@ -130,7 +140,7 @@
 	}			
 			
 	//Calculate sumXextdWXext
-	void LinearMahaFeatExtSparseCpp::reduce7(const double *Xext, const int BatchSize,  const int BatchNum) {
+	void LinearMahaFeatExtSparseCpp::reduce8(const double *Xext, const int BatchSize,  const int BatchNum) {
 						
 		int k,c,d2;
 		for (d2=0; d2<this->Jext; ++d2) for (c=0; c<this->J;++c) {//layer 1

@@ -30,8 +30,6 @@ Jext = 4
 MahaFeatExt = DMLL.LinearMahaFeatExtSparse(X.shape[1], Jext)
 MahaFeatExt.fit(X, Y, optimiser=DMLL.GradientDescent(25.0, 0.1), GlobalBatchSize=0, tol=1e-08, MaxNumIterations=500, root=0)
 
-print MahaFeatExt.GetParams()
-
 Xext = MahaFeatExt.transform(X)
 
 if DMLL.rank == 0:

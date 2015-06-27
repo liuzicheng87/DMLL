@@ -22,7 +22,8 @@ if DMLL.rank == 0:
 	del GlobalY
 else:
 	X = DMLL.Scatter()
-	Y = DMLL.Scatter1d()	
+	Y = DMLL.Scatter1
+	d()	
 
 #Show random dataset
 if DMLL.rank == 0:
