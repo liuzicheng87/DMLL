@@ -23,7 +23,7 @@ class LinearMahaFeatExtSparseCpp: public NumericallyOptimisedMLAlgorithmCpp {
 	Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic> V, VInv, ZEZ, dVdW, dZEZdW;
 	Eigen::SelfAdjointEigenSolver<Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic>> eigensolver;
 	Eigen::Matrix<double, 1, 1> gradient;	
-	
+		
 	//dXextdWData, dXextdWIndices and dXextdWIndptr store the local versions of dXextdW in sparse format
 	double **dXextdWData;
 	int **dXextdWIndices;
@@ -194,7 +194,7 @@ class LinearMahaFeatExtSparseCpp: public NumericallyOptimisedMLAlgorithmCpp {
 		if (Jext != this->Jext) throw std::invalid_argument("Number of attributes Jext does not match the Jext that has been defined when declaring the class!");		
 		if (XDataLength != XIndicesLength) throw std::invalid_argument("Length of XData does not match length of XIndices!");		
 				
-		int i, BatchNum, BatchBegin, BatchEnd, BatchSize, SparseDataSize;
+		int i, j, BatchNum, BatchBegin, BatchEnd, BatchSize, SparseDataSize;
 						
 		//Store input values (which we need for f() and g())
 		this->optimiser = optimiser;
@@ -293,7 +293,30 @@ class LinearMahaFeatExtSparseCpp: public NumericallyOptimisedMLAlgorithmCpp {
 																	
 		//Optimise
 		//This algorithm needs to be maximised, so we call the maximise function
-		this->optimiser->maximise(comm, this, I, lengthW, GlobalBatchSize, tol, MaxNumIterations);		
+		this->optimiser->maximise(comm, this, I, lengthW, GlobalBatchSize, tol, MaxNumIterations);	
+		
+		//Reformat W such that the transformations variance is one and their covariance is zero
+		//This will have no impact on the chi value			
+		Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic> Wmatrix(this->J, this->Jext), WTW(this->Jext, this->Jext), WTWInv(this->Jext, this->Jext), WTWInvSqrt(this->Jext, this->Jext);
+		
+		//Copy W to Wmatrix
+		for (j=0; j < this->Jext; ++j)  for (i=0; i < this->J; ++i) Wmatrix(i, j) = this->W[j*(this->J) + i];
+		
+		//Calculate WTW
+		WTW = Wmatrix.transpose()*Wmatrix;
+		
+		//Calculate WTWInv			
+		WTWInv = WTW.inverse(); 		
+		
+		//Calculate WTWInvSqrt
+		this->eigensolver.compute(WTWInv);
+		WTWInvSqrt = this->eigensolver.operatorSqrt();		
+		
+		//Recalculate Wmatrix
+		Wmatrix = Wmatrix*WTWInvSqrt;	
+		
+		//Copy Wmatrix to W
+		for (j=0; j < this->Jext; ++j)  for (i=0; i < this->J; ++i)  this->W[j*(this->J) + i] = Wmatrix(i, j);		
 					
 		//Free all the arrays that have been allocated previously
 		free(this->WBatchSize);
