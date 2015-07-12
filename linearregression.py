@@ -22,8 +22,7 @@ if DMLL.rank == 0:
 	del GlobalY
 else:
 	X = DMLL.Scatter()
-	Y = DMLL.Scatter1
-	d()	
+	Y = DMLL.Scatter1d()	
 
 #Show random dataset
 if DMLL.rank == 0:
@@ -32,7 +31,7 @@ if DMLL.rank == 0:
 	plt.show()
 
 thisptr = DMLL.LinearRegression(1)
-thisptr.fit(X, Y)
+thisptr.fit(X, Y, optimiser=DMLL.BacktrackingLineSearch(1.0, 0.5, 0.5, 1e-06), MaxNumIterations=10)
 
 SumGradients = thisptr.GetSumGradients()
 

@@ -196,3 +196,5 @@ void OptimiserCpp::minimise (MPI_Comm comm, NumericallyOptimisedMLAlgorithmCpp *
 
 
 #include "GradientDescent.hpp"
+#include "BacktrackingLineSearch.hpp"
+

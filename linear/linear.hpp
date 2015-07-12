@@ -41,7 +41,7 @@ class LinearRegressionCpp: public NumericallyOptimisedMLAlgorithmCpp {
 				
 		//Let Z equal 0
 		Z = 0.0;
-		
+				
 		//Calculate results for instances determined by the optimiser
 		for (i=BatchBegin; i<BatchEnd; ++i) {
 			
@@ -55,10 +55,10 @@ class LinearRegressionCpp: public NumericallyOptimisedMLAlgorithmCpp {
 			localZ += (Y[i] - Yhat)*(Y[i] - Yhat);
 						
 		}
-		
+						
 		//Add all localZ and store the result in Z
 		MPI_Allreduce(&localZ, &Z, 1, MPI_DOUBLE, MPI_SUM, comm);
-		
+						
 	}
 	
 	//dZdW: the number attributes or features		

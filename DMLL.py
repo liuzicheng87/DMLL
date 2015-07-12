@@ -112,6 +112,11 @@ class NumericallyOptimisedMLAlgorithm:
 class GradientDescent:
 	def __init__(self, LearningRate, LearningRatePower):
 		self.thisptr = DMLLCpp.GradientDescentCpp(LearningRate, LearningRatePower, size, rank)
+
+#Wrapper class for BacktrackingLineSearch optimiser
+class BacktrackingLineSearch:
+	def __init__(self, LearningRateStart, LearningRateReduction, c, tol):
+		self.thisptr = DMLLCpp.BacktrackingLineSearchCpp(LearningRateStart, LearningRateReduction, c, tol, size, rank)
 	
 #DimensionalityReduction
 class LinearMahaFeatExtSparse(NumericallyOptimisedMLAlgorithm):

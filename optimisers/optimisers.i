@@ -37,3 +37,14 @@ class GradientDescentCpp: public OptimiserCpp {
 				
 };
 
+class BacktrackingLineSearchCpp: public OptimiserCpp {
+	
+	public:
+		
+	BacktrackingLineSearchCpp (double LearningRateStart, double LearningRateReduction, double c, double tol, const int size, const int rank):OptimiserCpp(size, rank);
+
+	~BacktrackingLineSearchCpp();
+				
+};
+
+
