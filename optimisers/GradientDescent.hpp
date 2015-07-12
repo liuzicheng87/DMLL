@@ -40,8 +40,8 @@ void GradientDescentCpp::max(MPI_Comm comm, const double tol, const int MaxNumIt
 	
 				//VERY IMPORTANT CONVENTION: When passing this->localdZdw to g(), always set to zero first.
 				for (i=0; i<this->lengthW; ++i) this->localdZdW[i] = 0.0;
-				MPI_Barrier(comm);							
-																
+				MPI_Barrier(comm);				
+																				
 				//Call g()
 				//Note that it is the responsibility of whoever writes the MLalgorithm to make sure that this->dZdW and this->SumdZdW are passed to ALL processes
 				//It is, however, your responsibility to place a barrier after that, if required

@@ -207,6 +207,25 @@ class LinearMahaFeatExtSparseCpp(NumericallyOptimisedMLAlgorithmCpp):
 LinearMahaFeatExtSparseCpp_swigregister = _DMLLCpp.LinearMahaFeatExtSparseCpp_swigregister
 LinearMahaFeatExtSparseCpp_swigregister(LinearMahaFeatExtSparseCpp)
 
+class RBFMahaFeatExtSparseCpp(NumericallyOptimisedMLAlgorithmCpp):
+    __swig_setmethods__ = {}
+    for _s in [NumericallyOptimisedMLAlgorithmCpp]: __swig_setmethods__.update(getattr(_s,'__swig_setmethods__',{}))
+    __setattr__ = lambda self, name, value: _swig_setattr(self, RBFMahaFeatExtSparseCpp, name, value)
+    __swig_getmethods__ = {}
+    for _s in [NumericallyOptimisedMLAlgorithmCpp]: __swig_getmethods__.update(getattr(_s,'__swig_getmethods__',{}))
+    __getattr__ = lambda self, name: _swig_getattr(self, RBFMahaFeatExtSparseCpp, name)
+    __repr__ = _swig_repr
+    def __init__(self, *args): 
+        this = _DMLLCpp.new_RBFMahaFeatExtSparseCpp(*args)
+        try: self.this.append(this)
+        except: self.this = this
+    __swig_destroy__ = _DMLLCpp.delete_RBFMahaFeatExtSparseCpp
+    __del__ = lambda self : None;
+    def fit(self, *args): return _DMLLCpp.RBFMahaFeatExtSparseCpp_fit(self, *args)
+    def transform(self, *args): return _DMLLCpp.RBFMahaFeatExtSparseCpp_transform(self, *args)
+RBFMahaFeatExtSparseCpp_swigregister = _DMLLCpp.RBFMahaFeatExtSparseCpp_swigregister
+RBFMahaFeatExtSparseCpp_swigregister(RBFMahaFeatExtSparseCpp)
+
 # This file is compatible with both classic and new-style classes.
 
 
