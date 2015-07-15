@@ -144,16 +144,21 @@ class LinearMahaFeatExtSparse(NumericallyOptimisedMLAlgorithm):
 		return Xext
 
 #DimensionalityReduction
-class RBFMahaFeatExtSparse(NumericallyOptimisedMLAlgorithm):
-	def __init__(self, J, c):
-		self.Jext = 1
-		self.thisptr = DMLLCpp.RBFMahaFeatExtSparseCpp(J, c.data, c.indices, c.indptr, 1)
+class RBFMahaFeatExtSparse:
+	def __init__(self, X, Jext):
+		self.J = X.shape[1]		
+		self.Jext = Jext
+		self.thisptr = list()
+		for i in range(self.Jext):
+			c = X[np.random.randint(X.shape[0])]
+			self.thisptr.append(DMLLCpp.RBFMahaFeatExtSparseCpp(self.J, c.data, c.indices, c.indptr, 1))
 	def fit(self, X, Y, optimiser=GradientDescent(25.0, 0.1), GlobalBatchSize=0, tol=1e-08, MaxNumIterations=500, root=0):
 		#Place a barrier before getting the time
 		MPI.COMM_WORLD.barrier()
 		StartTiming = datetime.now()	#Calculate the length of the respective arrays and broadcast them to all processes
 		#Do the actual fitting
-		self.thisptr.fit(MPI.COMM_WORLD, rank, size, X.data, X.indices, X.indptr, Y, X.shape[1], optimiser.thisptr, GlobalBatchSize, tol, MaxNumIterations)
+		for i in range(self.Jext):
+			self.thisptr[i].fit(MPI.COMM_WORLD, rank, size, X.data, X.indices, X.indptr, Y, X.shape[1], optimiser.thisptr, GlobalBatchSize, tol, MaxNumIterations)
 		#Get the time
 		StopTiming = datetime.now()
 		TimeElapsed = StopTiming - StartTiming		
@@ -162,10 +167,11 @@ class RBFMahaFeatExtSparse(NumericallyOptimisedMLAlgorithm):
 			print "Time taken: %.2dh:%.2dm:%.2d.%.6ds" % (TimeElapsed.seconds//3600, TimeElapsed.seconds//60, TimeElapsed.seconds%60, TimeElapsed.microseconds)	
 			print				
 	def transform(self, X):
-		Xext = np.zeros((self.Jext, X.shape[0]))
-		self.thisptr.transform(Xext, X.data, X.indices, X.indptr, X.shape[1])
-		#transform returns the transpose of Xext, so we transpose it
-		Xext = Xext.transpose()
+		Xext = np.zeros((X.shape[0], 0))
+		for i in range(self.Jext):
+			XextCol = np.zeros((1, X.shape[0]))
+			self.thisptr[i].transform(XextCol, X.data, X.indices, X.indptr, self.J)
+			Xext = np.hstack((Xext, XextCol.transpose()))
 		return Xext
 
 #linear

@@ -5,39 +5,26 @@ import matplotlib.pyplot as plt
 import pylab
 import os
 import pickle
+from sklearn import linear_model
+
+import numpy as np
 
 import sklearn.datasets
 
-X, y = sklearn.datasets.make_classification(n_samples=10000, n_features=2, n_informative=2, n_redundant=0, n_clusters_per_class=2)
+X, y = sklearn.datasets.make_classification(n_samples=100000, n_features=2, n_informative=2, n_redundant=0, n_clusters_per_class=2)
 X = scipy.sparse.csr_matrix(X)
 
-Xtrain, ytrain = X[:9000], y[:9000]
-Xtest, ytest = X[9000:], y[9000:]
+Xtrain, ytrain = X[:99000], y[:99000]
+Xtest, ytest = X[99000:], y[99000:]
 
-Jext = 1
-c = Xtrain[DMLL.np.random.randint(Xtrain.shape[0])]
-
-MahaFeatExt = DMLL.RBFMahaFeatExtSparse(Xtrain.shape[1], c)
-MahaFeatExt.fit(X, y, DMLL.GradientDescent(0.5, 0.1), 0, 1e-08, 500)
-
+Jext = 20
+MahaFeatExt = DMLL.RBFMahaFeatExtSparse(Xtrain, Jext)
+MahaFeatExt.fit(Xtrain, ytrain, optimiser=DMLL.GradientDescent(0.001, 0.5), GlobalBatchSize=500, MaxNumIterations=30)
 Xext = MahaFeatExt.transform(Xtrain)
 
 if DMLL.rank == 0:
     for i in range(Jext):
       print scipy.stats.pearsonr(Xext[:,i], ytrain)
-        
-    for i in range(Jext):
-       for j in range(i):
-           print str(i) + ", " + str(j) + ":"
-           print scipy.stats.pearsonr(Xext[:,i], Xext[:,j])
-
-if DMLL.rank == 0:
-   SumGradients = MahaFeatExt.GetSumGradients()
-   
-   plt.grid(True)
-   plt.plot(SumGradients)
-   plt.show()
-   
 
 #Erstelle Netz (fuer heatmaps)
 h = .02
@@ -48,10 +35,12 @@ xx, yy = DMLL.np.meshgrid(DMLL.np.arange(x_min, x_max, h),
 
 #----------------------------------Zeichne Heat Map-----------------------------------------
 
-Z = MahaFeatExt.transform(scipy.sparse.csr_matrix(DMLL.np.c_[xx.ravel(), yy.ravel()]))
-Z = Z.reshape(xx.shape)
+logreg = linear_model.LogisticRegression(C=1.0, penalty='l2', tol=1e-6).fit(Xext, ytrain)
 
-print Z
+grid_data = MahaFeatExt.transform(scipy.sparse.csr_matrix(np.c_[xx.ravel(), yy.ravel()]))
+
+Z = logreg.predict_proba(grid_data)[:,1]
+Z = Z.reshape(xx.shape)
 
 plt.imshow(Z, extent=[xx.min(), xx.max(), yy.max(), yy.min()])
 

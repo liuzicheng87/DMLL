@@ -12,30 +12,30 @@
 			while (true) {//layer 2
 				
 				if (this->XIndices[j1] > this->cIndices[j2]) {//layer 3
-					
+										
 					//If cIndices[j2] is smaller than XIndices[j1], calculate the weighted Euclidian distance between c[j2] and 0.					
 					Xext[i-BatchBegin] -= this->cData[j2]*this->cData[j2]*W[this->cIndices[j2]]*W[this->cIndices[j2]];
 					++j2;
 					
 				} else if (this->XIndices[j1] < this->cIndices[j2]) {//layer 3
-					
+										
 					//If cIndices[j2] is greter than XIndices[j1], calculate the weighted Euclidian distance between c[j2] and 0.					
 					Xext[i-BatchBegin] -= this->XData[j1]*this->XData[j1]*W[this->XIndices[j1]]*W[this->XIndices[j1]];	
 					++j1;
 					
 				} else {//layer 3
-					
+															
 					//If the indices are equal, calculate the weighted Euclidian distance between X[j1] and c[j2]
 					Xext[i-BatchBegin] -= (this->XData[j1] - this->cData[j2])*(this->XData[j1] - this->cData[j2])*W[this->XIndices[j1]]*W[this->XIndices[j1]];					
 					++j1;
 					++j2;			
 						
 				}//layer 3
-				
+								
 				//Once either j1 or j2 is greater than the maximum possible value, we just increment the other and calculate its distance to 0
 				if (j1 == this->XIndptr[i+1]) {//layer 3
 					
-					 for (; j2 < this->cData[1]; ++j2) Xext[i-BatchBegin] -= this->cData[j2]*this->cData[j2]*W[this->cIndices[j2]]*W[this->cIndices[j2]];
+					 for (; j2 < this->cIndptr[1]; ++j2) Xext[i-BatchBegin] -= this->cData[j2]*this->cData[j2]*W[this->cIndices[j2]]*W[this->cIndices[j2]];
 					 break;
 					 
 				 }//layer 3

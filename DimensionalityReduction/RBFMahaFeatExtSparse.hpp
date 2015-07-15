@@ -22,7 +22,7 @@ class RBFMahaFeatExtSparseCpp: public NumericallyOptimisedMLAlgorithmCpp {
 	//Matrices
 	Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic> V, VInv, ZEZ, dVdW, dZEZdW;
 	Eigen::SelfAdjointEigenSolver<Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic>> eigensolver;
-	Eigen::Matrix<double, 1, 1> gradient;	
+	Eigen::Matrix<double, 1, 1> chi, gradient;	
 		
 	//XMinusCSquaredData, XMinusCSquaredData and XMinusCSquaredIndptr store the local versions of XMinusCSquared in sparse format
 	double **XMinusCSquaredData;
@@ -90,7 +90,61 @@ class RBFMahaFeatExtSparseCpp: public NumericallyOptimisedMLAlgorithmCpp {
 	//size: number of processes
 	//BatchNum: batch number
 	//IterationNum: iteration number
-	void f(MPI_Comm comm, double &Z, const double *W, const int BatchBegin, const int BatchEnd, const int BatchSize, const int BatchNum, const int IterationNum) {	}
+	void f(MPI_Comm comm, double &Z, const double *W, const int BatchBegin, const int BatchEnd, const int BatchSize, const int BatchNum, const int IterationNum) {	
+
+			const double *y;
+			int i,j,k,a,c,d;
+			double BatchSizeDouble = (double)BatchSize;
+			double GlobalBatchSizeDouble;
+																
+			//Are these still necessary?										
+			for (i=0; i<this->Jext; ++i) this->LocalsumXext[i] = 0.0;
+			for (i=0; i<this->Jext; ++i) this->LocalsumXextY[i] = 0.0;				
+			for (i=0; i<(this->Jext*(this->Jext + 1))/2; ++i) this->LocalsumXextXext[i] = 0.0;
+			for (i=0; i<this->Jext; ++i) for (j=0; j<this->J; ++j) this->LocalsumdXextdWXext[i][j] = 0.0;			
+																																
+			double *Xext = (double*)calloc(this->Jext*BatchSize, sizeof(double));
+				
+			//Declare a pointer that points to the part of this->Y we are interested in
+			y = this->Y + BatchBegin;		
+
+			calcXext(Xext, W, BatchBegin, BatchEnd); //Calculate Xext				
+			reduce3(Xext, BatchSize);//Calculate sumXext
+			reduce4(Xext, y, BatchSize);//Calculate sumXextY				
+			reduce5(Xext, BatchSize); //Calculate LocalsumXext
+
+			free(Xext);		
+			
+			//Execute AllReduce operations
+			MPI_Allreduce(&BatchSizeDouble, &GlobalBatchSizeDouble, 1, MPI_DOUBLE, MPI_SUM, comm); //Add all BatchSizeDouble and store the result in GlobalBatchSizeDouble	
+
+			MPI_Allreduce(this->LocalsumXext, this->sumXext, this->Jext, MPI_DOUBLE, MPI_SUM, comm); //Add all LocalsumXext and store the result in sumXext	
+			MPI_Allreduce(this->LocalsumXextY, this->sumXextY, this->Jext, MPI_DOUBLE, MPI_SUM, comm); //Add all LocalsumXextY and store the result in sumXextY	
+			MPI_Allreduce(this->LocalsumXextXext, this->sumXextXext, (this->Jext*(this->Jext + 1))/2, MPI_DOUBLE, MPI_SUM, comm); //Add all LocalsumXextXext and store the result in sumXextXext	
+
+			//Barrier: Wait until all threads have reached this point
+			MPI_Barrier(comm);							
+																 
+			//Calculate Z - E(Z)
+			for(a=0; a<Jext; ++a) this->ZEZ(a, 0) = this->sumXextY[a] - this->sumXext[a]*this->sumY[BatchNum]/GlobalBatchSizeDouble;
+																							
+			//Calculate V							
+			for (i=0; i<Jext; ++i) for (k=0; k<=i; ++k)
+				this->V(i, k) = this->V(k, i) =
+					calcvar1(sumXext[i], sumXext[k], sumXextXext[i*(i+1)/2 + k], sumY[BatchNum], sumYY[BatchNum], GlobalBatchSizeDouble); 
+																																																			
+				//Calculate V_inv			
+			this->VInv = this->V.inverse(); 
+			
+			//Calculate Z
+			chi = this->ZEZ.transpose()*this->VInv*this->ZEZ;
+			Z = chi(0,0);
+									
+			//Barrier: Wait until all threads have reached this point
+			//It the the responsibility of every ML algorithm to pass the complete dZdW to the optimiser
+			MPI_Barrier(comm);			
+		
+	}
 	
 	//Z: the value to be optimised	
 	//W: weights to be used for this iteration			
@@ -109,7 +163,8 @@ class RBFMahaFeatExtSparseCpp: public NumericallyOptimisedMLAlgorithmCpp {
 			int i,j,k,a,c,d;
 			double BatchSizeDouble = (double)BatchSize;
 			double GlobalBatchSizeDouble;
-																										
+									
+			//Are these still necessary?																																				
 			for (i=0; i<this->Jext; ++i) this->LocalsumXext[i] = 0.0;
 			for (i=0; i<this->Jext; ++i) this->LocalsumXextY[i] = 0.0;				
 			for (i=0; i<(this->Jext*(this->Jext + 1))/2; ++i) this->LocalsumXextXext[i] = 0.0;
