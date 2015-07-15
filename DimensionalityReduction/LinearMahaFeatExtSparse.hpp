@@ -80,13 +80,8 @@ class LinearMahaFeatExtSparseCpp: public NumericallyOptimisedMLAlgorithmCpp {
 			int i,j,k,a,c,d;
 			double BatchSizeDouble = (double)BatchSize;
 			double GlobalBatchSizeDouble;
-										
-			//Are these still necessary?
-			for (i=0; i<this->Jext; ++i) this->LocalsumXext[i] = 0.0;
-			for (i=0; i<this->Jext; ++i) this->LocalsumXextY[i] = 0.0;				
-			for (i=0; i<(this->Jext*(this->Jext + 1))/2; ++i) this->LocalsumXextXext[i] = 0.0;
-			for (i=0; i<this->Jext; ++i) for (j=0; j<this->J; ++j) this->LocalsumdXextdWXext[i][j] = 0.0;			
-																																	
+																																											
+			//The size of Xext depends on BatchSize. Therefore, it needs to be initalised within an iteration																																				
 			double *Xext = (double*)calloc(this->Jext*BatchSize, sizeof(double));
 				
 			//Declare a pointer that points to the part of this->Y we are interested in
@@ -146,12 +141,8 @@ class LinearMahaFeatExtSparseCpp: public NumericallyOptimisedMLAlgorithmCpp {
 			int i,j,k,a,c,d;
 			double BatchSizeDouble = (double)BatchSize;
 			double GlobalBatchSizeDouble;
-										
-			for (i=0; i<this->Jext; ++i) this->LocalsumXext[i] = 0.0;
-			for (i=0; i<this->Jext; ++i) this->LocalsumXextY[i] = 0.0;				
-			for (i=0; i<(this->Jext*(this->Jext + 1))/2; ++i) this->LocalsumXextXext[i] = 0.0;
-			for (i=0; i<this->Jext; ++i) for (j=0; j<this->J; ++j) this->LocalsumdXextdWXext[i][j] = 0.0;			
-																																	
+																																											
+			//The size of Xext depends on BatchSize. Therefore, it needs to be initalised within an iteration																																				
 			double *Xext = (double*)calloc(this->Jext*BatchSize, sizeof(double));
 				
 			//Declare a pointer that points to the part of this->Y we are interested in

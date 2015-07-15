@@ -3,7 +3,7 @@
 	void RBFMahaFeatExtSparseCpp::calcXext(double *Xext, const double *W, const int BatchBegin, const int BatchEnd) {
 						
 		int i,j1,j2,k;
-		
+				
 		for (i=BatchBegin; i<BatchEnd; ++i) {//layer 1
 			
 		//Calculate distance		
