@@ -186,6 +186,23 @@ class BacktrackingLineSearchCpp(OptimiserCpp):
 BacktrackingLineSearchCpp_swigregister = _DMLLCpp.BacktrackingLineSearchCpp_swigregister
 BacktrackingLineSearchCpp_swigregister(BacktrackingLineSearchCpp)
 
+class GradientDescentWithMomentumCpp(OptimiserCpp):
+    __swig_setmethods__ = {}
+    for _s in [OptimiserCpp]: __swig_setmethods__.update(getattr(_s,'__swig_setmethods__',{}))
+    __setattr__ = lambda self, name, value: _swig_setattr(self, GradientDescentWithMomentumCpp, name, value)
+    __swig_getmethods__ = {}
+    for _s in [OptimiserCpp]: __swig_getmethods__.update(getattr(_s,'__swig_getmethods__',{}))
+    __getattr__ = lambda self, name: _swig_getattr(self, GradientDescentWithMomentumCpp, name)
+    __repr__ = _swig_repr
+    def __init__(self, *args): 
+        this = _DMLLCpp.new_GradientDescentWithMomentumCpp(*args)
+        try: self.this.append(this)
+        except: self.this = this
+    __swig_destroy__ = _DMLLCpp.delete_GradientDescentWithMomentumCpp
+    __del__ = lambda self : None;
+GradientDescentWithMomentumCpp_swigregister = _DMLLCpp.GradientDescentWithMomentumCpp_swigregister
+GradientDescentWithMomentumCpp_swigregister(GradientDescentWithMomentumCpp)
+
 class LinearRegressionCpp(NumericallyOptimisedMLAlgorithmCpp):
     __swig_setmethods__ = {}
     for _s in [NumericallyOptimisedMLAlgorithmCpp]: __swig_setmethods__.update(getattr(_s,'__swig_setmethods__',{}))

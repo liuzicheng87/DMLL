@@ -1,6 +1,7 @@
 from datetime import datetime
 from mpi4py import MPI
 import numpy as np
+from scipy.sparse import csr_matrix
 
 import DMLLCpp
 
@@ -81,9 +82,66 @@ def Scatter(GlobalX=np.zeros((0,0)), root=0, rank=rank):
 	StopTiming = datetime.now()
 	TimeElapsed = StopTiming - StartTiming
 	if rank==root:
-		print "Scattered one-dimensional numpy array."
+		print "Scattered two-dimensional numpy array."
 		print "Time taken: %.2dh:%.2dm:%.2d.%.6ds" % (TimeElapsed.seconds//3600, TimeElapsed.seconds//60, TimeElapsed.seconds%60, TimeElapsed.microseconds)	
 		print		
+	return X
+
+#ScatterSparse is used to scatter a scipy csr_matrix
+def ScatterSparse(GlobalX=np.zeros((0,0)), root=0):
+	#Place a barrier before getting the time
+	MPI.COMM_WORLD.barrier()
+	StartTiming = datetime.now()	#Calculate the length of the respective arrays and broadcast them to all processes
+	#Only the root process knows I, J and LengthData
+	I = np.zeros(1).astype(np.int32)				
+	J = np.zeros(1).astype(np.int32)		
+	LengthData = np.zeros(1).astype(np.int32)		
+	if rank == root:
+		J[0] = GlobalX.shape[1]
+		LocalI, CumulativeLocalI = CalcLocalI(GlobalX.shape[0])
+		CumulativeLocalI = np.hstack((CumulativeLocalI, GlobalX.shape[0]))
+		DMLLCpp.BcastCpp(MPI.COMM_WORLD, rank, J, root)	
+		#Scatter the csr_matrix according to CumulativeLocalI and	sent to other processes
+		for r in range(size):
+			if r == root:
+				continue
+			X = GlobalX[CumulativeLocalI[r]:CumulativeLocalI[r+1]]
+			#Since the receiving process does not know I and LengthData, send these pieces of information first															
+			I[0] = X.shape[0]			
+			DMLLCpp.SendIntCpp(MPI.COMM_WORLD, I, r)
+			LengthData[0] = len(X.data)
+			DMLLCpp.SendIntCpp(MPI.COMM_WORLD, LengthData, r)		
+			#Send the actual data																									
+			DMLLCpp.SendIntCpp(MPI.COMM_WORLD, X.indptr, r)												
+			DMLLCpp.SendDoubleCpp(MPI.COMM_WORLD, X.data, r)		
+			DMLLCpp.SendIntCpp(MPI.COMM_WORLD, X.indices, r)	
+		#Create the local version of X for the root process itself
+		X = GlobalX[CumulativeLocalI[root]:CumulativeLocalI[root+1]]	
+		#Print time
+		StopTiming = datetime.now()
+		TimeElapsed = StopTiming - StartTiming
+		print "Scattered csr_matrix."
+		print "Time taken: %.2dh:%.2dm:%.2d.%.6ds" % (TimeElapsed.seconds//3600, TimeElapsed.seconds//60, TimeElapsed.seconds%60, TimeElapsed.microseconds)	
+		print													
+	else:
+		#Receive J, I, LengthData
+		DMLLCpp.BcastCpp(MPI.COMM_WORLD, rank, J, root)	
+		DMLLCpp.RecvIntCpp(MPI.COMM_WORLD, I, root)	
+		DMLLCpp.RecvIntCpp(MPI.COMM_WORLD, LengthData, root)	
+		#Init XIndptr, XData, XIndices
+		XIndptr = np.zeros(I[0] + 1).astype(np.int32)		
+		XData = np.zeros(LengthData[0])
+		XIndices = np.zeros(LengthData[0]).astype(np.int32)		
+		#Receive XIndptr, XData, XIndices		
+		DMLLCpp.RecvIntCpp(MPI.COMM_WORLD, XIndptr, root)	
+		DMLLCpp.RecvDoubleCpp(MPI.COMM_WORLD, XData, root)	
+		DMLLCpp.RecvIntCpp(MPI.COMM_WORLD, XIndices, root)	
+		#Create csr_matrix
+		X = csr_matrix( (XData, XIndices, XIndptr), shape=(I[0], J[0]))
+		#Delete old data
+		del XIndptr
+		del XData
+		del XIndices	
 	return X
 
 #optimisers
@@ -112,6 +170,11 @@ class NumericallyOptimisedMLAlgorithm:
 class GradientDescent:
 	def __init__(self, LearningRate, LearningRatePower):
 		self.thisptr = DMLLCpp.GradientDescentCpp(LearningRate, LearningRatePower, size, rank)
+
+#Wrapper class for GradientDescentWithMomentum optimiser
+class GradientDescentWithMomentum:
+	def __init__(self, LearningRate, LearningRatePower, momentum):
+		self.thisptr = DMLLCpp.GradientDescentWithMomentumCpp(LearningRate, LearningRatePower, momentum, size, rank)
 
 #Wrapper class for BacktrackingLineSearch optimiser
 class BacktrackingLineSearch:
@@ -173,7 +236,15 @@ class RBFMahaFeatExtSparse:
 			self.thisptr[i].transform(XextCol, X.data, X.indices, X.indptr, self.J)
 			Xext = np.hstack((Xext, XextCol.transpose()))
 		return Xext
-
+	def GetSumGradients(self):
+		SumGradients = list()
+		for i in range(self.Jext):
+			IterationsNeeded = self.thisptr[i].GetIterationsNeeded()
+			SumGradientsRow = np.zeros(IterationsNeeded)
+			self.thisptr[i].GetSumGradients(SumGradientsRow)
+			SumGradients.append(SumGradientsRow)
+		return SumGradients
+		
 #linear
 class LinearRegression(NumericallyOptimisedMLAlgorithm):
 	def __init__(self, J):

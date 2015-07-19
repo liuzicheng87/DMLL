@@ -28,7 +28,7 @@ X = scipy.sparse.csr_matrix(X)
 
 Jext = 4
 MahaFeatExt = DMLL.LinearMahaFeatExtSparse(X.shape[1], Jext)
-MahaFeatExt.fit(X, Y, optimiser=DMLL.BacktrackingLineSearch(25.0, 0.5, 0.5, 1e-06), GlobalBatchSize=0, tol=1e-08, MaxNumIterations=500, root=0)
+MahaFeatExt.fit(X, Y, optimiser=DMLL.GradientDescentWithMomentum(25.0, 0.1, 0.5), GlobalBatchSize=0, tol=1e-08, MaxNumIterations=500, root=0)
 
 Xext = MahaFeatExt.transform(X)
 

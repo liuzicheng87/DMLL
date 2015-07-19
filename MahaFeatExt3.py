@@ -19,7 +19,7 @@ Xtest, ytest = X[99000:], y[99000:]
 
 Jext = 20
 MahaFeatExt = DMLL.RBFMahaFeatExtSparse(Xtrain, Jext)
-MahaFeatExt.fit(Xtrain, ytrain, optimiser=DMLL.GradientDescent(0.001, 0.5), GlobalBatchSize=500, MaxNumIterations=30)
+MahaFeatExt.fit(Xtrain, ytrain, optimiser=DMLL.GradientDescentWithMomentum(1e-04, 0.1, 0.5), GlobalBatchSize=100, MaxNumIterations=120)
 Xext = MahaFeatExt.transform(Xtrain)
 
 if DMLL.rank == 0:
@@ -51,3 +51,12 @@ plt.xlim(xx.min(), xx.max())
 plt.ylim(yy.min(), yy.max())
 
 plt.show()
+
+#----------------------------------SumGradients-----------------------------------------
+
+SumGradients = MahaFeatExt.GetSumGradients()
+
+for i in range(Jext):
+	plt.grid(True)
+	plt.plot(SumGradients[i])
+	plt.show()

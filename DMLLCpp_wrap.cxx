@@ -2936,18 +2936,19 @@ SWIG_Python_NonDynamicSetAttr(PyObject *obj, PyObject *name, PyObject *value) {
 
 #define SWIGTYPE_p_BacktrackingLineSearchCpp swig_types[0]
 #define SWIGTYPE_p_GradientDescentCpp swig_types[1]
-#define SWIGTYPE_p_LinearMahaFeatExtSparseCpp swig_types[2]
-#define SWIGTYPE_p_LinearRegressionCpp swig_types[3]
-#define SWIGTYPE_p_MPI_Comm swig_types[4]
-#define SWIGTYPE_p_NumericallyOptimisedMLAlgorithmCpp swig_types[5]
-#define SWIGTYPE_p_OptimiserCpp swig_types[6]
-#define SWIGTYPE_p_RBFMahaFeatExtSparseCpp swig_types[7]
-#define SWIGTYPE_p_SayHelloCpp swig_types[8]
-#define SWIGTYPE_p_char swig_types[9]
-#define SWIGTYPE_p_double swig_types[10]
-#define SWIGTYPE_p_int swig_types[11]
-static swig_type_info *swig_types[13];
-static swig_module_info swig_module = {swig_types, 12, 0, 0, 0, 0};
+#define SWIGTYPE_p_GradientDescentWithMomentumCpp swig_types[2]
+#define SWIGTYPE_p_LinearMahaFeatExtSparseCpp swig_types[3]
+#define SWIGTYPE_p_LinearRegressionCpp swig_types[4]
+#define SWIGTYPE_p_MPI_Comm swig_types[5]
+#define SWIGTYPE_p_NumericallyOptimisedMLAlgorithmCpp swig_types[6]
+#define SWIGTYPE_p_OptimiserCpp swig_types[7]
+#define SWIGTYPE_p_RBFMahaFeatExtSparseCpp swig_types[8]
+#define SWIGTYPE_p_SayHelloCpp swig_types[9]
+#define SWIGTYPE_p_char swig_types[10]
+#define SWIGTYPE_p_double swig_types[11]
+#define SWIGTYPE_p_int swig_types[12]
+static swig_type_info *swig_types[14];
+static swig_module_info swig_module = {swig_types, 13, 0, 0, 0, 0};
 #define SWIG_TypeQuery(name) SWIG_TypeQueryModule(&swig_module, &swig_module, name)
 #define SWIG_MangledTypeQuery(name) SWIG_MangledTypeQueryModule(&swig_module, &swig_module, name)
 
@@ -4579,6 +4580,92 @@ SWIGINTERN PyObject *BacktrackingLineSearchCpp_swigregister(PyObject *SWIGUNUSED
   return SWIG_Py_Void();
 }
 
+SWIGINTERN PyObject *_wrap_new_GradientDescentWithMomentumCpp(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  double arg1 ;
+  double arg2 ;
+  double arg3 ;
+  int arg4 ;
+  int arg5 ;
+  double val1 ;
+  int ecode1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  double val3 ;
+  int ecode3 = 0 ;
+  int val4 ;
+  int ecode4 = 0 ;
+  int val5 ;
+  int ecode5 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  PyObject * obj3 = 0 ;
+  PyObject * obj4 = 0 ;
+  GradientDescentWithMomentumCpp *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOOOO:new_GradientDescentWithMomentumCpp",&obj0,&obj1,&obj2,&obj3,&obj4)) SWIG_fail;
+  ecode1 = SWIG_AsVal_double(obj0, &val1);
+  if (!SWIG_IsOK(ecode1)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "new_GradientDescentWithMomentumCpp" "', argument " "1"" of type '" "double""'");
+  } 
+  arg1 = static_cast< double >(val1);
+  ecode2 = SWIG_AsVal_double(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "new_GradientDescentWithMomentumCpp" "', argument " "2"" of type '" "double""'");
+  } 
+  arg2 = static_cast< double >(val2);
+  ecode3 = SWIG_AsVal_double(obj2, &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "new_GradientDescentWithMomentumCpp" "', argument " "3"" of type '" "double""'");
+  } 
+  arg3 = static_cast< double >(val3);
+  ecode4 = SWIG_AsVal_int(obj3, &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "new_GradientDescentWithMomentumCpp" "', argument " "4"" of type '" "int""'");
+  } 
+  arg4 = static_cast< int >(val4);
+  ecode5 = SWIG_AsVal_int(obj4, &val5);
+  if (!SWIG_IsOK(ecode5)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "new_GradientDescentWithMomentumCpp" "', argument " "5"" of type '" "int""'");
+  } 
+  arg5 = static_cast< int >(val5);
+  result = (GradientDescentWithMomentumCpp *)new GradientDescentWithMomentumCpp(arg1,arg2,arg3,arg4,arg5);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_GradientDescentWithMomentumCpp, SWIG_POINTER_NEW |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_delete_GradientDescentWithMomentumCpp(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  GradientDescentWithMomentumCpp *arg1 = (GradientDescentWithMomentumCpp *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:delete_GradientDescentWithMomentumCpp",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_GradientDescentWithMomentumCpp, SWIG_POINTER_DISOWN |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_GradientDescentWithMomentumCpp" "', argument " "1"" of type '" "GradientDescentWithMomentumCpp *""'"); 
+  }
+  arg1 = reinterpret_cast< GradientDescentWithMomentumCpp * >(argp1);
+  delete arg1;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *GradientDescentWithMomentumCpp_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *obj;
+  if (!PyArg_ParseTuple(args,(char*)"O:swigregister", &obj)) return NULL;
+  SWIG_TypeNewClientData(SWIGTYPE_p_GradientDescentWithMomentumCpp, SWIG_NewClientData(obj));
+  return SWIG_Py_Void();
+}
+
 SWIGINTERN PyObject *_wrap_new_LinearRegressionCpp(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   int arg1 ;
@@ -5585,6 +5672,9 @@ static PyMethodDef SwigMethods[] = {
 	 { (char *)"new_BacktrackingLineSearchCpp", _wrap_new_BacktrackingLineSearchCpp, METH_VARARGS, NULL},
 	 { (char *)"delete_BacktrackingLineSearchCpp", _wrap_delete_BacktrackingLineSearchCpp, METH_VARARGS, NULL},
 	 { (char *)"BacktrackingLineSearchCpp_swigregister", BacktrackingLineSearchCpp_swigregister, METH_VARARGS, NULL},
+	 { (char *)"new_GradientDescentWithMomentumCpp", _wrap_new_GradientDescentWithMomentumCpp, METH_VARARGS, NULL},
+	 { (char *)"delete_GradientDescentWithMomentumCpp", _wrap_delete_GradientDescentWithMomentumCpp, METH_VARARGS, NULL},
+	 { (char *)"GradientDescentWithMomentumCpp_swigregister", GradientDescentWithMomentumCpp_swigregister, METH_VARARGS, NULL},
 	 { (char *)"new_LinearRegressionCpp", _wrap_new_LinearRegressionCpp, METH_VARARGS, NULL},
 	 { (char *)"delete_LinearRegressionCpp", _wrap_delete_LinearRegressionCpp, METH_VARARGS, NULL},
 	 { (char *)"LinearRegressionCpp_fit", _wrap_LinearRegressionCpp_fit, METH_VARARGS, NULL},
@@ -5609,6 +5699,9 @@ static PyMethodDef SwigMethods[] = {
 static void *_p_GradientDescentCppTo_p_OptimiserCpp(void *x, int *SWIGUNUSEDPARM(newmemory)) {
     return (void *)((OptimiserCpp *)  ((GradientDescentCpp *) x));
 }
+static void *_p_GradientDescentWithMomentumCppTo_p_OptimiserCpp(void *x, int *SWIGUNUSEDPARM(newmemory)) {
+    return (void *)((OptimiserCpp *)  ((GradientDescentWithMomentumCpp *) x));
+}
 static void *_p_BacktrackingLineSearchCppTo_p_OptimiserCpp(void *x, int *SWIGUNUSEDPARM(newmemory)) {
     return (void *)((OptimiserCpp *)  ((BacktrackingLineSearchCpp *) x));
 }
@@ -5623,6 +5716,7 @@ static void *_p_LinearRegressionCppTo_p_NumericallyOptimisedMLAlgorithmCpp(void 
 }
 static swig_type_info _swigt__p_BacktrackingLineSearchCpp = {"_p_BacktrackingLineSearchCpp", "BacktrackingLineSearchCpp *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_GradientDescentCpp = {"_p_GradientDescentCpp", "GradientDescentCpp *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_GradientDescentWithMomentumCpp = {"_p_GradientDescentWithMomentumCpp", "GradientDescentWithMomentumCpp *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_LinearMahaFeatExtSparseCpp = {"_p_LinearMahaFeatExtSparseCpp", "LinearMahaFeatExtSparseCpp *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_LinearRegressionCpp = {"_p_LinearRegressionCpp", "LinearRegressionCpp *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_MPI_Comm = {"_p_MPI_Comm", "MPI_Comm *", 0, 0, (void*)0, 0};
@@ -5637,6 +5731,7 @@ static swig_type_info _swigt__p_int = {"_p_int", "int *", 0, 0, (void*)0, 0};
 static swig_type_info *swig_type_initial[] = {
   &_swigt__p_BacktrackingLineSearchCpp,
   &_swigt__p_GradientDescentCpp,
+  &_swigt__p_GradientDescentWithMomentumCpp,
   &_swigt__p_LinearMahaFeatExtSparseCpp,
   &_swigt__p_LinearRegressionCpp,
   &_swigt__p_MPI_Comm,
@@ -5651,11 +5746,12 @@ static swig_type_info *swig_type_initial[] = {
 
 static swig_cast_info _swigc__p_BacktrackingLineSearchCpp[] = {  {&_swigt__p_BacktrackingLineSearchCpp, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_GradientDescentCpp[] = {  {&_swigt__p_GradientDescentCpp, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_GradientDescentWithMomentumCpp[] = {  {&_swigt__p_GradientDescentWithMomentumCpp, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_LinearMahaFeatExtSparseCpp[] = {  {&_swigt__p_LinearMahaFeatExtSparseCpp, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_LinearRegressionCpp[] = {  {&_swigt__p_LinearRegressionCpp, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_MPI_Comm[] = {  {&_swigt__p_MPI_Comm, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_NumericallyOptimisedMLAlgorithmCpp[] = {  {&_swigt__p_LinearMahaFeatExtSparseCpp, _p_LinearMahaFeatExtSparseCppTo_p_NumericallyOptimisedMLAlgorithmCpp, 0, 0},  {&_swigt__p_RBFMahaFeatExtSparseCpp, _p_RBFMahaFeatExtSparseCppTo_p_NumericallyOptimisedMLAlgorithmCpp, 0, 0},  {&_swigt__p_NumericallyOptimisedMLAlgorithmCpp, 0, 0, 0},  {&_swigt__p_LinearRegressionCpp, _p_LinearRegressionCppTo_p_NumericallyOptimisedMLAlgorithmCpp, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_OptimiserCpp[] = {  {&_swigt__p_GradientDescentCpp, _p_GradientDescentCppTo_p_OptimiserCpp, 0, 0},  {&_swigt__p_OptimiserCpp, 0, 0, 0},  {&_swigt__p_BacktrackingLineSearchCpp, _p_BacktrackingLineSearchCppTo_p_OptimiserCpp, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_OptimiserCpp[] = {  {&_swigt__p_GradientDescentCpp, _p_GradientDescentCppTo_p_OptimiserCpp, 0, 0},  {&_swigt__p_GradientDescentWithMomentumCpp, _p_GradientDescentWithMomentumCppTo_p_OptimiserCpp, 0, 0},  {&_swigt__p_OptimiserCpp, 0, 0, 0},  {&_swigt__p_BacktrackingLineSearchCpp, _p_BacktrackingLineSearchCppTo_p_OptimiserCpp, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_RBFMahaFeatExtSparseCpp[] = {  {&_swigt__p_RBFMahaFeatExtSparseCpp, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_SayHelloCpp[] = {  {&_swigt__p_SayHelloCpp, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_char[] = {  {&_swigt__p_char, 0, 0, 0},{0, 0, 0, 0}};
@@ -5665,6 +5761,7 @@ static swig_cast_info _swigc__p_int[] = {  {&_swigt__p_int, 0, 0, 0},{0, 0, 0, 0
 static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_BacktrackingLineSearchCpp,
   _swigc__p_GradientDescentCpp,
+  _swigc__p_GradientDescentWithMomentumCpp,
   _swigc__p_LinearMahaFeatExtSparseCpp,
   _swigc__p_LinearRegressionCpp,
   _swigc__p_MPI_Comm,

@@ -31,7 +31,7 @@ if DMLL.rank == 0:
 	plt.show()
 
 thisptr = DMLL.LinearRegression(1)
-thisptr.fit(X, Y, optimiser=DMLL.BacktrackingLineSearch(1.0, 0.5, 0.5, 1e-06), MaxNumIterations=10)
+thisptr.fit(X, Y, optimiser=DMLL.GradientDescentWithMomentum(1.0, 0.1, 0.5), MaxNumIterations=100)
 
 SumGradients = thisptr.GetSumGradients()
 
