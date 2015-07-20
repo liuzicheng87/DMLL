@@ -419,13 +419,13 @@ class LinearMahaFeatExtSparseCpp: public NumericallyOptimisedMLAlgorithmCpp {
 		if (XIndptrLength != I+1) throw std::invalid_argument("Number of instances in Xext does not match number of instances in X!");		
 		
 		//Make sure Xext is intialised to zero
-		for (i=0; i<this->Jext*I; ++i) Xext[i] = 0.0;
+		for (i=0; i<Jext*I; ++i) Xext[i] = 0.0;
 		
 		//Make sure Xext is intialised to zero		
 		//Note that Xext is in column-major order!
-		for (jext=0; jext<this->Jext; ++jext) for (i=0; i<I; ++i) 
+		for (jext=0; jext<Jext; ++jext) for (i=0; i<I; ++i) 
 			for (k=XIndptr[i]; k<XIndptr[i + 1]; ++k)
-				Xext[jext*I + i] += this->XData[k]*this->W[jext*J + XIndices[k]];
+				Xext[jext*I + i] += XData[k]*this->W[jext*J + XIndices[k]];
 	}		
 	
 	private:
