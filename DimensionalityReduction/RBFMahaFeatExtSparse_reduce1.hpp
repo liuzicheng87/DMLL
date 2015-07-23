@@ -14,19 +14,19 @@
 				if (this->XIndices[j1] > this->cIndices[j2]) {//layer 3
 										
 					//If cIndices[j2] is smaller than XIndices[j1], calculate the weighted Euclidian distance between c[j2] and 0.					
-					Xext[i-BatchBegin] -= this->cData[j2]*this->cData[j2]*W[this->cIndices[j2]]*W[this->cIndices[j2]];
+					Xext[i-BatchBegin] += this->cData[j2]*this->cData[j2]*W[this->cIndices[j2]];
 					++j2;
 					
 				} else if (this->XIndices[j1] < this->cIndices[j2]) {//layer 3
 										
 					//If cIndices[j2] is greter than XIndices[j1], calculate the weighted Euclidian distance between c[j2] and 0.					
-					Xext[i-BatchBegin] -= this->XData[j1]*this->XData[j1]*W[this->XIndices[j1]]*W[this->XIndices[j1]];	
+					Xext[i-BatchBegin] += this->XData[j1]*this->XData[j1]*W[this->XIndices[j1]];	
 					++j1;
 					
 				} else {//layer 3
 															
 					//If the indices are equal, calculate the weighted Euclidian distance between X[j1] and c[j2]
-					Xext[i-BatchBegin] -= (this->XData[j1] - this->cData[j2])*(this->XData[j1] - this->cData[j2])*W[this->XIndices[j1]]*W[this->XIndices[j1]];					
+					Xext[i-BatchBegin] += (this->XData[j1] - this->cData[j2])*(this->XData[j1] - this->cData[j2])*W[this->XIndices[j1]];					
 					++j1;
 					++j2;			
 						
@@ -35,14 +35,14 @@
 				//Once either j1 or j2 is greater than the maximum possible value, we just increment the other and calculate its distance to 0
 				if (j1 == this->XIndptr[i+1]) {//layer 3
 					
-					 for (; j2 < this->cIndptr[1]; ++j2) Xext[i-BatchBegin] -= this->cData[j2]*this->cData[j2]*W[this->cIndices[j2]]*W[this->cIndices[j2]];
+					 for (; j2 < this->cIndptr[1]; ++j2) Xext[i-BatchBegin] += this->cData[j2]*this->cData[j2]*W[this->cIndices[j2]];
 					 break;
 					 
 				 }//layer 3
 				 
 				if (j2 == cIndptr[1]) {//layer 3
 					
-					 for (; j1 < this->XIndptr[i+1]; ++j1) Xext[i-BatchBegin] -= this->XData[j1]*this->XData[j1]*W[this->XIndices[j1]]*W[this->XIndices[j1]];
+					 for (; j1 < this->XIndptr[i+1]; ++j1) Xext[i-BatchBegin] += this->XData[j1]*this->XData[j1]*W[this->XIndices[j1]];
 					 break;
 					 
 				 }//layer 3				 
@@ -182,7 +182,7 @@
 					
 					for (i=this->XMinusCSquaredIndptr[BatchNum][j1]; i< this->XMinusCSquaredIndptr[BatchNum][j1+1]; ++i) {//layer 3
 					
-						this->LocalsumdXextdW[j1] += TemporaryValue = (-2.0)*this->XMinusCSquaredData[BatchNum][i]*Xext[this->XMinusCSquaredIndices[BatchNum][i]]*W[j1];
+						this->LocalsumdXextdW[j1] += TemporaryValue = this->XMinusCSquaredData[BatchNum][i]*Xext[this->XMinusCSquaredIndices[BatchNum][i]];
 						this->LocalsumdXextdWXext[0][j1] += TemporaryValue*Xext[this->XMinusCSquaredIndices[BatchNum][i]];						
 						this->LocalsumdXextdWY[j1] += TemporaryValue*y[i];
 						
@@ -193,13 +193,13 @@
 				
 				//Whereever x[i] is zero, (x-c)*(x-c) is equal to c*c. Since we assume this to be the case most of the time, we simply initialise to the sum assuming all c is 0 to all cases and the substract the difference where this assumption fails:
 				
-				this->LocalsumdXextdW[j1] = (-2.0)*this->LocalsumXext[0]*W[j1]*this->cData[j2]*this->cData[j2];
-				this->LocalsumdXextdWY[j1] = (-2.0)*this->LocalsumXextY[0]*W[j1]*this->cData[j2]*this->cData[j2];
-				this->LocalsumdXextdWXext[0][j1] = (-2.0)*this->LocalsumXextXext[0]*W[j1]*this->cData[j2]*this->cData[j2];							
+				this->LocalsumdXextdW[j1] = this->LocalsumXext[0]*this->cData[j2]*this->cData[j2];
+				this->LocalsumdXextdWY[j1] = this->LocalsumXextY[0]*this->cData[j2]*this->cData[j2];
+				this->LocalsumdXextdWXext[0][j1] = this->LocalsumXextXext[0]*this->cData[j2]*this->cData[j2];							
 				
 				for (i=this->XMinusCSquaredIndptr[BatchNum][j1]; i< this->XMinusCSquaredIndptr[BatchNum][j1+1]; ++i) {//layer 3 
 				
-						this->LocalsumdXextdW[j1] += TemporaryValue = (-2.0)*(this->XMinusCSquaredData[BatchNum][i] - this->cData[j2]*this->cData[j2])*Xext[this->XMinusCSquaredIndices[BatchNum][i]]*W[j1];
+						this->LocalsumdXextdW[j1] += TemporaryValue = (this->XMinusCSquaredData[BatchNum][i] - this->cData[j2]*this->cData[j2])*Xext[this->XMinusCSquaredIndices[BatchNum][i]];
 						this->LocalsumdXextdWXext[0][j1] += TemporaryValue*Xext[this->XMinusCSquaredIndices[BatchNum][i]];						
 						this->LocalsumdXextdWY[j1] += TemporaryValue*y[i];				
 					

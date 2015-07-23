@@ -39,7 +39,7 @@ Xtrain = scipy.sparse.csr_matrix(Xtrain)
 
 Jext = 20
 MahaFeatExt = DMLL.RBFMahaFeatExtSparse(Xtrain, Jext)
-MahaFeatExt.fit(Xtrain, ytrain, optimiser=DMLL.GradientDescentWithMomentum(1e-09, 0.5, 0.5), GlobalBatchSize=0, MaxNumIterations=120)
+MahaFeatExt.fit(Xtrain, ytrain, optimiser=DMLL.GradientDescentWithMomentum(0.1, 0.5, 0.5), GlobalBatchSize=0, MaxNumIterations=1200)
 
 Xext = MahaFeatExt.transform(Xtrain)
 Xtransform = scipy.sparse.csr_matrix(Xext)
@@ -47,7 +47,7 @@ Xtransform = scipy.sparse.csr_matrix(Xext)
 Jext2 = 3
 
 MahaFeatExt2 = DMLL.LinearMahaFeatExtSparse(Jext, Jext2)
-MahaFeatExt2.fit(Xtransform, ytrain, optimiser=DMLL.GradientDescent(1.0, 0.5), GlobalBatchSize=0, tol=1e-08, MaxNumIterations=5000, root=0)
+MahaFeatExt2.fit(Xtransform, ytrain, optimiser=DMLL.GradientDescent(1.0, 0.5), GlobalBatchSize=0, tol=1e-08, MaxNumIterations=120, root=0)
 
 if DMLL.rank == 0:
    SumGradients = MahaFeatExt2.GetSumGradients()
