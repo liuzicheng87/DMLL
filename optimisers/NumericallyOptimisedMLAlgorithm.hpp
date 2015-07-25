@@ -3,7 +3,7 @@ class NumericallyOptimisedMLAlgorithmCpp {
 	public:
 	double *W, *SumGradients;
 	int I, GlobalI, lengthW, IterationsNeeded;
-					
+						
 	NumericallyOptimisedMLAlgorithmCpp() {
 		this->W = NULL;
 		this->SumGradients = NULL;
@@ -11,7 +11,12 @@ class NumericallyOptimisedMLAlgorithmCpp {
 		}
 	
 	//Virtual destructor		
-	virtual ~NumericallyOptimisedMLAlgorithmCpp() {}
+	virtual ~NumericallyOptimisedMLAlgorithmCpp() {
+				
+		//Free W and SumGradients
+		if (this->W != NULL) free(this->W);		
+		if (this->SumGradients != NULL) free(this->SumGradients);		
+		}
 
 	//Z: the value to be optimised	
 	//W: weights to be used for this iteration			

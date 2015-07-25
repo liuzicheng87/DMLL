@@ -180,6 +180,21 @@ class GradientDescentWithMomentum:
 class BacktrackingLineSearch:
 	def __init__(self, LearningRateStart, LearningRateReduction, c, tol):
 		self.thisptr = DMLLCpp.BacktrackingLineSearchCpp(LearningRateStart, LearningRateReduction, c, tol, size, rank)
+
+#Wrapper class for the (empty) regulariser
+class Regulariser:
+	def __init__(self, alpha=0.0):
+		self.thisptr = DMLLCpp.RegulariserCpp(alpha)
+
+#Wrapper class for the L1 regulariser
+class L1Regulariser:
+	def __init__(self, alpha=0.0):
+		self.thisptr = DMLLCpp.L1RegulariserCpp(alpha)
+		
+#Wrapper class for the L2 regulariser
+class L2Regulariser:
+	def __init__(self, alpha=0.0):
+		self.thisptr = DMLLCpp.L2RegulariserCpp(alpha)
 	
 #DimensionalityReduction
 class LinearMahaFeatExtSparse(NumericallyOptimisedMLAlgorithm):
@@ -208,13 +223,14 @@ class LinearMahaFeatExtSparse(NumericallyOptimisedMLAlgorithm):
 
 #DimensionalityReduction
 class RBFMahaFeatExtSparse:
-	def __init__(self, X, Jext):
+	def __init__(self, X, Jext, regulariser=Regulariser()):
 		self.J = X.shape[1]		
 		self.Jext = Jext
+		self.regulariser = regulariser		
 		self.thisptr = list()
 		for i in range(self.Jext):
 			c = X[np.random.randint(X.shape[0])]
-			self.thisptr.append(DMLLCpp.RBFMahaFeatExtSparseCpp(self.J, c.data, c.indices, c.indptr, 1))
+			self.thisptr.append(DMLLCpp.RBFMahaFeatExtSparseCpp(self.J, c.data, c.indices, c.indptr, 1, self.regulariser.thisptr))
 	def fit(self, X, Y, optimiser=GradientDescent(25.0, 0.1), GlobalBatchSize=0, tol=1e-08, MaxNumIterations=500, root=0):
 		#Place a barrier before getting the time
 		MPI.COMM_WORLD.barrier()
@@ -247,8 +263,9 @@ class RBFMahaFeatExtSparse:
 		
 #linear
 class LinearRegression(NumericallyOptimisedMLAlgorithm):
-	def __init__(self, J):
-		self.thisptr = DMLLCpp.LinearRegressionCpp(J)
+	def __init__(self, J, regulariser=Regulariser()):
+		self.regulariser = regulariser
+		self.thisptr = DMLLCpp.LinearRegressionCpp(J, regulariser.thisptr)
 	def fit(self, X, Y, optimiser=GradientDescent(1.0, 0.1), GlobalBatchSize=0, tol=1e-08, MaxNumIterations=500, root=0):
 		#Place a barrier before getting the time
 		MPI.COMM_WORLD.barrier()

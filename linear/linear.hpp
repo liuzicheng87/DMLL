@@ -5,8 +5,10 @@ class LinearRegressionCpp: public NumericallyOptimisedMLAlgorithmCpp {
 	int J;
 	
 	OptimiserCpp *optimiser;
+	
+	RegulariserCpp *regulariser;
 
-	LinearRegressionCpp(int J): NumericallyOptimisedMLAlgorithmCpp() {
+	LinearRegressionCpp(int J, RegulariserCpp *regulariser): NumericallyOptimisedMLAlgorithmCpp() {
 		
 		int i;
 		
@@ -16,6 +18,7 @@ class LinearRegressionCpp: public NumericallyOptimisedMLAlgorithmCpp {
 		
 		this->J = J;
 		this->lengthW = J+1;
+		this->regulariser = regulariser;
 				
 		//IMPORTANT: You must malloc W and initialise values randomly. How you randomly initialise them is your decision, but make sure you the the same values every time you call the function.
 		this->W = (double*)malloc(this->lengthW*sizeof(double));
@@ -23,11 +26,7 @@ class LinearRegressionCpp: public NumericallyOptimisedMLAlgorithmCpp {
 
 	}
 	
-	~LinearRegressionCpp() {
-		//IMPORTANT: These two free's should appear in all classes that inherit from NumericallyOptimisedMLAlgorithmCpp!
-		if (this->W != NULL) free(this->W);		
-		if (this->SumGradients != NULL) free(this->SumGradients);
-	}
+	~LinearRegressionCpp() {}
 
 	//Z: the value to be optimised	
 	//W: weights to be used for this iteration			
@@ -55,6 +54,9 @@ class LinearRegressionCpp: public NumericallyOptimisedMLAlgorithmCpp {
 			localZ += (Y[i] - Yhat)*(Y[i] - Yhat);
 						
 		}
+		
+		//Apply regulariser
+		this->regulariser->f(localZ, W, 0, this->J, this->J, (double)BatchSize); 
 						
 		//Add all localZ and store the result in Z
 		MPI_Allreduce(&localZ, &Z, 1, MPI_DOUBLE, MPI_SUM, comm);
@@ -90,6 +92,9 @@ class LinearRegressionCpp: public NumericallyOptimisedMLAlgorithmCpp {
 			this->optimiser->localdZdW[this->J] += TwoYhatMinusY;
 			
 		}
+		
+		//Apply regulariser
+		this->regulariser->g(this->optimiser->localdZdW, W, 0, this->J, this->J, (double)BatchSize); 		
 							
 		//Add all localdZdW and store the result in dZdW
 		MPI_Allreduce(this->optimiser->localdZdW, this->optimiser->dZdW, this->lengthW, MPI_DOUBLE, MPI_SUM, comm);			

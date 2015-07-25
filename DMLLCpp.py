@@ -203,6 +203,55 @@ class GradientDescentWithMomentumCpp(OptimiserCpp):
 GradientDescentWithMomentumCpp_swigregister = _DMLLCpp.GradientDescentWithMomentumCpp_swigregister
 GradientDescentWithMomentumCpp_swigregister(GradientDescentWithMomentumCpp)
 
+class RegulariserCpp(_object):
+    __swig_setmethods__ = {}
+    __setattr__ = lambda self, name, value: _swig_setattr(self, RegulariserCpp, name, value)
+    __swig_getmethods__ = {}
+    __getattr__ = lambda self, name: _swig_getattr(self, RegulariserCpp, name)
+    __repr__ = _swig_repr
+    def __init__(self, *args): 
+        this = _DMLLCpp.new_RegulariserCpp(*args)
+        try: self.this.append(this)
+        except: self.this = this
+    __swig_destroy__ = _DMLLCpp.delete_RegulariserCpp
+    __del__ = lambda self : None;
+RegulariserCpp_swigregister = _DMLLCpp.RegulariserCpp_swigregister
+RegulariserCpp_swigregister(RegulariserCpp)
+
+class L1RegulariserCpp(RegulariserCpp):
+    __swig_setmethods__ = {}
+    for _s in [RegulariserCpp]: __swig_setmethods__.update(getattr(_s,'__swig_setmethods__',{}))
+    __setattr__ = lambda self, name, value: _swig_setattr(self, L1RegulariserCpp, name, value)
+    __swig_getmethods__ = {}
+    for _s in [RegulariserCpp]: __swig_getmethods__.update(getattr(_s,'__swig_getmethods__',{}))
+    __getattr__ = lambda self, name: _swig_getattr(self, L1RegulariserCpp, name)
+    __repr__ = _swig_repr
+    def __init__(self, *args): 
+        this = _DMLLCpp.new_L1RegulariserCpp(*args)
+        try: self.this.append(this)
+        except: self.this = this
+    __swig_destroy__ = _DMLLCpp.delete_L1RegulariserCpp
+    __del__ = lambda self : None;
+L1RegulariserCpp_swigregister = _DMLLCpp.L1RegulariserCpp_swigregister
+L1RegulariserCpp_swigregister(L1RegulariserCpp)
+
+class L2RegulariserCpp(RegulariserCpp):
+    __swig_setmethods__ = {}
+    for _s in [RegulariserCpp]: __swig_setmethods__.update(getattr(_s,'__swig_setmethods__',{}))
+    __setattr__ = lambda self, name, value: _swig_setattr(self, L2RegulariserCpp, name, value)
+    __swig_getmethods__ = {}
+    for _s in [RegulariserCpp]: __swig_getmethods__.update(getattr(_s,'__swig_getmethods__',{}))
+    __getattr__ = lambda self, name: _swig_getattr(self, L2RegulariserCpp, name)
+    __repr__ = _swig_repr
+    def __init__(self, *args): 
+        this = _DMLLCpp.new_L2RegulariserCpp(*args)
+        try: self.this.append(this)
+        except: self.this = this
+    __swig_destroy__ = _DMLLCpp.delete_L2RegulariserCpp
+    __del__ = lambda self : None;
+L2RegulariserCpp_swigregister = _DMLLCpp.L2RegulariserCpp_swigregister
+L2RegulariserCpp_swigregister(L2RegulariserCpp)
+
 class LinearRegressionCpp(NumericallyOptimisedMLAlgorithmCpp):
     __swig_setmethods__ = {}
     for _s in [NumericallyOptimisedMLAlgorithmCpp]: __swig_setmethods__.update(getattr(_s,'__swig_setmethods__',{}))

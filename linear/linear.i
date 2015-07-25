@@ -2,7 +2,7 @@ class LinearRegressionCpp: public NumericallyOptimisedMLAlgorithmCpp {
 
 	public:
 
-	LinearRegressionCpp(int J): NumericallyOptimisedMLAlgorithmCpp();
+	LinearRegressionCpp(int J, RegulariserCpp *regulariser): NumericallyOptimisedMLAlgorithmCpp();
 	
 	~LinearRegressionCpp();
 

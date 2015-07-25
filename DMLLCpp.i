@@ -36,6 +36,7 @@ import_array();
 
 %include UsefulFunctions/UsefulFunctions.i
 %include optimisers/optimisers.i
+%include Regularisers/regularisers.i
 
 %include linear/linear.i
 %include DimensionalityReduction/DimensionalityReduction.i

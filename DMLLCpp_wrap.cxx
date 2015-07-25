@@ -2937,18 +2937,21 @@ SWIG_Python_NonDynamicSetAttr(PyObject *obj, PyObject *name, PyObject *value) {
 #define SWIGTYPE_p_BacktrackingLineSearchCpp swig_types[0]
 #define SWIGTYPE_p_GradientDescentCpp swig_types[1]
 #define SWIGTYPE_p_GradientDescentWithMomentumCpp swig_types[2]
-#define SWIGTYPE_p_LinearMahaFeatExtSparseCpp swig_types[3]
-#define SWIGTYPE_p_LinearRegressionCpp swig_types[4]
-#define SWIGTYPE_p_MPI_Comm swig_types[5]
-#define SWIGTYPE_p_NumericallyOptimisedMLAlgorithmCpp swig_types[6]
-#define SWIGTYPE_p_OptimiserCpp swig_types[7]
-#define SWIGTYPE_p_RBFMahaFeatExtSparseCpp swig_types[8]
-#define SWIGTYPE_p_SayHelloCpp swig_types[9]
-#define SWIGTYPE_p_char swig_types[10]
-#define SWIGTYPE_p_double swig_types[11]
-#define SWIGTYPE_p_int swig_types[12]
-static swig_type_info *swig_types[14];
-static swig_module_info swig_module = {swig_types, 13, 0, 0, 0, 0};
+#define SWIGTYPE_p_L1RegulariserCpp swig_types[3]
+#define SWIGTYPE_p_L2RegulariserCpp swig_types[4]
+#define SWIGTYPE_p_LinearMahaFeatExtSparseCpp swig_types[5]
+#define SWIGTYPE_p_LinearRegressionCpp swig_types[6]
+#define SWIGTYPE_p_MPI_Comm swig_types[7]
+#define SWIGTYPE_p_NumericallyOptimisedMLAlgorithmCpp swig_types[8]
+#define SWIGTYPE_p_OptimiserCpp swig_types[9]
+#define SWIGTYPE_p_RBFMahaFeatExtSparseCpp swig_types[10]
+#define SWIGTYPE_p_RegulariserCpp swig_types[11]
+#define SWIGTYPE_p_SayHelloCpp swig_types[12]
+#define SWIGTYPE_p_char swig_types[13]
+#define SWIGTYPE_p_double swig_types[14]
+#define SWIGTYPE_p_int swig_types[15]
+static swig_type_info *swig_types[17];
+static swig_module_info swig_module = {swig_types, 16, 0, 0, 0, 0};
 #define SWIG_TypeQuery(name) SWIG_TypeQueryModule(&swig_module, &swig_module, name)
 #define SWIG_MangledTypeQuery(name) SWIG_MangledTypeQueryModule(&swig_module, &swig_module, name)
 
@@ -4666,21 +4669,180 @@ SWIGINTERN PyObject *GradientDescentWithMomentumCpp_swigregister(PyObject *SWIGU
   return SWIG_Py_Void();
 }
 
+SWIGINTERN PyObject *_wrap_new_RegulariserCpp(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  double arg1 ;
+  double val1 ;
+  int ecode1 = 0 ;
+  PyObject * obj0 = 0 ;
+  RegulariserCpp *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:new_RegulariserCpp",&obj0)) SWIG_fail;
+  ecode1 = SWIG_AsVal_double(obj0, &val1);
+  if (!SWIG_IsOK(ecode1)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "new_RegulariserCpp" "', argument " "1"" of type '" "double""'");
+  } 
+  arg1 = static_cast< double >(val1);
+  result = (RegulariserCpp *)new RegulariserCpp(arg1);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_RegulariserCpp, SWIG_POINTER_NEW |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_delete_RegulariserCpp(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  RegulariserCpp *arg1 = (RegulariserCpp *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:delete_RegulariserCpp",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_RegulariserCpp, SWIG_POINTER_DISOWN |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_RegulariserCpp" "', argument " "1"" of type '" "RegulariserCpp *""'"); 
+  }
+  arg1 = reinterpret_cast< RegulariserCpp * >(argp1);
+  delete arg1;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *RegulariserCpp_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *obj;
+  if (!PyArg_ParseTuple(args,(char*)"O:swigregister", &obj)) return NULL;
+  SWIG_TypeNewClientData(SWIGTYPE_p_RegulariserCpp, SWIG_NewClientData(obj));
+  return SWIG_Py_Void();
+}
+
+SWIGINTERN PyObject *_wrap_new_L1RegulariserCpp(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  double arg1 ;
+  double val1 ;
+  int ecode1 = 0 ;
+  PyObject * obj0 = 0 ;
+  L1RegulariserCpp *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:new_L1RegulariserCpp",&obj0)) SWIG_fail;
+  ecode1 = SWIG_AsVal_double(obj0, &val1);
+  if (!SWIG_IsOK(ecode1)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "new_L1RegulariserCpp" "', argument " "1"" of type '" "double""'");
+  } 
+  arg1 = static_cast< double >(val1);
+  result = (L1RegulariserCpp *)new L1RegulariserCpp(arg1);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_L1RegulariserCpp, SWIG_POINTER_NEW |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_delete_L1RegulariserCpp(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  L1RegulariserCpp *arg1 = (L1RegulariserCpp *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:delete_L1RegulariserCpp",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_L1RegulariserCpp, SWIG_POINTER_DISOWN |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_L1RegulariserCpp" "', argument " "1"" of type '" "L1RegulariserCpp *""'"); 
+  }
+  arg1 = reinterpret_cast< L1RegulariserCpp * >(argp1);
+  delete arg1;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *L1RegulariserCpp_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *obj;
+  if (!PyArg_ParseTuple(args,(char*)"O:swigregister", &obj)) return NULL;
+  SWIG_TypeNewClientData(SWIGTYPE_p_L1RegulariserCpp, SWIG_NewClientData(obj));
+  return SWIG_Py_Void();
+}
+
+SWIGINTERN PyObject *_wrap_new_L2RegulariserCpp(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  double arg1 ;
+  double val1 ;
+  int ecode1 = 0 ;
+  PyObject * obj0 = 0 ;
+  L2RegulariserCpp *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:new_L2RegulariserCpp",&obj0)) SWIG_fail;
+  ecode1 = SWIG_AsVal_double(obj0, &val1);
+  if (!SWIG_IsOK(ecode1)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "new_L2RegulariserCpp" "', argument " "1"" of type '" "double""'");
+  } 
+  arg1 = static_cast< double >(val1);
+  result = (L2RegulariserCpp *)new L2RegulariserCpp(arg1);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_L2RegulariserCpp, SWIG_POINTER_NEW |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_delete_L2RegulariserCpp(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  L2RegulariserCpp *arg1 = (L2RegulariserCpp *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:delete_L2RegulariserCpp",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_L2RegulariserCpp, SWIG_POINTER_DISOWN |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_L2RegulariserCpp" "', argument " "1"" of type '" "L2RegulariserCpp *""'"); 
+  }
+  arg1 = reinterpret_cast< L2RegulariserCpp * >(argp1);
+  delete arg1;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *L2RegulariserCpp_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *obj;
+  if (!PyArg_ParseTuple(args,(char*)"O:swigregister", &obj)) return NULL;
+  SWIG_TypeNewClientData(SWIGTYPE_p_L2RegulariserCpp, SWIG_NewClientData(obj));
+  return SWIG_Py_Void();
+}
+
 SWIGINTERN PyObject *_wrap_new_LinearRegressionCpp(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   int arg1 ;
+  RegulariserCpp *arg2 = (RegulariserCpp *) 0 ;
   int val1 ;
   int ecode1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
   PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
   LinearRegressionCpp *result = 0 ;
   
-  if (!PyArg_ParseTuple(args,(char *)"O:new_LinearRegressionCpp",&obj0)) SWIG_fail;
+  if (!PyArg_ParseTuple(args,(char *)"OO:new_LinearRegressionCpp",&obj0,&obj1)) SWIG_fail;
   ecode1 = SWIG_AsVal_int(obj0, &val1);
   if (!SWIG_IsOK(ecode1)) {
     SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "new_LinearRegressionCpp" "', argument " "1"" of type '" "int""'");
   } 
   arg1 = static_cast< int >(val1);
-  result = (LinearRegressionCpp *)new LinearRegressionCpp(arg1);
+  res2 = SWIG_ConvertPtr(obj1, &argp2,SWIGTYPE_p_RegulariserCpp, 0 |  0 );
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "new_LinearRegressionCpp" "', argument " "2"" of type '" "RegulariserCpp *""'"); 
+  }
+  arg2 = reinterpret_cast< RegulariserCpp * >(argp2);
+  result = (LinearRegressionCpp *)new LinearRegressionCpp(arg1,arg2);
   resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_LinearRegressionCpp, SWIG_POINTER_NEW |  0 );
   return resultobj;
 fail:
@@ -5245,6 +5407,7 @@ SWIGINTERN PyObject *_wrap_new_RBFMahaFeatExtSparseCpp(PyObject *SWIGUNUSEDPARM(
   int *arg6 = (int *) 0 ;
   int arg7 ;
   int arg8 ;
+  RegulariserCpp *arg9 = (RegulariserCpp *) 0 ;
   int val1 ;
   int ecode1 = 0 ;
   PyArrayObject *array2 = NULL ;
@@ -5255,14 +5418,17 @@ SWIGINTERN PyObject *_wrap_new_RBFMahaFeatExtSparseCpp(PyObject *SWIGUNUSEDPARM(
   int is_new_object6 ;
   int val8 ;
   int ecode8 = 0 ;
+  void *argp9 = 0 ;
+  int res9 = 0 ;
   PyObject * obj0 = 0 ;
   PyObject * obj1 = 0 ;
   PyObject * obj2 = 0 ;
   PyObject * obj3 = 0 ;
   PyObject * obj4 = 0 ;
+  PyObject * obj5 = 0 ;
   RBFMahaFeatExtSparseCpp *result = 0 ;
   
-  if (!PyArg_ParseTuple(args,(char *)"OOOOO:new_RBFMahaFeatExtSparseCpp",&obj0,&obj1,&obj2,&obj3,&obj4)) SWIG_fail;
+  if (!PyArg_ParseTuple(args,(char *)"OOOOOO:new_RBFMahaFeatExtSparseCpp",&obj0,&obj1,&obj2,&obj3,&obj4,&obj5)) SWIG_fail;
   ecode1 = SWIG_AsVal_int(obj0, &val1);
   if (!SWIG_IsOK(ecode1)) {
     SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "new_RBFMahaFeatExtSparseCpp" "', argument " "1"" of type '" "int""'");
@@ -5300,7 +5466,12 @@ SWIGINTERN PyObject *_wrap_new_RBFMahaFeatExtSparseCpp(PyObject *SWIGUNUSEDPARM(
     SWIG_exception_fail(SWIG_ArgError(ecode8), "in method '" "new_RBFMahaFeatExtSparseCpp" "', argument " "8"" of type '" "int""'");
   } 
   arg8 = static_cast< int >(val8);
-  result = (RBFMahaFeatExtSparseCpp *)new RBFMahaFeatExtSparseCpp(arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8);
+  res9 = SWIG_ConvertPtr(obj5, &argp9,SWIGTYPE_p_RegulariserCpp, 0 |  0 );
+  if (!SWIG_IsOK(res9)) {
+    SWIG_exception_fail(SWIG_ArgError(res9), "in method '" "new_RBFMahaFeatExtSparseCpp" "', argument " "9"" of type '" "RegulariserCpp *""'"); 
+  }
+  arg9 = reinterpret_cast< RegulariserCpp * >(argp9);
+  result = (RBFMahaFeatExtSparseCpp *)new RBFMahaFeatExtSparseCpp(arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9);
   resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_RBFMahaFeatExtSparseCpp, SWIG_POINTER_NEW |  0 );
   {
     if (is_new_object2 && array2) Py_DECREF(array2);
@@ -5675,6 +5846,15 @@ static PyMethodDef SwigMethods[] = {
 	 { (char *)"new_GradientDescentWithMomentumCpp", _wrap_new_GradientDescentWithMomentumCpp, METH_VARARGS, NULL},
 	 { (char *)"delete_GradientDescentWithMomentumCpp", _wrap_delete_GradientDescentWithMomentumCpp, METH_VARARGS, NULL},
 	 { (char *)"GradientDescentWithMomentumCpp_swigregister", GradientDescentWithMomentumCpp_swigregister, METH_VARARGS, NULL},
+	 { (char *)"new_RegulariserCpp", _wrap_new_RegulariserCpp, METH_VARARGS, NULL},
+	 { (char *)"delete_RegulariserCpp", _wrap_delete_RegulariserCpp, METH_VARARGS, NULL},
+	 { (char *)"RegulariserCpp_swigregister", RegulariserCpp_swigregister, METH_VARARGS, NULL},
+	 { (char *)"new_L1RegulariserCpp", _wrap_new_L1RegulariserCpp, METH_VARARGS, NULL},
+	 { (char *)"delete_L1RegulariserCpp", _wrap_delete_L1RegulariserCpp, METH_VARARGS, NULL},
+	 { (char *)"L1RegulariserCpp_swigregister", L1RegulariserCpp_swigregister, METH_VARARGS, NULL},
+	 { (char *)"new_L2RegulariserCpp", _wrap_new_L2RegulariserCpp, METH_VARARGS, NULL},
+	 { (char *)"delete_L2RegulariserCpp", _wrap_delete_L2RegulariserCpp, METH_VARARGS, NULL},
+	 { (char *)"L2RegulariserCpp_swigregister", L2RegulariserCpp_swigregister, METH_VARARGS, NULL},
 	 { (char *)"new_LinearRegressionCpp", _wrap_new_LinearRegressionCpp, METH_VARARGS, NULL},
 	 { (char *)"delete_LinearRegressionCpp", _wrap_delete_LinearRegressionCpp, METH_VARARGS, NULL},
 	 { (char *)"LinearRegressionCpp_fit", _wrap_LinearRegressionCpp_fit, METH_VARARGS, NULL},
@@ -5696,15 +5876,6 @@ static PyMethodDef SwigMethods[] = {
 
 /* -------- TYPE CONVERSION AND EQUIVALENCE RULES (BEGIN) -------- */
 
-static void *_p_GradientDescentCppTo_p_OptimiserCpp(void *x, int *SWIGUNUSEDPARM(newmemory)) {
-    return (void *)((OptimiserCpp *)  ((GradientDescentCpp *) x));
-}
-static void *_p_GradientDescentWithMomentumCppTo_p_OptimiserCpp(void *x, int *SWIGUNUSEDPARM(newmemory)) {
-    return (void *)((OptimiserCpp *)  ((GradientDescentWithMomentumCpp *) x));
-}
-static void *_p_BacktrackingLineSearchCppTo_p_OptimiserCpp(void *x, int *SWIGUNUSEDPARM(newmemory)) {
-    return (void *)((OptimiserCpp *)  ((BacktrackingLineSearchCpp *) x));
-}
 static void *_p_LinearMahaFeatExtSparseCppTo_p_NumericallyOptimisedMLAlgorithmCpp(void *x, int *SWIGUNUSEDPARM(newmemory)) {
     return (void *)((NumericallyOptimisedMLAlgorithmCpp *)  ((LinearMahaFeatExtSparseCpp *) x));
 }
@@ -5714,15 +5885,33 @@ static void *_p_RBFMahaFeatExtSparseCppTo_p_NumericallyOptimisedMLAlgorithmCpp(v
 static void *_p_LinearRegressionCppTo_p_NumericallyOptimisedMLAlgorithmCpp(void *x, int *SWIGUNUSEDPARM(newmemory)) {
     return (void *)((NumericallyOptimisedMLAlgorithmCpp *)  ((LinearRegressionCpp *) x));
 }
+static void *_p_L1RegulariserCppTo_p_RegulariserCpp(void *x, int *SWIGUNUSEDPARM(newmemory)) {
+    return (void *)((RegulariserCpp *)  ((L1RegulariserCpp *) x));
+}
+static void *_p_L2RegulariserCppTo_p_RegulariserCpp(void *x, int *SWIGUNUSEDPARM(newmemory)) {
+    return (void *)((RegulariserCpp *)  ((L2RegulariserCpp *) x));
+}
+static void *_p_GradientDescentCppTo_p_OptimiserCpp(void *x, int *SWIGUNUSEDPARM(newmemory)) {
+    return (void *)((OptimiserCpp *)  ((GradientDescentCpp *) x));
+}
+static void *_p_GradientDescentWithMomentumCppTo_p_OptimiserCpp(void *x, int *SWIGUNUSEDPARM(newmemory)) {
+    return (void *)((OptimiserCpp *)  ((GradientDescentWithMomentumCpp *) x));
+}
+static void *_p_BacktrackingLineSearchCppTo_p_OptimiserCpp(void *x, int *SWIGUNUSEDPARM(newmemory)) {
+    return (void *)((OptimiserCpp *)  ((BacktrackingLineSearchCpp *) x));
+}
 static swig_type_info _swigt__p_BacktrackingLineSearchCpp = {"_p_BacktrackingLineSearchCpp", "BacktrackingLineSearchCpp *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_GradientDescentCpp = {"_p_GradientDescentCpp", "GradientDescentCpp *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_GradientDescentWithMomentumCpp = {"_p_GradientDescentWithMomentumCpp", "GradientDescentWithMomentumCpp *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_L1RegulariserCpp = {"_p_L1RegulariserCpp", "L1RegulariserCpp *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_L2RegulariserCpp = {"_p_L2RegulariserCpp", "L2RegulariserCpp *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_LinearMahaFeatExtSparseCpp = {"_p_LinearMahaFeatExtSparseCpp", "LinearMahaFeatExtSparseCpp *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_LinearRegressionCpp = {"_p_LinearRegressionCpp", "LinearRegressionCpp *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_MPI_Comm = {"_p_MPI_Comm", "MPI_Comm *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_NumericallyOptimisedMLAlgorithmCpp = {"_p_NumericallyOptimisedMLAlgorithmCpp", "NumericallyOptimisedMLAlgorithmCpp *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_OptimiserCpp = {"_p_OptimiserCpp", "OptimiserCpp *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_RBFMahaFeatExtSparseCpp = {"_p_RBFMahaFeatExtSparseCpp", "RBFMahaFeatExtSparseCpp *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_RegulariserCpp = {"_p_RegulariserCpp", "RegulariserCpp *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_SayHelloCpp = {"_p_SayHelloCpp", "SayHelloCpp *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_char = {"_p_char", "char *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_double = {"_p_double", "double *", 0, 0, (void*)0, 0};
@@ -5732,12 +5921,15 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_BacktrackingLineSearchCpp,
   &_swigt__p_GradientDescentCpp,
   &_swigt__p_GradientDescentWithMomentumCpp,
+  &_swigt__p_L1RegulariserCpp,
+  &_swigt__p_L2RegulariserCpp,
   &_swigt__p_LinearMahaFeatExtSparseCpp,
   &_swigt__p_LinearRegressionCpp,
   &_swigt__p_MPI_Comm,
   &_swigt__p_NumericallyOptimisedMLAlgorithmCpp,
   &_swigt__p_OptimiserCpp,
   &_swigt__p_RBFMahaFeatExtSparseCpp,
+  &_swigt__p_RegulariserCpp,
   &_swigt__p_SayHelloCpp,
   &_swigt__p_char,
   &_swigt__p_double,
@@ -5747,12 +5939,15 @@ static swig_type_info *swig_type_initial[] = {
 static swig_cast_info _swigc__p_BacktrackingLineSearchCpp[] = {  {&_swigt__p_BacktrackingLineSearchCpp, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_GradientDescentCpp[] = {  {&_swigt__p_GradientDescentCpp, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_GradientDescentWithMomentumCpp[] = {  {&_swigt__p_GradientDescentWithMomentumCpp, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_L1RegulariserCpp[] = {  {&_swigt__p_L1RegulariserCpp, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_L2RegulariserCpp[] = {  {&_swigt__p_L2RegulariserCpp, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_LinearMahaFeatExtSparseCpp[] = {  {&_swigt__p_LinearMahaFeatExtSparseCpp, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_LinearRegressionCpp[] = {  {&_swigt__p_LinearRegressionCpp, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_MPI_Comm[] = {  {&_swigt__p_MPI_Comm, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_NumericallyOptimisedMLAlgorithmCpp[] = {  {&_swigt__p_LinearMahaFeatExtSparseCpp, _p_LinearMahaFeatExtSparseCppTo_p_NumericallyOptimisedMLAlgorithmCpp, 0, 0},  {&_swigt__p_RBFMahaFeatExtSparseCpp, _p_RBFMahaFeatExtSparseCppTo_p_NumericallyOptimisedMLAlgorithmCpp, 0, 0},  {&_swigt__p_NumericallyOptimisedMLAlgorithmCpp, 0, 0, 0},  {&_swigt__p_LinearRegressionCpp, _p_LinearRegressionCppTo_p_NumericallyOptimisedMLAlgorithmCpp, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_OptimiserCpp[] = {  {&_swigt__p_GradientDescentCpp, _p_GradientDescentCppTo_p_OptimiserCpp, 0, 0},  {&_swigt__p_GradientDescentWithMomentumCpp, _p_GradientDescentWithMomentumCppTo_p_OptimiserCpp, 0, 0},  {&_swigt__p_OptimiserCpp, 0, 0, 0},  {&_swigt__p_BacktrackingLineSearchCpp, _p_BacktrackingLineSearchCppTo_p_OptimiserCpp, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_RBFMahaFeatExtSparseCpp[] = {  {&_swigt__p_RBFMahaFeatExtSparseCpp, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_RegulariserCpp[] = {  {&_swigt__p_RegulariserCpp, 0, 0, 0},  {&_swigt__p_L1RegulariserCpp, _p_L1RegulariserCppTo_p_RegulariserCpp, 0, 0},  {&_swigt__p_L2RegulariserCpp, _p_L2RegulariserCppTo_p_RegulariserCpp, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_SayHelloCpp[] = {  {&_swigt__p_SayHelloCpp, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_char[] = {  {&_swigt__p_char, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_double[] = {  {&_swigt__p_double, 0, 0, 0},{0, 0, 0, 0}};
@@ -5762,12 +5957,15 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_BacktrackingLineSearchCpp,
   _swigc__p_GradientDescentCpp,
   _swigc__p_GradientDescentWithMomentumCpp,
+  _swigc__p_L1RegulariserCpp,
+  _swigc__p_L2RegulariserCpp,
   _swigc__p_LinearMahaFeatExtSparseCpp,
   _swigc__p_LinearRegressionCpp,
   _swigc__p_MPI_Comm,
   _swigc__p_NumericallyOptimisedMLAlgorithmCpp,
   _swigc__p_OptimiserCpp,
   _swigc__p_RBFMahaFeatExtSparseCpp,
+  _swigc__p_RegulariserCpp,
   _swigc__p_SayHelloCpp,
   _swigc__p_char,
   _swigc__p_double,

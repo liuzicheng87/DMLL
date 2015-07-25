@@ -34,8 +34,10 @@ class RBFMahaFeatExtSparseCpp: public NumericallyOptimisedMLAlgorithmCpp {
 	int *cIndices;
 	int *cIndptr;		
 	
+	RegulariserCpp *regulariser;
+		
 	//We keep the parameter Jext in case we want to extend the algorithm to include a small number of different centres and RBFs
-	RBFMahaFeatExtSparseCpp (const int J, double *cData, int cDataLength, int *cIndices, int cIndicesLength,  int *cIndptr, int cIndptrLength, const int Jext): NumericallyOptimisedMLAlgorithmCpp()  {
+	RBFMahaFeatExtSparseCpp (const int J, double *cData, int cDataLength, int *cIndices, int cIndicesLength,  int *cIndptr, int cIndptrLength, const int Jext, RegulariserCpp *regulariser): NumericallyOptimisedMLAlgorithmCpp()  {
 		
 		int i;
 		
@@ -52,6 +54,7 @@ class RBFMahaFeatExtSparseCpp: public NumericallyOptimisedMLAlgorithmCpp {
 		for (i=0; i<cIndptr[Jext]; ++i) this->cIndices[i] = cIndices[i];
 		this->cData = (double*)malloc((cIndptr[Jext])*sizeof(double));
 		for (i=0; i<cIndptr[Jext]; ++i) this->cData[i] = cData[i];		
+		this->regulariser = regulariser;
 		
 		//IMPORTANT: this->lengthW needs to be defined when initialising an algorithm!
 		this->lengthW = J*Jext; 		
@@ -73,10 +76,6 @@ class RBFMahaFeatExtSparseCpp: public NumericallyOptimisedMLAlgorithmCpp {
 		free(cData);
 		free(cIndices);
 		free(cIndptr);
-		
-		//IMPORTANT: These three free's should appear in all classes that inherit from NumericallyOptimisedMLAlgorithmCpp!
-		if (this->W != NULL) free(this->W);		
-		if (this->SumGradients != NULL) free(this->SumGradients);
 		};
 						
 	//Z: the value to be optimised	
@@ -130,11 +129,15 @@ class RBFMahaFeatExtSparseCpp: public NumericallyOptimisedMLAlgorithmCpp {
 																																																			
 				//Calculate V_inv			
 			this->VInv = this->V.inverse(); 
-			
+						
 			//Calculate Z
 			chi = this->ZEZ.transpose()*this->VInv*this->ZEZ;
 			Z = chi(0,0);
-									
+			
+			//Apply regulariser
+			this->regulariser->f(Z, W, 0, this->lengthW, this->lengthW, GlobalBatchSizeDouble); 			
+			
+												
 			//Barrier: Wait until all threads have reached this point
 			//It the the responsibility of every ML algorithm to pass the complete dZdW to the optimiser
 			MPI_Barrier(comm);			
@@ -231,6 +234,9 @@ class RBFMahaFeatExtSparseCpp: public NumericallyOptimisedMLAlgorithmCpp {
 				this->optimiser->localdZdW[i] = gradient(0,0);
 																			
 			}			
+			
+			//Apply regulariser
+			this->regulariser->g(this->optimiser->localdZdW, W, this->WBatchBegin, this->WBatchEnd, this->WBatchSize[this->optimiser->rank], GlobalBatchSizeDouble);
 						
 			//Gather all localdZdW and store the result in dZdW
 			MPI_Allgatherv(this->optimiser->localdZdW + this->WBatchBegin, this->WBatchSize[this->optimiser->rank], MPI_DOUBLE, this->optimiser->dZdW, this->WBatchSize, this->CumulativeWBatchSize, MPI_DOUBLE, comm);				

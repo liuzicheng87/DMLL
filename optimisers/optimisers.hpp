@@ -142,10 +142,12 @@ void OptimiserCpp::maximise (MPI_Comm comm, NumericallyOptimisedMLAlgorithmCpp *
 	//SumdZdW: the sum over all batches in one iteration
 	//dZdW is always set to 0 before passing in to g
 	//SumGradients is used to document the gradients after every iteration
-	this->W = this->MLalgorithm->W;
 	this->dZdW = (double*)calloc(lengthW, sizeof(double));
 	this->localdZdW = (double*)calloc(lengthW, sizeof(double));	
 	this->SumdZdW = (double*)calloc(lengthW, sizeof(double));	
+	
+	//W and SumGradients are free'd when the MLalgorithm is destroyed
+	this->W = this->MLalgorithm->W;	//Note that we are simply pointing to the W's in MLalgorithm
 	if (this->MLalgorithm->SumGradients != NULL) free(this->MLalgorithm->SumGradients);
 	this->MLalgorithm->SumGradients = (double*)calloc(MaxNumIterations, sizeof(double));
 	
@@ -175,10 +177,12 @@ void OptimiserCpp::minimise (MPI_Comm comm, NumericallyOptimisedMLAlgorithmCpp *
 	//SumdZdW: the sum over all batches in one iteration
 	//dZdW is always set to 0 before passing in to g
 	//SumGradients is used to document the gradients after every iteration
-	this->W = this->MLalgorithm->W;
 	this->dZdW = (double*)calloc(lengthW, sizeof(double));
 	this->localdZdW = (double*)calloc(lengthW, sizeof(double));		
 	this->SumdZdW = (double*)calloc(lengthW, sizeof(double));	
+	
+	//W and SumGradients are free'd when the MLalgorithm is destroyed
+	this->W = this->MLalgorithm->W;	//Note that we are simply pointing to the W's in MLalgorithm
 	if (this->MLalgorithm->SumGradients != NULL) free(this->MLalgorithm->SumGradients);
 	this->MLalgorithm->SumGradients = (double*)calloc(MaxNumIterations, sizeof(double));
 	

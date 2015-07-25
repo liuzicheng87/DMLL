@@ -57,11 +57,7 @@ class LinearMahaFeatExtSparseCpp: public NumericallyOptimisedMLAlgorithmCpp {
 
 	};
 	
-	~LinearMahaFeatExtSparseCpp() {
-		//IMPORTANT: These three free's should appear in all classes that inherit from NumericallyOptimisedMLAlgorithmCpp!
-		if (this->W != NULL) free(this->W);		
-		if (this->SumGradients != NULL) free(this->SumGradients);
-		};
+	~LinearMahaFeatExtSparseCpp() {};
 						
 	//Z: the value to be optimised	
 	//W: weights to be used for this iteration			

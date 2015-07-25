@@ -16,7 +16,7 @@ class RBFMahaFeatExtSparseCpp: public NumericallyOptimisedMLAlgorithmCpp {
 
 	public:
 
-	RBFMahaFeatExtSparseCpp (const int J, double *cData, int cDataLength, int *cIndices, int cIndicesLength,  int *cIndptr, int cIndptrLength, const int Jext): NumericallyOptimisedMLAlgorithmCpp();
+	RBFMahaFeatExtSparseCpp (const int J, double *cData, int cDataLength, int *cIndices, int cIndicesLength,  int *cIndptr, int cIndptrLength, const int Jext, RegulariserCpp *regulariser): NumericallyOptimisedMLAlgorithmCpp();
 	
 	~RBFMahaFeatExtSparseCpp();
 
