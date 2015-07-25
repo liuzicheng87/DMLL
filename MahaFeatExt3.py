@@ -38,8 +38,8 @@ else:
 Xtrain = scipy.sparse.csr_matrix(Xtrain)
 
 Jext = 20
-MahaFeatExt = DMLL.RBFMahaFeatExtSparse(Xtrain, Jext, DMLL.L1Regulariser(-2.0))
-MahaFeatExt.fit(Xtrain, ytrain, optimiser=DMLL.GradientDescentWithMomentum(0.01, 0.5, 0.5), GlobalBatchSize=0, MaxNumIterations=1200)
+MahaFeatExt = DMLL.RBFMahaFeatExtSparse(Xtrain, Jext, DMLL.L2Regulariser(-1.0))
+MahaFeatExt.fit(Xtrain, ytrain, optimiser=DMLL.GradientDescentWithMomentum(0.025, 0.5, 0.5), GlobalBatchSize=0, MaxNumIterations=1200)
 
 Xext = MahaFeatExt.transform(Xtrain)
 Xtransform = scipy.sparse.csr_matrix(Xext)

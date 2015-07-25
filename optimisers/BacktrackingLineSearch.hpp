@@ -51,7 +51,7 @@ void BacktrackingLineSearchCpp::max(MPI_Comm comm, const double tol, const int M
 				//Call g()
 				//Note that it is the responsibility of whoever writes the MLalgorithm to make sure that this->dZdW and this->SumdZdW are passed to ALL processes
 				//It is, however, your responsibility to place a barrier after that, if required
-				this->MLalgorithm->g(comm, this->W, BatchBegin, BatchEnd, BatchSize, BatchNum, IterationNum);
+				this->MLalgorithm->g(comm, this->dZdW, this->localdZdW, this->W, BatchBegin, BatchEnd, BatchSize, BatchNum, IterationNum);
 				
 				//Add all BatchSize and store the result in GlobalBatchSize
 				MPI_Allreduce(&BatchSize, &GlobalBatchSize, 1, MPI_INT, MPI_SUM, comm);		
@@ -143,7 +143,7 @@ void BacktrackingLineSearchCpp::min(MPI_Comm comm, const double tol, const int M
 				//Call g()
 				//Note that it is the responsibility of whoever writes the MLalgorithm to make sure that this->dZdW and this->SumdZdW are passed to ALL processes
 				//It is, however, your responsibility to place a barrier after that, if required
-				this->MLalgorithm->g(comm, this->W, BatchBegin, BatchEnd, BatchSize, BatchNum, IterationNum);
+				this->MLalgorithm->g(comm, this->dZdW, this->localdZdW, this->W, BatchBegin, BatchEnd, BatchSize, BatchNum, IterationNum);
 				
 				//Add all BatchSize and store the result in GlobalBatchSize
 				MPI_Allreduce(&BatchSize, &GlobalBatchSize, 1, MPI_INT, MPI_SUM, comm);		

@@ -61,7 +61,8 @@ class LinearMahaFeatExtSparseCpp: public NumericallyOptimisedMLAlgorithmCpp {
 						
 	//Z: the value to be optimised	
 	//W: weights to be used for this iteration			
-	//dZdW: the number attributes or features		
+	//dZdW: derivative of the value to be optimised (contained in optimiser class)
+	//localdZdW: local version of the derivative of the value to be optimised (contained in optimiser class)	
 	//SumdZdW: sum over all batches in one iteration (needed for the stopping criterion)	
 	//BatchBegin: the number of the instance or sample at which this process is supposed to begin iterating
 	//BatchEnd: the end of the batch assigned to this process. The process will iterate from sample number BatchBegin to sample number BatchEnd.
@@ -131,7 +132,7 @@ class LinearMahaFeatExtSparseCpp: public NumericallyOptimisedMLAlgorithmCpp {
 	//size: number of processes
 	//BatchNum: batch number
 	//IterationNum: iteration number
-	void g(MPI_Comm comm, const double *W, const int BatchBegin, const int BatchEnd, const int BatchSize, const int BatchNum, const int IterationNum) {	
+	void g(MPI_Comm comm, double *dZdW, double *localdZdW, const double *W, const int BatchBegin, const int BatchEnd, const int BatchSize, const int BatchNum, const int IterationNum) {	
 								
 			const double *y;
 			int i,j,k,a,c,d;
@@ -204,12 +205,12 @@ class LinearMahaFeatExtSparseCpp: public NumericallyOptimisedMLAlgorithmCpp {
 				//Calculate the gradient
 				gradient = 2.0*dZEZdW*VInv*ZEZ - ZEZ.transpose()*VInv*dVdW*VInv*ZEZ;
 													
-				this->optimiser->localdZdW[i] = gradient(0,0);
+				localdZdW[i] = gradient(0,0);
 																			
 			}			
 						
 			//Gather all localdZdW and store the result in dZdW
-			MPI_Allgatherv(this->optimiser->localdZdW + this->WBatchBegin, this->WBatchSize[this->optimiser->rank], MPI_DOUBLE, this->optimiser->dZdW, this->WBatchSize, this->CumulativeWBatchSize, MPI_DOUBLE, comm);				
+			MPI_Allgatherv(localdZdW + this->WBatchBegin, this->WBatchSize[this->optimiser->rank], MPI_DOUBLE, dZdW, this->WBatchSize, this->CumulativeWBatchSize, MPI_DOUBLE, comm);				
 			
 			//Barrier: Wait until all threads have reached this point
 			//It the the responsibility of every ML algorithm to pass the complete dZdW to the optimiser

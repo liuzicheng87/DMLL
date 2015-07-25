@@ -63,7 +63,8 @@ class LinearRegressionCpp: public NumericallyOptimisedMLAlgorithmCpp {
 						
 	}
 	
-	//dZdW: the number attributes or features		
+	//dZdW: derivative of the value to be optimised (contained in optimiser class)
+	//localdZdW: local version of the derivative of the value to be optimised (contained in optimiser class)	
 	//SumdZdW: sum over all batches in one iteration (needed for the stopping criterion)	
 	//W: weights to be used for this iteration				
 	//BatchBegin: the number of the instance or sample at which this process is supposed to begin iterating
@@ -71,7 +72,7 @@ class LinearRegressionCpp: public NumericallyOptimisedMLAlgorithmCpp {
 	//BatchSize: the end of the batch assigned to this process. The process will iterate from sample number BatchBegin to sample number BatchEnd.	
 	//BatchNum: batch number
 	//IterationNum: iteration number
-	void g(MPI_Comm comm, const double *W, const int BatchBegin, const int BatchEnd, const int BatchSize, const int BatchNum, const int IterationNum) {
+	void g(MPI_Comm comm, double *dZdW, double *localdZdW, const double *W, const int BatchBegin, const int BatchEnd, const int BatchSize, const int BatchNum, const int IterationNum) {
 		
 		int i,j;
 		double Yhat, TwoYhatMinusY;
@@ -88,16 +89,16 @@ class LinearRegressionCpp: public NumericallyOptimisedMLAlgorithmCpp {
 			//dZdW = sum 2*(Yhat - Y[i])*X[j]
 			TwoYhatMinusY = 2.0*(Yhat - Y[i]);
 			
-			for (j=0; j<this->J; ++j) this->optimiser->localdZdW[j] += this->X[this->J*i + j]*TwoYhatMinusY;
-			this->optimiser->localdZdW[this->J] += TwoYhatMinusY;
+			for (j=0; j<this->J; ++j) localdZdW[j] += this->X[this->J*i + j]*TwoYhatMinusY;
+			localdZdW[this->J] += TwoYhatMinusY;
 			
 		}
 		
 		//Apply regulariser
-		this->regulariser->g(this->optimiser->localdZdW, W, 0, this->J, this->J, (double)BatchSize); 		
+		this->regulariser->g(localdZdW, W, 0, this->J, this->J, (double)BatchSize); 		
 							
 		//Add all localdZdW and store the result in dZdW
-		MPI_Allreduce(this->optimiser->localdZdW, this->optimiser->dZdW, this->lengthW, MPI_DOUBLE, MPI_SUM, comm);			
+		MPI_Allreduce(localdZdW, this->optimiser->dZdW, this->lengthW, MPI_DOUBLE, MPI_SUM, comm);			
 						
 	}
 	

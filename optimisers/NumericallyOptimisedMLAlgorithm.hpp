@@ -20,7 +20,8 @@ class NumericallyOptimisedMLAlgorithmCpp {
 
 	//Z: the value to be optimised	
 	//W: weights to be used for this iteration			
-	//dZdW: the number attributes or features		
+	//dZdW: derivative of the value to be optimised (contained in optimiser class)
+	//localdZdW: local version of the derivative of the value to be optimised (contained in optimiser class)	
 	//SumdZdW: sum over all batches in one iteration (needed for the stopping criterion)	
 	//BatchBegin: the number of the instance or sample at which this process is supposed to begin iterating
 	//BatchEnd: the end of the batch assigned to this process. The process will iterate from sample number BatchBegin to sample number BatchEnd.
@@ -30,7 +31,7 @@ class NumericallyOptimisedMLAlgorithmCpp {
 	//BatchNum: batch number
 	//IterationNum: iteration number
 	virtual void f(MPI_Comm comm, double &Z, const double *W, const int BatchBegin, const int BatchEnd, const int BatchSize, const int BatchNum, const int IterationNum) {}
-	virtual void g(MPI_Comm comm, const double *W, const int BatchBegin, const int BatchEnd, const int BatchSize, const int BatchNum, const int IterationNum) {}
+	virtual void g(MPI_Comm comm, double *dZdW, double *localdZdW, const double *W, const int BatchBegin, const int BatchEnd, const int BatchSize, const int BatchNum, const int IterationNum) {}
 			
 	//This is used to determine the size of the array needed
 	int GetIterationsNeeded() {return this->IterationsNeeded;}
