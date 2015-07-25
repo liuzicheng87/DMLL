@@ -252,12 +252,34 @@ class RBFMahaFeatExtSparse:
 			self.thisptr[i].transform(XextCol, X.data, X.indices, X.indptr, self.J)
 			Xext = np.hstack((Xext, XextCol.transpose()))
 		return Xext
+	def GetParams(self):
+		#This object contains a list of RBF. We need to get the parameters for each RBF.
+		Params = list()
+		for i in range(self.Jext):
+			#Initialise row
+			ParamsRow = np.zeros(self.J)
+			#Get W
+			self.thisptr[i].GetParams(ParamsRow)
+			#Append
+			Params.append(ParamsRow)
+		return Params		
+	def SetParams(self, params=0, root=0):
+		for i in range(self.Jext):		
+			#Broadcast parameters from root to all other processes
+			ParamsRow = MPI.COMM_WORLD.bcast(params[i], root)
+			#Set W
+			self.thisptr[i].SetParams(Params[i])
 	def GetSumGradients(self):
+		#This object contains a list of RBF. We need to get SumGradients for each RBF.		
 		SumGradients = list()
 		for i in range(self.Jext):
+			#Get number of iterations needed
 			IterationsNeeded = self.thisptr[i].GetIterationsNeeded()
+			#Initalise Row
 			SumGradientsRow = np.zeros(IterationsNeeded)
+			#Fill row
 			self.thisptr[i].GetSumGradients(SumGradientsRow)
+			#Append
 			SumGradients.append(SumGradientsRow)
 		return SumGradients
 		
