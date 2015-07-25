@@ -68,10 +68,12 @@ void AdaGradCpp::max(MPI_Comm comm, const double tol, const int MaxNumIterations
 				//Barrier: Wait until all processes have reached this point
 				MPI_Barrier(comm);							
 				for (i=0; i<this->lengthW; ++i) this->SumdZdW[i] += this->dZdW[i];  		
+
+				//Calculate "dampening parameter"
 				for (i=0; i<this->lengthW; ++i) this->SumdZdWSquared[i] += this->dZdW[i]*this->dZdW[i];  		
 
 				//Update W
-				for (i=0; i<this->lengthW; ++i) this->W[i] += (this->dZdW[i]/sqrt(this->SumdZdWSquared[i]))*CurrentLearningRate;
+				for (i=0; i<this->lengthW; ++i) if (this->SumdZdWSquared[i] > 0.0) this->W[i] += (this->dZdW[i]/sqrt(this->SumdZdWSquared[i]))*CurrentLearningRate;						
 													
 			}//BatchNum layer
 									
@@ -140,11 +142,14 @@ void AdaGradCpp::min(MPI_Comm comm, const double tol, const int MaxNumIterations
 								
 				//Barrier: Wait until all processes have reached this point
 				MPI_Barrier(comm);							
-				for (i=0; i<this->lengthW; ++i) this->SumdZdW[i] += this->dZdW[i];  		
-				for (i=0; i<this->lengthW; ++i) this->SumdZdWSquared[i] += this->dZdW[i]*this->dZdW[i];  		
+				for (i=0; i<this->lengthW; ++i) this->SumdZdW[i] += this->dZdW[i];  	
 				
+				//Calculate "dampening parameter"
+				for (i=0; i<this->lengthW; ++i) this->SumdZdWSquared[i] += this->dZdW[i]*this->dZdW[i];  		
+					
 				//Update W
-				for (i=0; i<this->lengthW; ++i) this->W[i] -= (this->dZdW[i]/sqrt(this->SumdZdWSquared[i]))*CurrentLearningRate;
+				for (i=0; i<this->lengthW; ++i) if (this->SumdZdWSquared[i] > 0.0) this->W[i] -= (this->dZdW[i]/sqrt(this->SumdZdWSquared[i]))*CurrentLearningRate;						
+								
 													
 			}//BatchNum layer
 									

@@ -39,7 +39,7 @@ Xtrain = scipy.sparse.csr_matrix(Xtrain)
 
 Jext = 50
 MahaFeatExt = DMLL.RBFMahaFeatExtSparse(Xtrain, Jext, DMLL.L2Regulariser(-1.0), clipW=True)
-MahaFeatExt.fit(Xtrain, ytrain, optimiser=DMLL.AdaGrad(1.0, 0.0), GlobalBatchSize=0, MaxNumIterations=120)
+MahaFeatExt.fit(Xtrain, ytrain, optimiser=DMLL.AdaGrad(0.08, 0.0), GlobalBatchSize=0, MaxNumIterations=120)
 
 Xext = MahaFeatExt.transform(Xtrain)
 Xtransform = scipy.sparse.csr_matrix(Xext)
@@ -47,7 +47,7 @@ Xtransform = scipy.sparse.csr_matrix(Xext)
 Jext2 = 4
 
 MahaFeatExt2 = DMLL.LinearMahaFeatExtSparse(Jext, Jext2)
-MahaFeatExt2.fit(Xtransform, ytrain, optimiser=DMLL.AdaGrad(1.0, 0.0), GlobalBatchSize=0, tol=1e-08, MaxNumIterations=1200, root=0)
+MahaFeatExt2.fit(Xtransform, ytrain, optimiser=DMLL.AdaGrad(0.5, 0.0), GlobalBatchSize=0, tol=1e-08, MaxNumIterations=1200, root=0)
 Xtransform2 = MahaFeatExt2.transform(Xtransform)
 
 if DMLL.rank == 0:
@@ -74,7 +74,7 @@ if DMLL.rank == root:
 			print scipy.stats.pearsonr(Xtransformtest2[:,i], Xtransformtest2[:,j])
 	print
 	W =  MahaFeatExt.GetParams()
-	for i in range(Jext1):
+	for i in range(Jext):
 		print W[i]
            
 if DMLL.rank == root:
