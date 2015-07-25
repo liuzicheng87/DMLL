@@ -31,6 +31,10 @@ void BacktrackingLineSearchCpp::max(MPI_Comm comm, const double tol, const int M
 		
 	//WNew is used to test the updates using the Armijo condition
 	double *WNew = (double*)calloc(this->lengthW, sizeof(double));
+	
+	//clip W, if necessary
+	// if there is no wMin of wMax, this will have no effect
+	wClip(this->W);	
 		
 	//Calculate Z once, so it can be used in the first iteration
 	this->CalcBatchBeginEnd(BatchBegin, BatchEnd, BatchSize, 0);
@@ -46,7 +50,9 @@ void BacktrackingLineSearchCpp::max(MPI_Comm comm, const double tol, const int M
 	
 				//VERY IMPORTANT CONVENTION: When passing this->localdZdw to g(), always set to zero first.
 				for (i=0; i<this->lengthW; ++i) this->localdZdW[i] = 0.0;
-				MPI_Barrier(comm);							
+				
+				//Barrier: Wait until all processes have reached this point
+				MPI_Barrier(comm);	
 																
 				//Call g()
 				//Note that it is the responsibility of whoever writes the MLalgorithm to make sure that this->dZdW and this->SumdZdW are passed to ALL processes
@@ -56,6 +62,10 @@ void BacktrackingLineSearchCpp::max(MPI_Comm comm, const double tol, const int M
 				//Add all BatchSize and store the result in GlobalBatchSize
 				MPI_Allreduce(&BatchSize, &GlobalBatchSize, 1, MPI_INT, MPI_SUM, comm);		
 				GlobalBatchSizeDouble = (double)GlobalBatchSize;	
+				
+				//If weight equals wMin (wMax) and dZdW is smaller than zero (greater than zero), set dZdW to zero
+				//If there is no wMin or wMax, this will have no effect
+				dZdWClipMax();						
 				
 				//Barrier: Wait until all processes have reached this point
 				MPI_Barrier(comm);	
@@ -70,7 +80,11 @@ void BacktrackingLineSearchCpp::max(MPI_Comm comm, const double tol, const int M
 				while(true) {
 					
 					//Calculate WNew
-					for (i=0; i<this->lengthW; ++i) WNew[i] = this->W[i] + this->dZdW[i]*CurrentLearningRate/GlobalBatchSizeDouble;					
+					for (i=0; i<this->lengthW; ++i) WNew[i] = this->W[i] + this->dZdW[i]*CurrentLearningRate/GlobalBatchSizeDouble;		
+					
+					//clip WNew, if necessary
+					// if there is no wMin of wMax, this will have no effect
+					wClip(WNew);								
 					
 					//Calculate ZNew based on WNew
 					this->MLalgorithm->f(comm, ZNew, WNew, BatchBegin, BatchEnd, BatchSize, BatchNum, IterationNum);
@@ -123,6 +137,10 @@ void BacktrackingLineSearchCpp::min(MPI_Comm comm, const double tol, const int M
 		
 	//WNew is used to test the updates using the Armijo condition
 	double *WNew = (double*)calloc(this->lengthW, sizeof(double));
+	
+	//clip W, if necessary
+	// if there is no wMin of wMax, this will have no effect
+	wClip(this->W);		
 		
 	//Calculate Z once, so it can be used in the first iteration
 	this->CalcBatchBeginEnd(BatchBegin, BatchEnd, BatchSize, 0);
@@ -138,7 +156,9 @@ void BacktrackingLineSearchCpp::min(MPI_Comm comm, const double tol, const int M
 	
 				//VERY IMPORTANT CONVENTION: When passing this->localdZdw to g(), always set to zero first.
 				for (i=0; i<this->lengthW; ++i) this->localdZdW[i] = 0.0;
-				MPI_Barrier(comm);							
+				
+				//Barrier: Wait until all processes have reached this point
+				MPI_Barrier(comm);	
 																
 				//Call g()
 				//Note that it is the responsibility of whoever writes the MLalgorithm to make sure that this->dZdW and this->SumdZdW are passed to ALL processes
@@ -148,6 +168,10 @@ void BacktrackingLineSearchCpp::min(MPI_Comm comm, const double tol, const int M
 				//Add all BatchSize and store the result in GlobalBatchSize
 				MPI_Allreduce(&BatchSize, &GlobalBatchSize, 1, MPI_INT, MPI_SUM, comm);		
 				GlobalBatchSizeDouble = (double)GlobalBatchSize;	
+				
+				//If weight equals wMin (wMax) and dZdW is greater than zero (smaller than zero), set dZdW to zero
+				//If there is no wMin or wMax, this will have no effect
+				dZdWClipMin();						
 				
 				//Barrier: Wait until all processes have reached this point
 				MPI_Barrier(comm);	
@@ -162,8 +186,12 @@ void BacktrackingLineSearchCpp::min(MPI_Comm comm, const double tol, const int M
 				while(true) {
 					
 					//Calculate WNew
-					for (i=0; i<this->lengthW; ++i) WNew[i] = this->W[i] - this->dZdW[i]*CurrentLearningRate/GlobalBatchSizeDouble;					
+					for (i=0; i<this->lengthW; ++i) WNew[i] = this->W[i] - this->dZdW[i]*CurrentLearningRate/GlobalBatchSizeDouble;			
 					
+					//clip WNew, if necessary
+					// if there is no wMin of wMax, this will have no effect
+					wClip(WNew);
+		
 					//Calculate ZNew based on WNew
 					this->MLalgorithm->f(comm, ZNew, WNew, BatchBegin, BatchEnd, BatchSize, BatchNum, IterationNum);
 																	

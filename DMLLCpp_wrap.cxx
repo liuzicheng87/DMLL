@@ -3483,6 +3483,17 @@ SWIGINTERNINLINE PyObject*
   return PyInt_FromLong((long) value);
 }
 
+
+SWIGINTERN int
+SWIG_AsVal_bool (PyObject *obj, bool *val)
+{
+  int r = PyObject_IsTrue(obj);
+  if (r == -1)
+    return SWIG_ERROR;
+  if (val) *val = r ? true : false;
+  return SWIG_OK;
+}
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -5408,6 +5419,7 @@ SWIGINTERN PyObject *_wrap_new_RBFMahaFeatExtSparseCpp(PyObject *SWIGUNUSEDPARM(
   int arg7 ;
   int arg8 ;
   RegulariserCpp *arg9 = (RegulariserCpp *) 0 ;
+  bool arg10 ;
   int val1 ;
   int ecode1 = 0 ;
   PyArrayObject *array2 = NULL ;
@@ -5420,15 +5432,18 @@ SWIGINTERN PyObject *_wrap_new_RBFMahaFeatExtSparseCpp(PyObject *SWIGUNUSEDPARM(
   int ecode8 = 0 ;
   void *argp9 = 0 ;
   int res9 = 0 ;
+  bool val10 ;
+  int ecode10 = 0 ;
   PyObject * obj0 = 0 ;
   PyObject * obj1 = 0 ;
   PyObject * obj2 = 0 ;
   PyObject * obj3 = 0 ;
   PyObject * obj4 = 0 ;
   PyObject * obj5 = 0 ;
+  PyObject * obj6 = 0 ;
   RBFMahaFeatExtSparseCpp *result = 0 ;
   
-  if (!PyArg_ParseTuple(args,(char *)"OOOOOO:new_RBFMahaFeatExtSparseCpp",&obj0,&obj1,&obj2,&obj3,&obj4,&obj5)) SWIG_fail;
+  if (!PyArg_ParseTuple(args,(char *)"OOOOOOO:new_RBFMahaFeatExtSparseCpp",&obj0,&obj1,&obj2,&obj3,&obj4,&obj5,&obj6)) SWIG_fail;
   ecode1 = SWIG_AsVal_int(obj0, &val1);
   if (!SWIG_IsOK(ecode1)) {
     SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "new_RBFMahaFeatExtSparseCpp" "', argument " "1"" of type '" "int""'");
@@ -5471,7 +5486,12 @@ SWIGINTERN PyObject *_wrap_new_RBFMahaFeatExtSparseCpp(PyObject *SWIGUNUSEDPARM(
     SWIG_exception_fail(SWIG_ArgError(res9), "in method '" "new_RBFMahaFeatExtSparseCpp" "', argument " "9"" of type '" "RegulariserCpp *""'"); 
   }
   arg9 = reinterpret_cast< RegulariserCpp * >(argp9);
-  result = (RBFMahaFeatExtSparseCpp *)new RBFMahaFeatExtSparseCpp(arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9);
+  ecode10 = SWIG_AsVal_bool(obj6, &val10);
+  if (!SWIG_IsOK(ecode10)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode10), "in method '" "new_RBFMahaFeatExtSparseCpp" "', argument " "10"" of type '" "bool""'");
+  } 
+  arg10 = static_cast< bool >(val10);
+  result = (RBFMahaFeatExtSparseCpp *)new RBFMahaFeatExtSparseCpp(arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10);
   resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_RBFMahaFeatExtSparseCpp, SWIG_POINTER_NEW |  0 );
   {
     if (is_new_object2 && array2) Py_DECREF(array2);

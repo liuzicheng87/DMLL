@@ -44,6 +44,12 @@ void GradientDescentWithMomentumCpp::max(MPI_Comm comm, const double tol, const 
 	
 				//VERY IMPORTANT CONVENTION: When passing this->localdZdw to g(), always set to zero first.
 				for (i=0; i<this->lengthW; ++i) this->localdZdW[i] = 0.0;
+				
+				//If weight is greater than wMax or smaller than wMin, then clip
+				//If there is no wMin or wMax, this will have no effect				
+				wClip(this->W);
+				
+				//Barrier: Wait until all processes have reached this point
 				MPI_Barrier(comm);				
 																				
 				//Call g()
@@ -54,6 +60,10 @@ void GradientDescentWithMomentumCpp::max(MPI_Comm comm, const double tol, const 
 				//Add all BatchSize and store the result in GlobalBatchSize
 				MPI_Allreduce(&BatchSize, &GlobalBatchSize, 1, MPI_INT, MPI_SUM, comm);		
 				GlobalBatchSizeDouble = (double)GlobalBatchSize;	
+				
+				//If weight equals wMin (wMax) and dZdW is smaller than zero (greater than zero), set dZdW to zero
+				//If there is no wMin or wMax, this will have no effect
+				dZdWClipMax();
 				
 				//Barrier: Wait until all processes have reached this point
 				MPI_Barrier(comm);							
@@ -109,22 +119,32 @@ void GradientDescentWithMomentumCpp::min(MPI_Comm comm, const double tol, const 
 	
 				//VERY IMPORTANT CONVENTION: When passing this->localdZdw to g(), always set to zero first.
 				for (i=0; i<this->lengthW; ++i) this->localdZdW[i] = 0.0;
-				MPI_Barrier(comm);							
+
+				//If weight is greater than wMax or smaller than wMin, then clip
+				//If there is no wMin or wMax, this will have no effect				
+				wClip(this->W);
+				
+				//Barrier: Wait until all processes have reached this point
+				MPI_Barrier(comm);	
 																
 				//Call g()
 				//Note that it is the responsibility of whoever writes the MLalgorithm to make sure that this->dZdW and this->SumdZdW are passed to ALL processes
 				//It is, however, your responsibility to place a barrier after that, if required
 				this->MLalgorithm->g(comm, this->dZdW, this->localdZdW, this->W, BatchBegin, BatchEnd, BatchSize, BatchNum, IterationNum);
-				
+		
 				//Add all BatchSize and store the result in GlobalBatchSize
 				MPI_Allreduce(&BatchSize, &GlobalBatchSize, 1, MPI_INT, MPI_SUM, comm);		
 				GlobalBatchSizeDouble = (double)GlobalBatchSize;	
+				
+				//If weight equals wMin (wMax) and dZdW is greater than zero (smaller than zero), set dZdW to zero
+				//If there is no wMin or wMax, this will have no effect
+				dZdWClipMin();				
 				
 				//Barrier: Wait until all processes have reached this point
 				MPI_Barrier(comm);							
 				for (i=0; i<this->lengthW; ++i) this->SumdZdW[i] += this->dZdW[i];  		
 								
-				//Update W (this is only line where max differs from min)
+				//Update W
 				//Learning rates are always divided by the sample size
 				for (i=0; i<this->lengthW; ++i) this->W[i] += update[i] = this->momentum*update[i] - this->dZdW[i]*CurrentLearningRate/GlobalBatchSizeDouble;			
 													

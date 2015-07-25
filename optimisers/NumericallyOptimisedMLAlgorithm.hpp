@@ -1,13 +1,19 @@
 class NumericallyOptimisedMLAlgorithmCpp {
 
 	public:
-	double *W, *SumGradients;
-	int I, GlobalI, lengthW, IterationsNeeded;
+	double *W, *SumGradients, *wMax, *wMin;
+	int I, GlobalI, lengthW, IterationsNeeded, *wMaxIndices, *wMinIndices, wMaxLength, wMinLength;
 						
 	NumericallyOptimisedMLAlgorithmCpp() {
 		this->W = NULL;
 		this->SumGradients = NULL;
 		this->IterationsNeeded = 0;
+		
+		//These variables are only relevant when we want to impose
+		this->wMax = NULL;
+		this->wMin = NULL;
+		this->wMaxLength = 0; //if there is no maximum imposed on W, we need to know that wMaxLength is zero
+		this->wMinLength = 0;//if there is no minimum imposed on W, we need to know that wMinLength is zero
 		}
 	
 	//Virtual destructor		
@@ -16,6 +22,9 @@ class NumericallyOptimisedMLAlgorithmCpp {
 		//Free W and SumGradients
 		if (this->W != NULL) free(this->W);		
 		if (this->SumGradients != NULL) free(this->SumGradients);		
+		if (this->wMax != NULL) {free(wMax); free(wMaxIndices);}
+		if (this->wMin != NULL) {free(wMin); free(wMinIndices);}
+
 		}
 
 	//Z: the value to be optimised	

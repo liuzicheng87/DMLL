@@ -57,10 +57,18 @@ class OptimiserCpp {
 	//BatchNum: Integer iterating throught the batches
 	void CalcBatchBeginEnd (int &BatchBegin, int &BatchEnd, int &BatchSize, const int BatchNum);
 	void CalcBatchBeginEnd (int &BatchBegin, int &BatchEnd, int &BatchSize, const int BatchNum, const int I, const int NumBatches);
+	
+	//If weight is greater than wMax or smaller than wMin, then clip
+	void wClip(double *W);
+	//If weight equals wMin (wMax) and dZdW is smaller than zero (greater than zero), set dZdW to zero
+	//To be used for maximisation
+	void dZdWClipMax();
+	//If weight equals wMax (wMin) and dZdW is smaller than zero (greater than zero), set dZdW to zero
+	//To be used for minimisation
+	void dZdWClipMin();
+	
 		
 };
-
-//Functions are in alphabetical order
 
 //CalcNumBatches calculates the number of batches needed
 void OptimiserCpp::CalcNumBatches (MPI_Comm comm) {
@@ -198,6 +206,33 @@ void OptimiserCpp::minimise (MPI_Comm comm, NumericallyOptimisedMLAlgorithmCpp *
 	
 }
 
+	//If weight is greater than wMax or smaller than wMin, then clip
+void OptimiserCpp::wClip(double *W) {
+	
+	int i;
+	for (i=0; i<this->MLalgorithm->wMaxLength; ++i) if (W[this->MLalgorithm->wMaxIndices[i]] > this->MLalgorithm->wMax[i]) W[this->MLalgorithm->wMaxIndices[i]] = this->MLalgorithm->wMax[i];
+	for (i=0; i<this->MLalgorithm->wMinLength; ++i) if (W[this->MLalgorithm->wMinIndices[i]] > this->MLalgorithm->wMin[i]) W[this->MLalgorithm->wMinIndices[i]] = this->MLalgorithm->wMin[i];
+	
+}
+	//If weight equals wMin (wMax) and dZdW is smaller than zero (greater than zero), set dZdW to zero
+	//To be used for maximisation
+void OptimiserCpp::dZdWClipMax() {
+	
+	int i;
+	for (i=0; i<this->MLalgorithm->wMaxLength; ++i) if (this->dZdW[this->MLalgorithm->wMaxIndices[i]] > 0.0 && this->W[this->MLalgorithm->wMaxIndices[i]] == this->MLalgorithm->wMax[i]) this->dZdW[this->MLalgorithm->wMaxIndices[i]] = 0.0;
+	for (i=0; i<this->MLalgorithm->wMinLength; ++i) if (this->dZdW[this->MLalgorithm->wMinIndices[i]] < 0.0 && this->W[this->MLalgorithm->wMinIndices[i]] == this->MLalgorithm->wMin[i]) this->dZdW[this->MLalgorithm->wMinIndices[i]] = 0.0;
+	
+	}
+	
+	//If weight equals wMax (wMin) and dZdW is smaller than zero (greater than zero), set dZdW to zero
+	//To be used for minisation
+void OptimiserCpp::dZdWClipMin() {
+	
+	int i;
+	for (i=0; i<this->MLalgorithm->wMaxLength; ++i) if (this->dZdW[this->MLalgorithm->wMaxIndices[i]] < 0.0 && this->W[this->MLalgorithm->wMaxIndices[i]] == this->MLalgorithm->wMax[i]) this->dZdW[this->MLalgorithm->wMaxIndices[i]] = 0.0;
+	for (i=0; i<this->MLalgorithm->wMinLength; ++i) if (this->dZdW[this->MLalgorithm->wMinIndices[i]] > 0.0 && this->W[this->MLalgorithm->wMinIndices[i]] == this->MLalgorithm->wMin[i]) this->dZdW[this->MLalgorithm->wMinIndices[i]] = 0.0;
+	
+	}
 
 #include "GradientDescent.hpp"
 #include "GradientDescentWithMomentum.hpp"

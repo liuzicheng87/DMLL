@@ -35,9 +35,12 @@ class RBFMahaFeatExtSparseCpp: public NumericallyOptimisedMLAlgorithmCpp {
 	int *cIndptr;		
 	
 	RegulariserCpp *regulariser;
+	
+	//Should all W's be smaller than zero?
+	bool clipW;
 		
 	//We keep the parameter Jext in case we want to extend the algorithm to include a small number of different centres and RBFs
-	RBFMahaFeatExtSparseCpp (const int J, double *cData, int cDataLength, int *cIndices, int cIndicesLength,  int *cIndptr, int cIndptrLength, const int Jext, RegulariserCpp *regulariser): NumericallyOptimisedMLAlgorithmCpp()  {
+	RBFMahaFeatExtSparseCpp (const int J, double *cData, int cDataLength, int *cIndices, int cIndicesLength,  int *cIndptr, int cIndptrLength, const int Jext, RegulariserCpp *regulariser, bool clipW): NumericallyOptimisedMLAlgorithmCpp()  {
 		
 		int i;
 		
@@ -55,13 +58,14 @@ class RBFMahaFeatExtSparseCpp: public NumericallyOptimisedMLAlgorithmCpp {
 		this->cData = (double*)malloc((cIndptr[Jext])*sizeof(double));
 		for (i=0; i<cIndptr[Jext]; ++i) this->cData[i] = cData[i];		
 		this->regulariser = regulariser;
+		this->clipW = clipW;
 		
 		//IMPORTANT: this->lengthW needs to be defined when initialising an algorithm!
 		this->lengthW = J*Jext; 		
 				
 		//IMPORTANT: You must malloc W and initialise values randomly. How you randomly initialise them is your decision, but make sure you the the same values every time you call the function.
 		this->W = (double*)malloc(this->lengthW*sizeof(double));
-		for (i=0; i<this->lengthW; ++i) this->W[i] = dist(gen);
+		for (i=0; i<this->lengthW; ++i) this->W[i] = (-1.0)*abs(dist(gen));
 		
 		//Resize matrices		
 		this->V.resize(this->Jext, this->Jext);
@@ -69,6 +73,16 @@ class RBFMahaFeatExtSparseCpp: public NumericallyOptimisedMLAlgorithmCpp {
 		this->ZEZ.resize(this->Jext, 1);
 		this->dVdW.resize(this->Jext, this->Jext);
 		this->dZEZdW.resize(1, this->Jext);
+		
+		//If clipW is True, then initialise maxW
+		if (clipW) {
+					
+			this->wMaxLength = this->lengthW;
+			this->wMaxIndices = (int*)malloc(this->wMaxLength*sizeof(int));
+			for (i=0; i<this->lengthW; ++i) this->wMaxIndices[i] = i;
+			
+			this->wMax = (double*)calloc(this->wMaxLength, sizeof(double));//wMax is set to zero for all W
+		}
 
 	};
 	
@@ -132,11 +146,12 @@ class RBFMahaFeatExtSparseCpp: public NumericallyOptimisedMLAlgorithmCpp {
 						
 			//Calculate Z
 			chi = this->ZEZ.transpose()*this->VInv*this->ZEZ;
-			Z = chi(0,0);
+			
+			//If all W are zero, then chi is undefined														
+			if (chi(0,0) == chi(0,0)) Z = chi(0,0); else Z = 0.0;
 			
 			//Apply regulariser
 			this->regulariser->f(Z, W, 0, this->lengthW, this->lengthW, GlobalBatchSizeDouble); 			
-			
 												
 			//Barrier: Wait until all threads have reached this point
 			//It the the responsibility of every ML algorithm to pass the complete dZdW to the optimiser
@@ -231,8 +246,9 @@ class RBFMahaFeatExtSparseCpp: public NumericallyOptimisedMLAlgorithmCpp {
 																																															
 				//Calculate the gradient
 				gradient = 2.0*dZEZdW*VInv*ZEZ - ZEZ.transpose()*VInv*dVdW*VInv*ZEZ;
-													
-				localdZdW[i] = gradient(0,0);
+				
+				//If all W are zero, then gradient is undefined											
+				if (gradient(0,0) == gradient(0,0)) localdZdW[i] = gradient(0,0); else localdZdW[i] = (-1.0)*GlobalBatchSizeDouble;
 																			
 			}			
 			

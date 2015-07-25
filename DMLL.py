@@ -223,14 +223,14 @@ class LinearMahaFeatExtSparse(NumericallyOptimisedMLAlgorithm):
 
 #DimensionalityReduction
 class RBFMahaFeatExtSparse:
-	def __init__(self, X, Jext, regulariser=Regulariser()):
+	def __init__(self, X, Jext, regulariser=Regulariser(), clipW = False):
 		self.J = X.shape[1]		
 		self.Jext = Jext
 		self.regulariser = regulariser		
 		self.thisptr = list()
 		for i in range(self.Jext):
 			c = X[np.random.randint(X.shape[0])]
-			self.thisptr.append(DMLLCpp.RBFMahaFeatExtSparseCpp(self.J, c.data, c.indices, c.indptr, 1, self.regulariser.thisptr))
+			self.thisptr.append(DMLLCpp.RBFMahaFeatExtSparseCpp(self.J, c.data, c.indices, c.indptr, 1, self.regulariser.thisptr, clipW))
 	def fit(self, X, Y, optimiser=GradientDescent(25.0, 0.1), GlobalBatchSize=0, tol=1e-08, MaxNumIterations=500, root=0):
 		#Place a barrier before getting the time
 		MPI.COMM_WORLD.barrier()

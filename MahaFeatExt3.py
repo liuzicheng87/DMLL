@@ -38,16 +38,17 @@ else:
 Xtrain = scipy.sparse.csr_matrix(Xtrain)
 
 Jext = 20
-MahaFeatExt = DMLL.RBFMahaFeatExtSparse(Xtrain, Jext, DMLL.L2Regulariser(-1.0))
+MahaFeatExt = DMLL.RBFMahaFeatExtSparse(Xtrain, Jext, DMLL.L2Regulariser(-1.0), clipW=True)
 MahaFeatExt.fit(Xtrain, ytrain, optimiser=DMLL.GradientDescentWithMomentum(0.025, 0.5, 0.5), GlobalBatchSize=0, MaxNumIterations=1200)
 
 Xext = MahaFeatExt.transform(Xtrain)
 Xtransform = scipy.sparse.csr_matrix(Xext)
 
-Jext2 = 1
+Jext2 = 4
 
-MahaFeatExt2 = DMLL.LinearMahaFeatExtSparse(Xtrain.shape[1], Jext2)
-MahaFeatExt2.fit(Xtrain, ytrain, optimiser=DMLL.GradientDescentWithMomentum(1.0, 0.5, 0.5), GlobalBatchSize=0, tol=1e-08, MaxNumIterations=1200, root=0)
+MahaFeatExt2 = DMLL.LinearMahaFeatExtSparse(Jext, Jext2)
+MahaFeatExt2.fit(Xtransform, ytrain, optimiser=DMLL.GradientDescent(1.0, 0.5), GlobalBatchSize=0, tol=1e-08, MaxNumIterations=1200, root=0)
+Xtransform2 = MahaFeatExt2.transform(Xtransform)
 
 if DMLL.rank == 0:
    SumGradients = MahaFeatExt2.GetSumGradients()
@@ -60,7 +61,7 @@ if DMLL.rank == 0:
    
 if DMLL.rank == root:
 	Xexttest = MahaFeatExt.transform(Xtest)
-	Xtransformtest = scipy.sparse.csr_matrix(Xtest)
+	Xtransformtest = scipy.sparse.csr_matrix(Xexttest)
 	Xtransformtest2 = MahaFeatExt2.transform(Xtransformtest)
 	for i in range(Jext2):
 		print scipy.stats.pearsonr(Xtransformtest2[:,i], ytest)
@@ -82,9 +83,9 @@ if DMLL.rank == root:
 	
 	#----------------------------------Zeichne Heat Map-----------------------------------------
 	
-	logreg = linear_model.LogisticRegression(C=1.0, penalty='l2', tol=1e-6).fit(Xext, ytrain)
+	logreg = linear_model.LogisticRegression(C=1.0, penalty='l2', tol=1e-6).fit(Xtransform2, ytrain)
 
-	grid_data = MahaFeatExt.transform(scipy.sparse.csr_matrix(np.c_[xx.ravel(), yy.ravel()]))
+	grid_data = MahaFeatExt2.transform(scipy.sparse.csr_matrix(MahaFeatExt.transform(scipy.sparse.csr_matrix(np.c_[xx.ravel(), yy.ravel()]))))
 
 	Z = logreg.predict_proba(grid_data)[:,1]
 	#Z = logreg.predict(grid_data)	
