@@ -181,6 +181,11 @@ class BacktrackingLineSearch:
 	def __init__(self, LearningRateStart, LearningRateReduction, c, tol):
 		self.thisptr = DMLLCpp.BacktrackingLineSearchCpp(LearningRateStart, LearningRateReduction, c, tol, size, rank)
 
+#Wrapper class for AdaGrad optimiser
+class AdaGrad:
+	def __init__(self, LearningRate, LearningRatePower):
+		self.thisptr = DMLLCpp.AdaGradCpp(LearningRate, LearningRatePower, size, rank)
+
 #Wrapper class for the (empty) regulariser
 class Regulariser:
 	def __init__(self, alpha=0.0):

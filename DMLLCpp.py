@@ -203,6 +203,23 @@ class GradientDescentWithMomentumCpp(OptimiserCpp):
 GradientDescentWithMomentumCpp_swigregister = _DMLLCpp.GradientDescentWithMomentumCpp_swigregister
 GradientDescentWithMomentumCpp_swigregister(GradientDescentWithMomentumCpp)
 
+class AdaGradCpp(OptimiserCpp):
+    __swig_setmethods__ = {}
+    for _s in [OptimiserCpp]: __swig_setmethods__.update(getattr(_s,'__swig_setmethods__',{}))
+    __setattr__ = lambda self, name, value: _swig_setattr(self, AdaGradCpp, name, value)
+    __swig_getmethods__ = {}
+    for _s in [OptimiserCpp]: __swig_getmethods__.update(getattr(_s,'__swig_getmethods__',{}))
+    __getattr__ = lambda self, name: _swig_getattr(self, AdaGradCpp, name)
+    __repr__ = _swig_repr
+    def __init__(self, *args): 
+        this = _DMLLCpp.new_AdaGradCpp(*args)
+        try: self.this.append(this)
+        except: self.this = this
+    __swig_destroy__ = _DMLLCpp.delete_AdaGradCpp
+    __del__ = lambda self : None;
+AdaGradCpp_swigregister = _DMLLCpp.AdaGradCpp_swigregister
+AdaGradCpp_swigregister(AdaGradCpp)
+
 class RegulariserCpp(_object):
     __swig_setmethods__ = {}
     __setattr__ = lambda self, name, value: _swig_setattr(self, RegulariserCpp, name, value)

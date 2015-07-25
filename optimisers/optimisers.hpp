@@ -237,4 +237,6 @@ void OptimiserCpp::dZdWClipMin() {
 #include "GradientDescent.hpp"
 #include "GradientDescentWithMomentum.hpp"
 #include "BacktrackingLineSearch.hpp"
+#include "AdaGrad.hpp"
+
 

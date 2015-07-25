@@ -57,4 +57,14 @@ class GradientDescentWithMomentumCpp: public OptimiserCpp {
 				
 };
 
+class AdaGradCpp: public OptimiserCpp {
+	
+	public:
+		
+	AdaGradCpp (double LearningRate, double LearningRatePower, const int size, const int rank):OptimiserCpp(size, rank);
+
+	~AdaGradCpp();
+				
+};
+
 
