@@ -65,8 +65,8 @@ class RBFMahaFeatExtSparseCpp: public NumericallyOptimisedMLAlgorithmCpp {
 				
 		//IMPORTANT: You must malloc W and initialise values randomly. How you randomly initialise them is your decision, but make sure you the the same values every time you call the function.
 		this->W = (double*)malloc(this->lengthW*sizeof(double));
-		for (i=0; i<this->lengthW; ++i) this->W[i] = (-1.0)*abs(dist(gen));
-		
+		for (i=0; i<this->lengthW; ++i) {this->W[i] = dist(gen); this->W[i] *= this->W[i]*(-1.0);} //We want to ensure that W < 0.0
+				
 		//Resize matrices		
 		this->V.resize(this->Jext, this->Jext);
 		this->VInv.resize(this->Jext, this->Jext);		
@@ -198,8 +198,8 @@ class RBFMahaFeatExtSparseCpp: public NumericallyOptimisedMLAlgorithmCpp {
 			MPI_Allreduce(this->LocalsumXext, this->sumXext, this->Jext, MPI_DOUBLE, MPI_SUM, comm); //Add all LocalsumXext and store the result in sumXext	
 			MPI_Allreduce(this->LocalsumXextY, this->sumXextY, this->Jext, MPI_DOUBLE, MPI_SUM, comm); //Add all LocalsumXextY and store the result in sumXextY	
 			MPI_Allreduce(this->LocalsumXextXext, this->sumXextXext, (this->Jext*(this->Jext + 1))/2, MPI_DOUBLE, MPI_SUM, comm); //Add all LocalsumXextXext and store the result in sumXextXext	
-			MPI_Allreduce(this->LocalsumdXextdW, this->sumdXextdW, J, MPI_DOUBLE, MPI_SUM, comm); //Add all LocalsumdXextdW and store the result in sumdXextdW	
-			MPI_Allreduce(this->LocalsumdXextdWY, this->sumdXextdWY, J, MPI_DOUBLE, MPI_SUM, comm); //Add all LocalsumdXextdWY and store the result in sumdXextdWY	
+			MPI_Allreduce(this->LocalsumdXextdW, this->sumdXextdW, this->J, MPI_DOUBLE, MPI_SUM, comm); //Add all LocalsumdXextdW and store the result in sumdXextdW	
+			MPI_Allreduce(this->LocalsumdXextdWY, this->sumdXextdWY, this->J, MPI_DOUBLE, MPI_SUM, comm); //Add all LocalsumdXextdWY and store the result in sumdXextdWY	
 			MPI_Allreduce(this->LocalsumdXextdWXext[0], this->sumdXextdWXext[0], this->J, MPI_DOUBLE, MPI_SUM, comm); //Add all LocalsumdXextdWXext and store the result in sumXextXext		
 
 			//Barrier: Wait until all threads have reached this point
@@ -222,10 +222,10 @@ class RBFMahaFeatExtSparseCpp: public NumericallyOptimisedMLAlgorithmCpp {
 										
 				//Calculate c and d
 				//c=0,1,...,J-1 is the index for the original feature
-				//c=0,1,...,Jext-1 is the index for the extracted feature	
+				//d=0,1,...,Jext-1 is the index for the extracted feature	
 				c = i%(this->J);
 				d = i/(this->J);
-				
+								
 				//If there is no data anyway, continue
 				if (XMinusCSquaredIndptr[BatchNum][c+1] == XMinusCSquaredIndptr[BatchNum][c]) continue;
 								
@@ -246,7 +246,7 @@ class RBFMahaFeatExtSparseCpp: public NumericallyOptimisedMLAlgorithmCpp {
 																																															
 				//Calculate the gradient
 				gradient = 2.0*dZEZdW*VInv*ZEZ - ZEZ.transpose()*VInv*dVdW*VInv*ZEZ;
-				
+
 				//If all W are zero, then gradient is undefined											
 				if (gradient(0,0) == gradient(0,0)) localdZdW[i] = gradient(0,0); else localdZdW[i] = (-1.0)*GlobalBatchSizeDouble;
 																			
@@ -254,13 +254,13 @@ class RBFMahaFeatExtSparseCpp: public NumericallyOptimisedMLAlgorithmCpp {
 			
 			//Apply regulariser
 			this->regulariser->g(localdZdW, W, this->WBatchBegin, this->WBatchEnd, this->WBatchSize[this->optimiser->rank], GlobalBatchSizeDouble);
-						
+									
 			//Gather all localdZdW and store the result in dZdW
 			MPI_Allgatherv(localdZdW + this->WBatchBegin, this->WBatchSize[this->optimiser->rank], MPI_DOUBLE, dZdW, this->WBatchSize, this->CumulativeWBatchSize, MPI_DOUBLE, comm);				
 			
 			//Barrier: Wait until all threads have reached this point
 			//It the the responsibility of every ML algorithm to pass the complete dZdW to the optimiser
-			MPI_Barrier(comm);						
+			MPI_Barrier(comm);								
 					
 	}		
 			
@@ -295,6 +295,7 @@ class RBFMahaFeatExtSparseCpp: public NumericallyOptimisedMLAlgorithmCpp {
 		this->CumulativeWBatchSize = (int*)calloc(size, sizeof(double));
 		
 		CalcLocalICpp (this->WBatchSize, size, this->CumulativeWBatchSize, size, this->lengthW);
+				
 		this->WBatchBegin = this->CumulativeWBatchSize[rank];
 		this->WBatchEnd = this->CumulativeWBatchSize[rank] + this->WBatchSize[rank];
 		

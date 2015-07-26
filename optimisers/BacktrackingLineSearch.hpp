@@ -119,6 +119,10 @@ void BacktrackingLineSearchCpp::max(MPI_Comm comm, const double tol, const int M
 			
 	}//IterationNum layer
 		
+		//If weight is greater than wMax or smaller than wMin, then clip
+		//If there is no wMin or wMax, this will have no effect				
+		wClip(this->W);			
+		
 		//Store number of IterationNums needed
 		this->MLalgorithm->IterationsNeeded = IterationNum;
 		
@@ -224,6 +228,10 @@ void BacktrackingLineSearchCpp::min(MPI_Comm comm, const double tol, const int M
 			if (this->MLalgorithm->SumGradients[IterationNum]/((double)(this->lengthW)) < tol) break;
 			
 	}//IterationNum layer
+		
+		//If weight is greater than wMax or smaller than wMin, then clip
+		//If there is no wMin or wMax, this will have no effect				
+		wClip(this->W);			
 		
 		//Store number of IterationNums needed
 		this->MLalgorithm->IterationsNeeded = IterationNum;

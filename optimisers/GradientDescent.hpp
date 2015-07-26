@@ -84,6 +84,10 @@ void GradientDescentCpp::max(MPI_Comm comm, const double tol, const int MaxNumIt
 			
 	}//IterationNum layer
 		
+		//If weight is greater than wMax or smaller than wMin, then clip
+		//If there is no wMin or wMax, this will have no effect				
+		wClip(this->W);			
+		
 		//Store number of IterationNums needed
 		this->MLalgorithm->IterationsNeeded = IterationNum;
 		
@@ -152,6 +156,10 @@ void GradientDescentCpp::min(MPI_Comm comm, const double tol, const int MaxNumIt
 			if (this->MLalgorithm->SumGradients[IterationNum]/((double)(this->lengthW)) < tol) break;
 			
 	}//IterationNum layer
+		
+		//If weight is greater than wMax or smaller than wMin, then clip
+		//If there is no wMin or wMax, this will have no effect				
+		wClip(this->W);			
 		
 		//Store number of IterationNums needed
 		this->MLalgorithm->IterationsNeeded = IterationNum;

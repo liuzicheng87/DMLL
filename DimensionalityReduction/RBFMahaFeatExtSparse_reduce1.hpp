@@ -184,7 +184,7 @@
 					
 						this->LocalsumdXextdW[j1] += TemporaryValue = this->XMinusCSquaredData[BatchNum][i]*Xext[this->XMinusCSquaredIndices[BatchNum][i]];
 						this->LocalsumdXextdWXext[0][j1] += TemporaryValue*Xext[this->XMinusCSquaredIndices[BatchNum][i]];						
-						this->LocalsumdXextdWY[j1] += TemporaryValue*y[i];
+						this->LocalsumdXextdWY[j1] += TemporaryValue*y[this->XMinusCSquaredIndices[BatchNum][i]];
 						
 				} //layer 3 close
 
@@ -201,7 +201,7 @@
 				
 						this->LocalsumdXextdW[j1] += TemporaryValue = (this->XMinusCSquaredData[BatchNum][i] - this->cData[j2]*this->cData[j2])*Xext[this->XMinusCSquaredIndices[BatchNum][i]];
 						this->LocalsumdXextdWXext[0][j1] += TemporaryValue*Xext[this->XMinusCSquaredIndices[BatchNum][i]];						
-						this->LocalsumdXextdWY[j1] += TemporaryValue*y[i];				
+						this->LocalsumdXextdWY[j1] += TemporaryValue*y[this->XMinusCSquaredIndices[BatchNum][i]];				
 					
 				} //layer 3 close
 				
