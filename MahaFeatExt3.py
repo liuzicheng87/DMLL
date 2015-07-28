@@ -44,7 +44,7 @@ MahaFeatExt.fit(Xtrain, ytrain, optimiser=DMLL.AdaGrad(0.08, 0.0), GlobalBatchSi
 Xext = MahaFeatExt.transform(Xtrain)
 Xtransform = scipy.sparse.csr_matrix(Xext)
 
-Jext2 = 4
+Jext2 = 2
 
 MahaFeatExt2 = DMLL.LinearMahaFeatExtSparse(Jext, Jext2)
 MahaFeatExt2.fit(Xtransform, ytrain, optimiser=DMLL.GradientDescentWithMomentum(25.0, 0.5, 0.5), GlobalBatchSize=0, tol=1e-08, MaxNumIterations=1200, root=0)

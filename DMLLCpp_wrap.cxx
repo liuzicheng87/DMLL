@@ -2942,17 +2942,18 @@ SWIG_Python_NonDynamicSetAttr(PyObject *obj, PyObject *name, PyObject *value) {
 #define SWIGTYPE_p_L2RegulariserCpp swig_types[5]
 #define SWIGTYPE_p_LinearMahaFeatExtSparseCpp swig_types[6]
 #define SWIGTYPE_p_LinearRegressionCpp swig_types[7]
-#define SWIGTYPE_p_MPI_Comm swig_types[8]
-#define SWIGTYPE_p_NumericallyOptimisedMLAlgorithmCpp swig_types[9]
-#define SWIGTYPE_p_OptimiserCpp swig_types[10]
-#define SWIGTYPE_p_RBFMahaFeatExtSparseCpp swig_types[11]
-#define SWIGTYPE_p_RegulariserCpp swig_types[12]
-#define SWIGTYPE_p_SayHelloCpp swig_types[13]
-#define SWIGTYPE_p_char swig_types[14]
-#define SWIGTYPE_p_double swig_types[15]
-#define SWIGTYPE_p_int swig_types[16]
-static swig_type_info *swig_types[18];
-static swig_module_info swig_module = {swig_types, 17, 0, 0, 0, 0};
+#define SWIGTYPE_p_LogisticRegressionCpp swig_types[8]
+#define SWIGTYPE_p_MPI_Comm swig_types[9]
+#define SWIGTYPE_p_NumericallyOptimisedMLAlgorithmCpp swig_types[10]
+#define SWIGTYPE_p_OptimiserCpp swig_types[11]
+#define SWIGTYPE_p_RBFMahaFeatExtSparseCpp swig_types[12]
+#define SWIGTYPE_p_RegulariserCpp swig_types[13]
+#define SWIGTYPE_p_SayHelloCpp swig_types[14]
+#define SWIGTYPE_p_char swig_types[15]
+#define SWIGTYPE_p_double swig_types[16]
+#define SWIGTYPE_p_int swig_types[17]
+static swig_type_info *swig_types[19];
+static swig_module_info swig_module = {swig_types, 18, 0, 0, 0, 0};
 #define SWIG_TypeQuery(name) SWIG_TypeQueryModule(&swig_module, &swig_module, name)
 #define SWIG_MangledTypeQuery(name) SWIG_MangledTypeQueryModule(&swig_module, &swig_module, name)
 
@@ -5140,6 +5141,238 @@ SWIGINTERN PyObject *LinearRegressionCpp_swigregister(PyObject *SWIGUNUSEDPARM(s
   return SWIG_Py_Void();
 }
 
+SWIGINTERN PyObject *_wrap_new_LogisticRegressionCpp(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  int arg1 ;
+  RegulariserCpp *arg2 = (RegulariserCpp *) 0 ;
+  int val1 ;
+  int ecode1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  LogisticRegressionCpp *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:new_LogisticRegressionCpp",&obj0,&obj1)) SWIG_fail;
+  ecode1 = SWIG_AsVal_int(obj0, &val1);
+  if (!SWIG_IsOK(ecode1)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "new_LogisticRegressionCpp" "', argument " "1"" of type '" "int""'");
+  } 
+  arg1 = static_cast< int >(val1);
+  res2 = SWIG_ConvertPtr(obj1, &argp2,SWIGTYPE_p_RegulariserCpp, 0 |  0 );
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "new_LogisticRegressionCpp" "', argument " "2"" of type '" "RegulariserCpp *""'"); 
+  }
+  arg2 = reinterpret_cast< RegulariserCpp * >(argp2);
+  result = (LogisticRegressionCpp *)new LogisticRegressionCpp(arg1,arg2);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_LogisticRegressionCpp, SWIG_POINTER_NEW |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_delete_LogisticRegressionCpp(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  LogisticRegressionCpp *arg1 = (LogisticRegressionCpp *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:delete_LogisticRegressionCpp",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_LogisticRegressionCpp, SWIG_POINTER_DISOWN |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_LogisticRegressionCpp" "', argument " "1"" of type '" "LogisticRegressionCpp *""'"); 
+  }
+  arg1 = reinterpret_cast< LogisticRegressionCpp * >(argp1);
+  delete arg1;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LogisticRegressionCpp_fit(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  LogisticRegressionCpp *arg1 = (LogisticRegressionCpp *) 0 ;
+  MPI_Comm arg2 ;
+  double *arg3 = (double *) 0 ;
+  int arg4 ;
+  int arg5 ;
+  double *arg6 = (double *) 0 ;
+  int arg7 ;
+  OptimiserCpp *arg8 = (OptimiserCpp *) 0 ;
+  int arg9 ;
+  double arg10 ;
+  int arg11 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyArrayObject *array3 = NULL ;
+  int is_new_object3 ;
+  PyArrayObject *array6 = NULL ;
+  int is_new_object6 ;
+  void *argp8 = 0 ;
+  int res8 = 0 ;
+  int val9 ;
+  int ecode9 = 0 ;
+  double val10 ;
+  int ecode10 = 0 ;
+  int val11 ;
+  int ecode11 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  PyObject * obj3 = 0 ;
+  PyObject * obj4 = 0 ;
+  PyObject * obj5 = 0 ;
+  PyObject * obj6 = 0 ;
+  PyObject * obj7 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOOOOOOO:LogisticRegressionCpp_fit",&obj0,&obj1,&obj2,&obj3,&obj4,&obj5,&obj6,&obj7)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_LogisticRegressionCpp, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LogisticRegressionCpp_fit" "', argument " "1"" of type '" "LogisticRegressionCpp *""'"); 
+  }
+  arg1 = reinterpret_cast< LogisticRegressionCpp * >(argp1);
+  {
+    MPI_Comm *ptr = (MPI_Comm *)0;
+    int res = SWIG_AsPtr_MPI_Comm(obj1, &ptr);
+    if (!SWIG_IsOK(res) || !ptr) {
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "LogisticRegressionCpp_fit" "', argument " "2"" of type '" "MPI_Comm""'"); 
+    }
+    arg2 = *ptr;
+    if (SWIG_IsNewObj(res)) delete ptr;
+  }
+  {
+    int size[2] = {
+      -1,-1
+    };
+    array3 = obj_to_array_contiguous_allow_conversion(obj2, PyArray_DOUBLE, &is_new_object3);
+    if (!array3 || !require_dimensions(array3,2) || !require_size(array3,size,1)) SWIG_fail;
+    arg3 = (double*) array3->data;
+    arg4 = array3->dimensions[0];
+    arg5 = array3->dimensions[1];
+  }
+  {
+    int size[1] = {
+      -1
+    };
+    array6 = obj_to_array_contiguous_allow_conversion(obj3, PyArray_DOUBLE, &is_new_object6);
+    if (!array6 || !require_dimensions(array6,1) || !require_size(array6,size,1)) SWIG_fail;
+    arg6 = (double*) array6->data;
+    arg7 = array6->dimensions[0];
+  }
+  res8 = SWIG_ConvertPtr(obj4, &argp8,SWIGTYPE_p_OptimiserCpp, 0 |  0 );
+  if (!SWIG_IsOK(res8)) {
+    SWIG_exception_fail(SWIG_ArgError(res8), "in method '" "LogisticRegressionCpp_fit" "', argument " "8"" of type '" "OptimiserCpp *""'"); 
+  }
+  arg8 = reinterpret_cast< OptimiserCpp * >(argp8);
+  ecode9 = SWIG_AsVal_int(obj5, &val9);
+  if (!SWIG_IsOK(ecode9)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode9), "in method '" "LogisticRegressionCpp_fit" "', argument " "9"" of type '" "int""'");
+  } 
+  arg9 = static_cast< int >(val9);
+  ecode10 = SWIG_AsVal_double(obj6, &val10);
+  if (!SWIG_IsOK(ecode10)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode10), "in method '" "LogisticRegressionCpp_fit" "', argument " "10"" of type '" "double""'");
+  } 
+  arg10 = static_cast< double >(val10);
+  ecode11 = SWIG_AsVal_int(obj7, &val11);
+  if (!SWIG_IsOK(ecode11)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode11), "in method '" "LogisticRegressionCpp_fit" "', argument " "11"" of type '" "int""'");
+  } 
+  arg11 = static_cast< int >(val11);
+  (arg1)->fit(arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10,arg11);
+  resultobj = SWIG_Py_Void();
+  {
+    if (is_new_object3 && array3) Py_DECREF(array3);
+  }
+  {
+    if (is_new_object6 && array6) Py_DECREF(array6);
+  }
+  return resultobj;
+fail:
+  {
+    if (is_new_object3 && array3) Py_DECREF(array3);
+  }
+  {
+    if (is_new_object6 && array6) Py_DECREF(array6);
+  }
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LogisticRegressionCpp_predict(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  LogisticRegressionCpp *arg1 = (LogisticRegressionCpp *) 0 ;
+  double *arg2 = (double *) 0 ;
+  int arg3 ;
+  double *arg4 = (double *) 0 ;
+  int arg5 ;
+  int arg6 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyArrayObject *array2 = NULL ;
+  int is_new_object2 ;
+  PyArrayObject *array4 = NULL ;
+  int is_new_object4 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:LogisticRegressionCpp_predict",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_LogisticRegressionCpp, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LogisticRegressionCpp_predict" "', argument " "1"" of type '" "LogisticRegressionCpp *""'"); 
+  }
+  arg1 = reinterpret_cast< LogisticRegressionCpp * >(argp1);
+  {
+    int size[1] = {
+      -1
+    };
+    array2 = obj_to_array_contiguous_allow_conversion(obj1, PyArray_DOUBLE, &is_new_object2);
+    if (!array2 || !require_dimensions(array2,1) || !require_size(array2,size,1)) SWIG_fail;
+    arg2 = (double*) array2->data;
+    arg3 = array2->dimensions[0];
+  }
+  {
+    int size[2] = {
+      -1,-1
+    };
+    array4 = obj_to_array_contiguous_allow_conversion(obj2, PyArray_DOUBLE, &is_new_object4);
+    if (!array4 || !require_dimensions(array4,2) || !require_size(array4,size,1)) SWIG_fail;
+    arg4 = (double*) array4->data;
+    arg5 = array4->dimensions[0];
+    arg6 = array4->dimensions[1];
+  }
+  (arg1)->predict(arg2,arg3,arg4,arg5,arg6);
+  resultobj = SWIG_Py_Void();
+  {
+    if (is_new_object2 && array2) Py_DECREF(array2);
+  }
+  {
+    if (is_new_object4 && array4) Py_DECREF(array4);
+  }
+  return resultobj;
+fail:
+  {
+    if (is_new_object2 && array2) Py_DECREF(array2);
+  }
+  {
+    if (is_new_object4 && array4) Py_DECREF(array4);
+  }
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *LogisticRegressionCpp_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *obj;
+  if (!PyArg_ParseTuple(args,(char*)"O:swigregister", &obj)) return NULL;
+  SWIG_TypeNewClientData(SWIGTYPE_p_LogisticRegressionCpp, SWIG_NewClientData(obj));
+  return SWIG_Py_Void();
+}
+
 SWIGINTERN PyObject *_wrap_new_LinearMahaFeatExtSparseCpp(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   int arg1 ;
@@ -5961,6 +6194,11 @@ static PyMethodDef SwigMethods[] = {
 	 { (char *)"LinearRegressionCpp_fit", _wrap_LinearRegressionCpp_fit, METH_VARARGS, NULL},
 	 { (char *)"LinearRegressionCpp_predict", _wrap_LinearRegressionCpp_predict, METH_VARARGS, NULL},
 	 { (char *)"LinearRegressionCpp_swigregister", LinearRegressionCpp_swigregister, METH_VARARGS, NULL},
+	 { (char *)"new_LogisticRegressionCpp", _wrap_new_LogisticRegressionCpp, METH_VARARGS, NULL},
+	 { (char *)"delete_LogisticRegressionCpp", _wrap_delete_LogisticRegressionCpp, METH_VARARGS, NULL},
+	 { (char *)"LogisticRegressionCpp_fit", _wrap_LogisticRegressionCpp_fit, METH_VARARGS, NULL},
+	 { (char *)"LogisticRegressionCpp_predict", _wrap_LogisticRegressionCpp_predict, METH_VARARGS, NULL},
+	 { (char *)"LogisticRegressionCpp_swigregister", LogisticRegressionCpp_swigregister, METH_VARARGS, NULL},
 	 { (char *)"new_LinearMahaFeatExtSparseCpp", _wrap_new_LinearMahaFeatExtSparseCpp, METH_VARARGS, NULL},
 	 { (char *)"delete_LinearMahaFeatExtSparseCpp", _wrap_delete_LinearMahaFeatExtSparseCpp, METH_VARARGS, NULL},
 	 { (char *)"LinearMahaFeatExtSparseCpp_fit", _wrap_LinearMahaFeatExtSparseCpp_fit, METH_VARARGS, NULL},
@@ -5985,6 +6223,9 @@ static void *_p_RBFMahaFeatExtSparseCppTo_p_NumericallyOptimisedMLAlgorithmCpp(v
 }
 static void *_p_LinearRegressionCppTo_p_NumericallyOptimisedMLAlgorithmCpp(void *x, int *SWIGUNUSEDPARM(newmemory)) {
     return (void *)((NumericallyOptimisedMLAlgorithmCpp *)  ((LinearRegressionCpp *) x));
+}
+static void *_p_LogisticRegressionCppTo_p_NumericallyOptimisedMLAlgorithmCpp(void *x, int *SWIGUNUSEDPARM(newmemory)) {
+    return (void *)((NumericallyOptimisedMLAlgorithmCpp *)  ((LogisticRegressionCpp *) x));
 }
 static void *_p_L1RegulariserCppTo_p_RegulariserCpp(void *x, int *SWIGUNUSEDPARM(newmemory)) {
     return (void *)((RegulariserCpp *)  ((L1RegulariserCpp *) x));
@@ -6012,6 +6253,7 @@ static swig_type_info _swigt__p_L1RegulariserCpp = {"_p_L1RegulariserCpp", "L1Re
 static swig_type_info _swigt__p_L2RegulariserCpp = {"_p_L2RegulariserCpp", "L2RegulariserCpp *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_LinearMahaFeatExtSparseCpp = {"_p_LinearMahaFeatExtSparseCpp", "LinearMahaFeatExtSparseCpp *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_LinearRegressionCpp = {"_p_LinearRegressionCpp", "LinearRegressionCpp *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_LogisticRegressionCpp = {"_p_LogisticRegressionCpp", "LogisticRegressionCpp *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_MPI_Comm = {"_p_MPI_Comm", "MPI_Comm *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_NumericallyOptimisedMLAlgorithmCpp = {"_p_NumericallyOptimisedMLAlgorithmCpp", "NumericallyOptimisedMLAlgorithmCpp *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_OptimiserCpp = {"_p_OptimiserCpp", "OptimiserCpp *", 0, 0, (void*)0, 0};
@@ -6031,6 +6273,7 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_L2RegulariserCpp,
   &_swigt__p_LinearMahaFeatExtSparseCpp,
   &_swigt__p_LinearRegressionCpp,
+  &_swigt__p_LogisticRegressionCpp,
   &_swigt__p_MPI_Comm,
   &_swigt__p_NumericallyOptimisedMLAlgorithmCpp,
   &_swigt__p_OptimiserCpp,
@@ -6050,8 +6293,9 @@ static swig_cast_info _swigc__p_L1RegulariserCpp[] = {  {&_swigt__p_L1Regularise
 static swig_cast_info _swigc__p_L2RegulariserCpp[] = {  {&_swigt__p_L2RegulariserCpp, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_LinearMahaFeatExtSparseCpp[] = {  {&_swigt__p_LinearMahaFeatExtSparseCpp, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_LinearRegressionCpp[] = {  {&_swigt__p_LinearRegressionCpp, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_LogisticRegressionCpp[] = {  {&_swigt__p_LogisticRegressionCpp, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_MPI_Comm[] = {  {&_swigt__p_MPI_Comm, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_NumericallyOptimisedMLAlgorithmCpp[] = {  {&_swigt__p_LinearMahaFeatExtSparseCpp, _p_LinearMahaFeatExtSparseCppTo_p_NumericallyOptimisedMLAlgorithmCpp, 0, 0},  {&_swigt__p_RBFMahaFeatExtSparseCpp, _p_RBFMahaFeatExtSparseCppTo_p_NumericallyOptimisedMLAlgorithmCpp, 0, 0},  {&_swigt__p_NumericallyOptimisedMLAlgorithmCpp, 0, 0, 0},  {&_swigt__p_LinearRegressionCpp, _p_LinearRegressionCppTo_p_NumericallyOptimisedMLAlgorithmCpp, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_NumericallyOptimisedMLAlgorithmCpp[] = {  {&_swigt__p_LinearMahaFeatExtSparseCpp, _p_LinearMahaFeatExtSparseCppTo_p_NumericallyOptimisedMLAlgorithmCpp, 0, 0},  {&_swigt__p_RBFMahaFeatExtSparseCpp, _p_RBFMahaFeatExtSparseCppTo_p_NumericallyOptimisedMLAlgorithmCpp, 0, 0},  {&_swigt__p_NumericallyOptimisedMLAlgorithmCpp, 0, 0, 0},  {&_swigt__p_LinearRegressionCpp, _p_LinearRegressionCppTo_p_NumericallyOptimisedMLAlgorithmCpp, 0, 0},  {&_swigt__p_LogisticRegressionCpp, _p_LogisticRegressionCppTo_p_NumericallyOptimisedMLAlgorithmCpp, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_OptimiserCpp[] = {  {&_swigt__p_GradientDescentCpp, _p_GradientDescentCppTo_p_OptimiserCpp, 0, 0},  {&_swigt__p_AdaGradCpp, _p_AdaGradCppTo_p_OptimiserCpp, 0, 0},  {&_swigt__p_GradientDescentWithMomentumCpp, _p_GradientDescentWithMomentumCppTo_p_OptimiserCpp, 0, 0},  {&_swigt__p_OptimiserCpp, 0, 0, 0},  {&_swigt__p_BacktrackingLineSearchCpp, _p_BacktrackingLineSearchCppTo_p_OptimiserCpp, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_RBFMahaFeatExtSparseCpp[] = {  {&_swigt__p_RBFMahaFeatExtSparseCpp, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_RegulariserCpp[] = {  {&_swigt__p_RegulariserCpp, 0, 0, 0},  {&_swigt__p_L1RegulariserCpp, _p_L1RegulariserCppTo_p_RegulariserCpp, 0, 0},  {&_swigt__p_L2RegulariserCpp, _p_L2RegulariserCppTo_p_RegulariserCpp, 0, 0},{0, 0, 0, 0}};
@@ -6069,6 +6313,7 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_L2RegulariserCpp,
   _swigc__p_LinearMahaFeatExtSparseCpp,
   _swigc__p_LinearRegressionCpp,
+  _swigc__p_LogisticRegressionCpp,
   _swigc__p_MPI_Comm,
   _swigc__p_NumericallyOptimisedMLAlgorithmCpp,
   _swigc__p_OptimiserCpp,

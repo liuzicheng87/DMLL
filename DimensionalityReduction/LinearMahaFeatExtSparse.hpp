@@ -206,8 +206,14 @@ class LinearMahaFeatExtSparseCpp: public NumericallyOptimisedMLAlgorithmCpp {
 				gradient = 2.0*dZEZdW*VInv*ZEZ - ZEZ.transpose()*VInv*dVdW*VInv*ZEZ;
 													
 				localdZdW[i] = gradient(0,0);
+				
+				//Add part about Lagrange multipliers here...
 																			
 			}			
+			
+			//Apply regularisation
+			//Regulariser does not apply to LaGrange parameters!
+			//this->regulariser->g(localdZdW, W, this->WBatchBegin, min(this->WBatchEnd, Jext*J), min(this->WBatchEnd, Jext*J) - this->WBatchBegin, GlobalBatchSizeDouble);
 						
 			//Gather all localdZdW and store the result in dZdW
 			MPI_Allgatherv(localdZdW + this->WBatchBegin, this->WBatchSize[this->optimiser->rank], MPI_DOUBLE, dZdW, this->WBatchSize, this->CumulativeWBatchSize, MPI_DOUBLE, comm);				

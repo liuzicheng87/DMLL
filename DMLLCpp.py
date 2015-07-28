@@ -288,6 +288,25 @@ class LinearRegressionCpp(NumericallyOptimisedMLAlgorithmCpp):
 LinearRegressionCpp_swigregister = _DMLLCpp.LinearRegressionCpp_swigregister
 LinearRegressionCpp_swigregister(LinearRegressionCpp)
 
+class LogisticRegressionCpp(NumericallyOptimisedMLAlgorithmCpp):
+    __swig_setmethods__ = {}
+    for _s in [NumericallyOptimisedMLAlgorithmCpp]: __swig_setmethods__.update(getattr(_s,'__swig_setmethods__',{}))
+    __setattr__ = lambda self, name, value: _swig_setattr(self, LogisticRegressionCpp, name, value)
+    __swig_getmethods__ = {}
+    for _s in [NumericallyOptimisedMLAlgorithmCpp]: __swig_getmethods__.update(getattr(_s,'__swig_getmethods__',{}))
+    __getattr__ = lambda self, name: _swig_getattr(self, LogisticRegressionCpp, name)
+    __repr__ = _swig_repr
+    def __init__(self, *args): 
+        this = _DMLLCpp.new_LogisticRegressionCpp(*args)
+        try: self.this.append(this)
+        except: self.this = this
+    __swig_destroy__ = _DMLLCpp.delete_LogisticRegressionCpp
+    __del__ = lambda self : None;
+    def fit(self, *args): return _DMLLCpp.LogisticRegressionCpp_fit(self, *args)
+    def predict(self, *args): return _DMLLCpp.LogisticRegressionCpp_predict(self, *args)
+LogisticRegressionCpp_swigregister = _DMLLCpp.LogisticRegressionCpp_swigregister
+LogisticRegressionCpp_swigregister(LogisticRegressionCpp)
+
 class LinearMahaFeatExtSparseCpp(NumericallyOptimisedMLAlgorithmCpp):
     __swig_setmethods__ = {}
     for _s in [NumericallyOptimisedMLAlgorithmCpp]: __swig_setmethods__.update(getattr(_s,'__swig_setmethods__',{}))
