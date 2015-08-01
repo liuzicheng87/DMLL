@@ -18,6 +18,7 @@ class LinearMahaFeatExtSparseCpp: public NumericallyOptimisedMLAlgorithmCpp {
 	//Variables that need to be recalculated in every iteration
 	double  *sumXext, *sumXextY, *sumXextXext,  **sumdXextdWXext;
 	double  *LocalsumXext, *LocalsumXextY, *LocalsumXextXext,  **LocalsumdXextdWXext;
+	double *WTW; //gram matrix for, which is necessary for our particular optimisation strategy
 	
 	//Matrices
 	Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic> V, VInv, ZEZ, dVdW, dZEZdW;
@@ -42,11 +43,12 @@ class LinearMahaFeatExtSparseCpp: public NumericallyOptimisedMLAlgorithmCpp {
 		this->Jext = Jext;
 		
 		//IMPORTANT: this->lengthW needs to be defined when initialising an algorithm!
-		this->lengthW = J*Jext; 		
+		this->lengthW = J*Jext + 1; 		
 				
 		//IMPORTANT: You must malloc W and initialise values randomly. How you randomly initialise them is your decision, but make sure you the the same values every time you call the function.
 		this->W = (double*)malloc(this->lengthW*sizeof(double));
-		for (i=0; i<this->lengthW; ++i) this->W[i] = dist(gen);
+		for (i=0; i<J*Jext; ++i) this->W[i] = dist(gen);
+		this->W[this->lengthW - 1] = -0.5;
 		
 		//Resize matrices		
 		this->V.resize(this->Jext, this->Jext);
@@ -54,7 +56,14 @@ class LinearMahaFeatExtSparseCpp: public NumericallyOptimisedMLAlgorithmCpp {
 		this->ZEZ.resize(this->Jext, 1);
 		this->dVdW.resize(this->Jext, this->Jext);
 		this->dZEZdW.resize(1, this->Jext);
-
+		
+		//Impose restriction on lambda (for most optimisers this actually not necessary, because the derivative for lambda is always going to be greater or equal to zero, but do so anyway, just in case)
+		this->wMaxLength = 1;
+		this->wMaxIndices = (int*)malloc(1*sizeof(int));
+		this->wMaxIndices[0] = this->lengthW - 1;
+			
+		this->wMax = (double*)calloc(1, sizeof(double));//wMax is set to zero
+		
 	};
 	
 	~LinearMahaFeatExtSparseCpp() {};
@@ -138,6 +147,11 @@ class LinearMahaFeatExtSparseCpp: public NumericallyOptimisedMLAlgorithmCpp {
 			int i,j,k,a,c,d;
 			double BatchSizeDouble = (double)BatchSize;
 			double GlobalBatchSizeDouble;
+			
+			//Calculate WTW. As the name implies WTW is the gram matrix for W.
+			for (i=0; i<this->Jext*(this->Jext + 1)/2; ++i) this->WTW[i] = 0.0;
+			for (i=0; i<this->Jext; ++i) for (j=0; j<=i; ++j) for (k=0; k<this->J; ++k) this->WTW[i*(i+1)/2 + j] += W[i*this->J + k]*W[j*this->J + k];
+			for (i=0; i<this->Jext; ++i) this->WTW[i*(i+1)/2 + i] -= 1.0; //We substract 1 from the diagonal, because this is the condition we impose on WTW.
 																																											
 			//The size of Xext depends on BatchSize. Therefore, it needs to be initalised within an iteration																																				
 			double *Xext = (double*)calloc(this->Jext*BatchSize, sizeof(double));
@@ -176,11 +190,11 @@ class LinearMahaFeatExtSparseCpp: public NumericallyOptimisedMLAlgorithmCpp {
 							
 			//Update W
 			//this->WBatchBegin and this->WBatchEnd are declared in fit. They define the batches of W assigned to this process. 
-			for (i=this->WBatchBegin; i < this->WBatchEnd; ++i) {
+			for (i=this->WBatchBegin; i < this->WBatchEnd; ++i) if (i < this->Jext*this->J) {//Calculate derivative for normal weights
 										
 				//Calculate c and d
 				//c=0,1,...,J-1 is the index for the original feature
-				//c=0,1,...,Jext-1 is the index for the extracted feature	
+				//d=0,1,...,Jext-1 is the index for the extracted feature	
 				c = i%(this->J);
 				d = i/(this->J);
 				
@@ -207,8 +221,17 @@ class LinearMahaFeatExtSparseCpp: public NumericallyOptimisedMLAlgorithmCpp {
 													
 				localdZdW[i] = gradient(0,0);
 				
-				//Add part about Lagrange multipliers here...
-																			
+				//Add LaGrange multiplier. Note that lambda = W[this->lengthW - 1]
+				for (a=0; a<d; ++a) localdZdW[i] += W[this->lengthW - 1]*this->WTW[d*(d + 1)/2 + a]*W[a*this->J + c];
+														
+				localdZdW[i] += 2.0*W[this->lengthW - 1]*this->WTW[d*(d + 1)/2 + d]*W[d*this->J + c]; //Note that we have already subtracted 1.0 for all diagonal elements in the gram matrix
+																						
+				for (a=d+1; a<this->Jext; ++a) localdZdW[i] += W[this->lengthW - 1]*this->WTW[a*(a + 1)/2 + d]*W[a*this->J + c];
+																
+			} else {//Calculate derivative for lambda
+				
+				for (j=0; j<this->Jext*(this->Jext + 1)/2; ++j)  localdZdW[i] -=  0.5*this->WTW[j]*this->WTW[j]; //Since we are minimising for lambda, rather than maximising, we intentionally multiply the derivative with -1.
+				
 			}			
 			
 			//Apply regularisation
@@ -301,6 +324,8 @@ class LinearMahaFeatExtSparseCpp: public NumericallyOptimisedMLAlgorithmCpp {
 		this->dXextdWIndices  = (int**)malloc(this->NumBatches*sizeof(int*));
 		this->dXextdWIndptr  = (int**)malloc(this->NumBatches*sizeof(int*));	
 																		
+		this->WTW = (double*)calloc((Jext*(Jext + 1))/2, sizeof(double));
+																		
 		//Calculate variables that DO NOT depend on W. Since they, by defintion, will not change as we optimise W, we calculate them before conducting the actual optimisation.
 		for (BatchNum=0; BatchNum<this->NumBatches; ++BatchNum) {
 								
@@ -366,6 +391,8 @@ class LinearMahaFeatExtSparseCpp: public NumericallyOptimisedMLAlgorithmCpp {
 		for (j=0; j < this->Jext; ++j)  for (i=0; i < this->J; ++i)  this->W[j*(this->J) + i] = Wmatrix(i, j);		
 					
 		//Free all the arrays that have been allocated previously
+		free(this->WTW);
+		
 		free(this->WBatchSize);
 		free(this->CumulativeWBatchSize);
 		

@@ -47,7 +47,7 @@ Xtransform = scipy.sparse.csr_matrix(Xext)
 Jext2 = 2
 
 MahaFeatExt2 = DMLL.LinearMahaFeatExtSparse(Jext, Jext2)
-MahaFeatExt2.fit(Xtransform, ytrain, optimiser=DMLL.GradientDescentWithMomentum(25.0, 0.5, 0.5), GlobalBatchSize=0, tol=1e-08, MaxNumIterations=1200, root=0)
+MahaFeatExt2.fit(Xtransform, ytrain, optimiser=DMLL.GradientDescentWithMomentum(5.0, 0.5, 0.5),  GlobalBatchSize=0, tol=1e-08, MaxNumIterations=1200, root=0)
 Xtransform2 = MahaFeatExt2.transform(Xtransform)
 
 if DMLL.rank == 0:
@@ -57,10 +57,12 @@ if DMLL.rank == 0:
    plt.plot(SumGradients)
    plt.show()
    
-   W = MahaFeatExt2.GetParams()
+   W = MahaFeatExt2.GetParams()[:Jext2*Jext]
    W = W.reshape(Jext2, Jext)
    print W
    print np.dot(W, W.transpose())
+   print "lambda:"
+   print MahaFeatExt2.GetParams()[Jext2*Jext]
    
 if DMLL.rank == root:
 	Xexttest = MahaFeatExt.transform(Xtest)
